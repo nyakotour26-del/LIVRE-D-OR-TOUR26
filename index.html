@@ -13,6 +13,7 @@
             --text-color: #2c3e50;
             --border-radius: 8px;
             --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --orange-color: #ff6b35;
         }
         
         * {
@@ -75,11 +76,14 @@
             font-size: 16px;
             border: 1px solid #ddd;
             border-radius: var(--border-radius);
-            /* Désactive les suggestions automatiques du navigateur */
-            autocomplete: "off";
-            autocorrect: "off";
-            autocapitalize: "off";
-            spellcheck: false;
+            /* Désactivation complète des suggestions navigateur */
+            autocomplete: off;
+            -webkit-autocomplete: off;
+            -moz-autocomplete: off;
+            -webkit-autocorrect: off;
+            -moz-autocorrect: off;
+            -webkit-autocapitalize: off;
+            -moz-autocapitalize: off;
         }
         
         .search-button {
@@ -333,7 +337,7 @@
         
         .detail-label {
             font-weight: bold;
-            color: var(--secondary-color);
+            color: var(--orange-color);
             font-size: 0.9em;
         }
         
@@ -346,7 +350,17 @@
             padding: 15px;
             background: white;
             border-radius: var(--border-radius);
-            border-left: 4px solid var(--primary-color);
+            border-left: 4px solid var(--orange-color);
+        }
+        
+        .message-label {
+            font-weight: bold;
+            color: var(--orange-color);
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .contact-info {
@@ -355,6 +369,16 @@
             background: #f8f9fa;
             border-radius: var(--border-radius);
             border-left: 4px solid #3498db;
+        }
+        
+        .contact-label {
+            font-weight: bold;
+            color: var(--orange-color);
+            font-size: 1em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .loading {
@@ -423,9 +447,17 @@
         </header>
         
         <section class="search-section">
-            <!-- Barre de recherche principale -->
+            <!-- Barre de recherche principale - CORRIGÉE -->
             <form class="search-form" id="searchForm" autocomplete="off">
-                <input type="text" class="search-input" id="searchInput" placeholder="Rechercher dans tous les messages..." autocomplete="off">
+                <input type="text" 
+                       class="search-input" 
+                       id="searchInput" 
+                       name="search"
+                       placeholder="Rechercher dans tous les messages..." 
+                       autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       spellcheck="false">
                 <button type="submit" class="search-button">Rechercher</button>
                 <div class="suggestions-container" id="suggestionsContainer"></div>
             </form>
@@ -529,6 +561,12 @@
         // Initialisation au chargement de la page
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Démarrage de l\'application Livre d\'Or...');
+            
+            // Désactivation FORCÉE de l'autocomplétion
+            const searchInput = document.getElementById('searchInput');
+            searchInput.setAttribute('autocomplete', 'new-password');
+            searchInput.setAttribute('name', 'search-' + Date.now());
+            
             loadDataFromGoogleSheets();
             
             // Configuration des événements
@@ -539,7 +577,6 @@
             document.getElementById('closeResults').addEventListener('click', closeResults);
             
             // Événements pour les suggestions
-            const searchInput = document.getElementById('searchInput');
             const suggestionsContainer = document.getElementById('suggestionsContainer');
             
             searchInput.addEventListener('input', function() {
@@ -1235,31 +1272,31 @@
                             </div>
                             <div class="entry-details">
                                 <div class="detail-item">
-                                    <div class="detail-label">Nom:</div>
+                                    <div class="detail-label">👤 Nom:</div>
                                     <div class="detail-value">${nom}</div>
                                 </div>
                                 <div class="detail-item">
-                                    <div class="detail-label">Lieu:</div>
+                                    <div class="detail-label">📍 Lieu:</div>
                                     <div class="detail-value">${lieu}</div>
                                 </div>
                                 <div class="detail-item">
-                                    <div class="detail-label">Pays:</div>
+                                    <div class="detail-label">🌍 Pays:</div>
                                     <div class="detail-value">${pays}</div>
                                 </div>
                             </div>
                             ${message ? `
                             <div class="message-content">
-                                <div class="detail-label">Message:</div>
+                                <div class="message-label">📨 Message:</div>
                                 <div class="detail-value">${message}</div>
                             </div>
                             ` : ''}
                             ${(adresse || email || facebook || telephone) ? `
                             <div class="contact-info">
-                                <div class="detail-label">📞 Informations de contact:</div>
-                                ${adresse ? `<div class="detail-item"><strong>Adresse:</strong> ${adresse}</div>` : ''}
-                                ${email ? `<div class="detail-item"><strong>Email:</strong> ${email}</div>` : ''}
-                                ${facebook ? `<div class="detail-item"><strong>Réseaux sociaux:</strong> ${facebook}</div>` : ''}
-                                ${telephone ? `<div class="detail-item"><strong>Téléphone/WhatsApp:</strong> ${telephone}</div>` : ''}
+                                <div class="contact-label">📞 Informations de contact:</div>
+                                ${adresse ? `<div class="detail-item"><strong>📍 Adresse:</strong> ${adresse}</div>` : ''}
+                                ${email ? `<div class="detail-item"><strong>📧 Email:</strong> ${email}</div>` : ''}
+                                ${facebook ? `<div class="detail-item"><strong>👥 Réseaux sociaux:</strong> ${facebook}</div>` : ''}
+                                ${telephone ? `<div class="detail-item"><strong>📱 Téléphone/WhatsApp:</strong> ${telephone}</div>` : ''}
                             </div>
                             ` : ''}
                         </div>
