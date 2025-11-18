@@ -75,6 +75,11 @@
             font-size: 16px;
             border: 1px solid #ddd;
             border-radius: var(--border-radius);
+            /* Désactive les suggestions automatiques du navigateur */
+            autocomplete: "off";
+            autocorrect: "off";
+            autocapitalize: "off";
+            spellcheck: false;
         }
         
         .search-button {
@@ -419,8 +424,8 @@
         
         <section class="search-section">
             <!-- Barre de recherche principale -->
-            <form class="search-form" id="searchForm">
-                <input type="text" class="search-input" id="searchInput" placeholder="Rechercher dans tous les messages...">
+            <form class="search-form" id="searchForm" autocomplete="off">
+                <input type="text" class="search-input" id="searchInput" placeholder="Rechercher dans tous les messages..." autocomplete="off">
                 <button type="submit" class="search-button">Rechercher</button>
                 <div class="suggestions-container" id="suggestionsContainer"></div>
             </form>
