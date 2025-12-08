@@ -37,7 +37,8 @@
             line-height: 1.6;
             color: var(--text-dark);
             padding: 20px;
-            background-color: #FFF8E1;
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFF5E6 50%, #FFF0D6 100%);
+            background-attachment: fixed;
             min-height: 100vh;
             font-size: 16px;
         }
@@ -67,7 +68,7 @@
             text-align: center;
             margin-bottom: 10px;
             padding: 15px 20px;
-            background: #f5f5f5;
+            background: linear-gradient(rgba(255, 253, 240, 0.9), rgba(255, 253, 240, 0.95));
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             color: var(--text-dark);
@@ -218,7 +219,7 @@
         }
         
         .search-section {
-            background-color: #f5f5f5;
+            background-color: white;
             padding: 15px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
@@ -327,7 +328,7 @@
         }
         
         .calendar-section {
-            background: #f5f5f5;
+            background: white;
             padding: 15px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
@@ -517,7 +518,7 @@
         }
         
         .stats-section {
-            background: #f5f5f5;
+            background: linear-gradient(135deg, var(--gold-light), #fcebb6);
             padding: 15px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
@@ -531,7 +532,7 @@
         }
         
         .stat-card {
-            background: white;
+            background: linear-gradient(135deg, white, #f8f9fa);
             padding: 10px;
             border-radius: var(--border-radius);
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -566,7 +567,7 @@
         }
         
         .filter-group {
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #FFF8E1, #FCEBB6);
             padding: 12px;
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-light);
@@ -647,7 +648,7 @@
         }
         
         .results-section {
-            background-color: #f5f5f5;
+            background-color: white;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
@@ -676,9 +677,25 @@
             margin-bottom: 20px;
             border-radius: var(--border-radius);
             overflow: hidden;
-            background: #f5f5f5;
+            background: rgba(255, 253, 245, 0.85);
             position: relative;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .entry-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 253, 245, 0.7), rgba(255, 253, 245, 0.8));
+            z-index: 0;
+        }
+        
+        .entry-item > * {
+            position: relative;
+            z-index: 1;
         }
         
         .entry-title {
@@ -687,7 +704,7 @@
             color: var(--gold-dark);
             padding: 12px 15px;
             text-align: center;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
             border-bottom: 2px solid var(--gold-light);
             font-family: 'Georgia', serif;
@@ -758,7 +775,7 @@
         .message-content {
             margin-top: 15px;
             padding: 20px;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: var(--border-radius);
             border-left: 4px solid var(--secondary-color);
         }
@@ -774,7 +791,7 @@
         }
         
         .message-text {
-            font-family: 'Bradley Hand', 'Segoe Script', 'Comic Sans MS', cursive;
+            font-family: 'Segoe Script', 'Comic Sans MS', cursive;
             font-size: 1.1em;
             line-height: 1.4;
             color: var(--text-medium);
@@ -799,7 +816,7 @@
         .contact-section {
             margin-top: 15px;
             padding: 15px;
-            background: white;
+            background: rgba(248, 249, 250, 0.95);
             border-radius: var(--border-radius);
             border-left: 4px solid var(--accent-blue);
         }
@@ -825,7 +842,7 @@
             align-items: center;
             gap: 8px;
             padding: 10px;
-            background: #f8f9fa;
+            background: white;
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
@@ -867,7 +884,7 @@
         }
         
         .date-filter-group {
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #FFF8E1, #FCEBB6);
             padding: 12px;
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-light);
@@ -876,7 +893,7 @@
         }
         
         .date-tag {
-            background: white;
+            background: linear-gradient(135deg, white, #f8f9fa);
             padding: 8px 12px;
             border-radius: 20px;
             cursor: pointer;
@@ -890,7 +907,7 @@
         }
         
         .date-tag:hover {
-            background: var(--gold-light);
+            background: linear-gradient(135deg, var(--gold-light), #f0e6cc);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
@@ -957,7 +974,7 @@
         }
         
         .book-section {
-            background: #f5f5f5;
+            background: white;
             padding: 15px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
@@ -967,7 +984,7 @@
         .book-intro {
             margin-bottom: 15px;
             padding: 20px;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: var(--border-radius);
             border-left: 4px solid var(--secondary-color);
             border-right: 4px solid var(--secondary-color);
@@ -989,7 +1006,7 @@
         }
         
         .book-stats {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 15px;
             border-radius: var(--border-radius);
             margin: 15px 0;
@@ -1027,7 +1044,7 @@
         }
         
         .country-group {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 15px;
             border-radius: var(--border-radius);
             border: 1px solid #e9ecef;
@@ -1042,7 +1059,7 @@
         }
         
         .tableau-container {
-            background: #f5f5f5;
+            background: white;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
@@ -1234,7 +1251,7 @@
         .title-message-treasure {
             color: #8B6914;
             font-size: 1.2em;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1244,7 +1261,7 @@
         .title-blessing-message {
             color: #8B0000;
             font-size: 1.2em;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1254,7 +1271,7 @@
         .title-european-journey {
             color: #1E3A8A;
             font-size: 1.2em;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1264,7 +1281,7 @@
         .title-spiritual-testimony {
             color: #27ae60;
             font-size: 1.2em;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1274,7 +1291,7 @@
         .title-memory-moment {
             color: #9b59b6;
             font-size: 1.2em;
-            background: #f5f5f5;
+            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1285,7 +1302,7 @@
             color: #D4AF37;
             font-size: 1.2em;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-            background: #f5f5f5;
+            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #8B6914;
@@ -1348,11 +1365,6 @@
             
             .stats-section {
                 order: 2;
-            }
-            
-            .calendar-section {
-                order: 3;
-                margin-top: 20px;
             }
             
             .date-filter-group {
@@ -1647,7 +1659,7 @@
         }
         
         .date-filter-group {
-            background: #f5f5f5;
+            background: linear-gradient(135deg, #FFF8E1, #FCEBB6);
             padding: 12px;
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-light);
@@ -1755,7 +1767,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
+            background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.4);
@@ -1958,6 +1970,41 @@
         
         .retry-button:hover {
             background: linear-gradient(135deg, var(--gold-dark), var(--secondary-color));
+        }
+        
+        /* MODIFICATION CRITIQUE : Calendrier après barre de recherche en mobile */
+        @media (max-width: 768px) {
+            /* Réorganisation du contenu principal pour mobile */
+            .main-content {
+                order: 0;
+            }
+            
+            /* Le calendrier vient après la barre de recherche */
+            .calendar-section {
+                order: 1;
+                margin-top: 0;
+            }
+            
+            /* Les autres sections viennent après */
+            #loadingIndicator {
+                order: 2;
+            }
+            
+            #dataInfo {
+                order: 3;
+            }
+            
+            #resultsSection {
+                order: 4;
+            }
+            
+            #tableauSection {
+                order: 5;
+            }
+            
+            #bookSection {
+                order: 6;
+            }
         }
     </style>
 </head>
@@ -2171,7 +2218,7 @@
                 </div>
             </section>
             
-            <!-- Calendrier -->
+            <!-- Calendrier - MODIFICATION: Placé après la barre de recherche en mobile -->
             <div class="calendar-section">
                 <div class="calendar-header">
                     <h3 style="font-size: 1.05em;">📅 Calendrier des messages</h3>
