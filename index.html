@@ -42,7 +42,7 @@
             background-attachment: fixed;
             background-position: center;
             min-height: 100vh;
-            font-size: 16px; /* Réduit de 18px à 16px */
+            font-size: 16px;
         }
         
         .container {
@@ -398,14 +398,14 @@
         
         .calendar-day {
             text-align: center;
-            padding: 8px 4px; /* Réduit le padding */
+            padding: 8px 4px;
             cursor: pointer;
             border-radius: 4px;
             transition: background-color 0.2s;
             border: 1px solid #f0f0f0;
             position: relative;
-            min-height: 45px; /* Réduit de 50px à 45px */
-            font-size: 0.9em; /* Réduit la taille du texte */
+            min-height: 45px;
+            font-size: 0.9em;
         }
         
         .calendar-day:hover {
@@ -709,7 +709,7 @@
         }
         
         .entry-title {
-            font-size: 1.3em; /* Réduit de 1.4em à 1.3em */
+            font-size: 1.3em;
             font-weight: bold;
             color: var(--gold-dark);
             padding: 12px 15px;
@@ -726,7 +726,7 @@
             padding: 10px 15px;
             color: white;
             font-weight: bold;
-            font-size: 0.95em; /* Réduit de 1em à 0.95em */
+            font-size: 0.95em;
             text-align: center;
             border-bottom: 2px solid rgba(212, 175, 55, 0.5);
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
@@ -751,7 +751,7 @@
             text-align: center;
             font-weight: 600;
             color: var(--gold-dark);
-            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
+            font-size: 1em;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -764,8 +764,16 @@
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
         
+        /* Style spécifique pour le nom de l'auteur en ORANGE */
+        .header-item.author-name {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #FF8C00 !important; /* Orange vif */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
         .header-icon {
-            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
+            font-size: 1.2em;
             margin-bottom: 2px;
             color: var(--gold-dark);
             text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
@@ -786,7 +794,7 @@
         .message-label {
             font-weight: bold;
             color: var(--gold-dark);
-            font-size: 1em; /* Réduit de 1.1em à 1em */
+            font-size: 1em;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -795,7 +803,7 @@
         
         .message-text {
             font-family: 'Bradley Hand', 'Segoe Script', 'Comic Sans MS', cursive;
-            font-size: 1.1em; /* Réduit de 1.2em à 1.1em */
+            font-size: 1.1em;
             line-height: 1.4;
             color: var(--text-medium);
         }
@@ -827,7 +835,7 @@
         .contact-label {
             font-weight: bold;
             color: var(--accent-blue);
-            font-size: 0.95em; /* Réduit de 1em à 0.95em */
+            font-size: 0.95em;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -870,7 +878,7 @@
             flex: 1;
             color: var(--text-dark);
             word-break: break-word;
-            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
+            font-size: 0.9em;
         }
         
         .clickable-link {
@@ -878,7 +886,7 @@
             text-decoration: none;
             border-bottom: 1px dotted #2980b9;
             transition: all 0.3s;
-            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
+            font-size: 0.9em;
         }
         
         .clickable-link:hover {
@@ -905,7 +913,7 @@
             border: 2px solid var(--gold-light);
             margin: 4px;
             display: inline-block;
-            font-size: 0.85em; /* Réduit de 0.9em à 0.85em */
+            font-size: 0.85em;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
@@ -939,7 +947,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
+            font-size: 0.9em;
             border: 1px solid rgba(0,0,0,0.1);
         }
         
@@ -996,14 +1004,14 @@
         .book-intro h3 {
             color: var(--gold-dark);
             margin-bottom: 15px;
-            font-size: 1.3em; /* Réduit de 1.4em à 1.3em */
+            font-size: 1.3em;
             text-align: center;
         }
         
         .book-intro p {
             line-height: 1.7;
             color: var(--text-dark);
-            font-size: 1em; /* Réduit de 1.05em à 1em */
+            font-size: 1em;
             margin-bottom: 15px;
             text-align: justify;
         }
@@ -1019,7 +1027,7 @@
         .book-stats h4 {
             color: #219653;
             margin-bottom: 10px;
-            font-size: 1.1em; /* Réduit de 1.2em à 1.1em */
+            font-size: 1.1em;
         }
         
         .book-stats-grid {
@@ -1032,7 +1040,7 @@
             background: white;
             padding: 10px;
             border-radius: 5px;
-            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
+            font-size: 0.9em;
         }
         
         .book-stat-value {
@@ -1058,7 +1066,7 @@
             margin-bottom: 10px;
             padding-bottom: 5px;
             border-bottom: 2px solid var(--gold-light);
-            font-size: 1em; /* Réduit de 1.1em à 1em */
+            font-size: 1em;
         }
         
         .tableau-container {
@@ -1249,7 +1257,7 @@
         
         .title-message-treasure {
             color: #8B6914;
-            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
+            font-size: 1.2em;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1260,7 +1268,7 @@
         
         .title-blessing-message {
             color: #8B0000;
-            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
+            font-size: 1.2em;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1271,7 +1279,7 @@
         
         .title-european-journey {
             color: #1E3A8A;
-            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
+            font-size: 1.2em;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1282,7 +1290,7 @@
         
         .title-spiritual-testimony {
             color: #27ae60;
-            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
+            font-size: 1.2em;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1293,7 +1301,7 @@
         
         .title-memory-moment {
             color: #9b59b6;
-            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
+            font-size: 1.2em;
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1304,7 +1312,7 @@
         
         .title-golden-words {
             color: #D4AF37;
-            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
+            font-size: 1.2em;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1337,7 +1345,7 @@
         
         @media (max-width: 768px) {
             body {
-                font-size: 16px; /* Réduit de 18px à 16px */
+                font-size: 16px;
             }
             
             .container {
@@ -1477,7 +1485,7 @@
             
             .calendar-day {
                 padding: 6px 2px;
-                font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
+                font-size: 0.9em;
                 min-height: 40px;
             }
             
@@ -1492,11 +1500,19 @@
                 flex: 1;
                 min-width: 30%;
                 text-align: center;
-                font-size: 0.8em; /* Réduit de 0.85em à 0.8em */
+                font-size: 0.85em;
+            }
+            
+            /* Style spécifique pour le nom de l'auteur en mobile en ORANGE */
+            .header-item.author-name {
+                font-size: 1em;
+                font-weight: 700;
+                color: #FF8C00 !important;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
             }
             
             .header-icon {
-                font-size: 1em; /* Réduit de 1.1em à 1em */
+                font-size: 1em;
             }
             
             .contact-details {
@@ -1517,7 +1533,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                font-size: 0.85em; /* Réduit de 0.9em à 0.85em */
+                font-size: 0.85em;
                 padding: 10px 15px;
             }
             
@@ -1555,34 +1571,15 @@
             .title-spiritual-testimony,
             .title-memory-moment,
             .title-golden-words {
-                font-size: 1em; /* Réduit de 1.1em à 1em */
+                font-size: 1em;
                 padding: 10px 12px;
-            }
-            
-            /* Style pour la liste des dates sous le bouton "Afficher tous les messages" */
-            .dates-list-container {
-                margin-top: 15px;
-                max-height: 200px;
-                overflow-y: auto;
-                border: 1px solid var(--gold-light);
-                border-radius: var(--border-radius);
-                padding: 10px;
-                background: white;
-            }
-            
-            .dates-list-title {
-                font-weight: bold;
-                color: var(--gold-dark);
-                margin-bottom: 10px;
-                font-size: 0.9em;
-                text-align: center;
             }
         }
         
         @media (max-width: 480px) {
             body {
                 padding: 10px;
-                font-size: 15px; /* Réduit de 17px à 15px */
+                font-size: 15px;
             }
             
             .stats-grid {
@@ -1592,13 +1589,21 @@
             
             .calendar-day {
                 padding: 4px 1px;
-                font-size: 0.85em; /* Réduit de 0.9em à 0.85em */
+                font-size: 0.85em;
                 min-height: 35px;
             }
             
             .header-item {
                 min-width: 30%;
-                font-size: 0.75em; /* Réduit de 0.8em à 0.75em */
+                font-size: 0.8em;
+            }
+            
+            /* Style spécifique pour le nom de l'auteur en très petit écran en ORANGE */
+            .header-item.author-name {
+                font-size: 0.9em;
+                font-weight: 700;
+                color: #FF8C00 !important;
+                text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
             }
             
             .entry-content {
@@ -1611,7 +1616,7 @@
             }
             
             .message-text {
-                font-size: 1em; /* Réduit de 1.1em à 1em */
+                font-size: 1em;
                 line-height: 1.3;
             }
             
@@ -1630,7 +1635,7 @@
             
             .mobile-buttons-row .export-btn {
                 padding: 8px 12px;
-                font-size: 0.8em; /* Réduit de 0.85em à 0.8em */
+                font-size: 0.8em;
             }
             
             .title-message-treasure,
@@ -1639,7 +1644,7 @@
             .title-spiritual-testimony,
             .title-memory-moment,
             .title-golden-words {
-                font-size: 0.95em; /* Réduit de 1em à 0.95em */
+                font-size: 0.95em;
                 padding: 8px 10px;
             }
         }
@@ -1922,17 +1927,6 @@
         .icon-button.unlock-btn:hover {
             background: linear-gradient(135deg, #8B6914, #5D4037);
         }
-        
-        /* Style pour la liste des dates sous le bouton "Afficher tous les messages" */
-        .dates-list-container {
-            display: none; /* Caché par défaut, affiché en mobile */
-        }
-        
-        @media (max-width: 768px) {
-            .dates-list-container {
-                display: block;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1985,7 +1979,6 @@
         </div>
         <div class="unlock-bubble-content">
             <p>Pour accéder à toutes les fonctionnalités d'export (PDF, Excel, livre complet), veuillez saisir le mot de passe administrateur.</p>
-            <p style="font-size: 0.85em; color: #888; font-style: italic;">Mot de passe par défaut : <strong>admin</strong></p>
             <input type="password" class="unlock-bubble-input" id="unlockPassword" placeholder="Entrez le mot de passe" autocomplete="off">
         </div>
         <div class="unlock-bubble-actions">
@@ -2024,16 +2017,10 @@
         <div class="sidebar">
             <!-- Filtres -->
             <div class="filters-sidebar" style="order: 1;">
-                <!-- Bouton Afficher tous les messages avec la liste des dates en dessous (mobile) -->
+                <!-- Bouton Afficher tous les messages -->
                 <button class="action-button" onclick="showAllData()" style="margin-bottom: 15px; font-size: 1em; padding: 14px;">
                     📋 Afficher tous les messages
                 </button>
-                
-                <!-- Liste des dates pour mobile -->
-                <div class="dates-list-container" id="mobileDatesList">
-                    <div class="dates-list-title">📅 Dates disponibles</div>
-                    <div class="filter-tags" id="mobileDatesTags" style="max-height: 200px;"></div>
-                </div>
                 
                 <!-- Dates avec messages (pour desktop) -->
                 <div class="date-filter-group" style="order: 2;">
@@ -2419,7 +2406,6 @@
                 renderFilterTags();
                 renderCalendar();
                 renderDatesTags();
-                renderMobileDatesTags();
                 
                 showDataInfo();
                 
@@ -2624,34 +2610,6 @@
 
         function renderDatesTags() {
             const container = document.getElementById('datesTags');
-            container.innerHTML = '';
-            
-            // Créer un Set de dates uniques
-            const uniqueDates = [...new Set(datesWithData.map(d => 
-                d.date.toISOString().split('T')[0]
-            ))].sort().reverse();
-            
-            uniqueDates.forEach(dateStr => {
-                const date = new Date(dateStr);
-                const count = dateMessagesMap[dateStr]?.length || 0;
-                
-                const tag = document.createElement('div');
-                tag.className = 'date-tag';
-                tag.innerHTML = `
-                    <div style="font-weight: bold; color: var(--gold-dark);">${date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}</div>
-                    <div style="font-size: 0.8em; color: var(--text-medium);">${count} message${count > 1 ? 's' : ''}</div>
-                `;
-                
-                tag.addEventListener('click', () => {
-                    selectDate(date);
-                });
-                
-                container.appendChild(tag);
-            });
-        }
-
-        function renderMobileDatesTags() {
-            const container = document.getElementById('mobileDatesTags');
             container.innerHTML = '';
             
             // Créer un Set de dates uniques
@@ -2979,7 +2937,7 @@
                             </div>
                             
                             <div class="entry-header">
-                                <div class="header-item">
+                                <div class="header-item author-name">
                                     <div class="header-icon">👤</div>
                                     <div>${nom.replace(/\n/g, ' ')}</div>
                                 </div>
@@ -3251,6 +3209,7 @@
                         .fiche-content { padding: 25px; }
                         .info-row { display: flex; justify-content: space-between; background: rgba(212, 175, 55, 0.15); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid rgba(212, 175, 55, 0.3); }
                         .info-item { flex: 1; text-align: center; font-weight: bold; color: #8B6914; }
+                        .info-item.author-name { font-size: 1.2em; font-weight: 700; color: #FF8C00 !important; } /* Orange vif */
                         .message-section { margin-top: 20px; padding: 20px; background: rgba(255, 255, 255, 0.95); border-radius: 8px; border-left: 4px solid #D4AF37; }
                         .message-label { font-weight: bold; color: #8B6914; margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px; }
                         .message-text { font-family: 'Bradley Hand', 'Segoe Script', cursive; font-size: 17px; line-height: 1.6; color: #5D4037; }
@@ -3324,7 +3283,7 @@
                             </div>
                             <div class="fiche-content">
                                 <div class="info-row">
-                                    <div class="info-item">
+                                    <div class="info-item author-name">
                                         <div>👤 ${nom}</div>
                                     </div>
                                     <div class="info-item">
@@ -3568,7 +3527,7 @@
                                     ${formattedDate}
                                 </div>
                                 <div style="background: rgba(212, 175, 55, 0.3); color: #8B6914; padding: 10px; border-radius: 5px; margin-bottom: 15px; display: flex; justify-content: space-between; text-align: center; font-weight: bold;">
-                                    <div style="flex: 1;">👤 ${nom}</div>
+                                    <div style="flex: 1; font-size: 1.2em; font-weight: 700; color: #FF8C00;">👤 ${nom}</div>
                                     <div style="flex: 1;">📍 ${lieu}</div>
                                     <div style="flex: 1;">🌍 ${pays}</div>
                                 </div>
@@ -3868,9 +3827,6 @@
                 
                 // Ajuster l'affichage de la sidebar
                 document.querySelector('.sidebar').style.display = 'flex';
-                
-                // Afficher la liste des dates sous le bouton "Afficher tous les messages"
-                document.getElementById('mobileDatesList').style.display = 'block';
             } else {
                 // Afficher les boutons flottants pour desktop, cacher ceux pour mobile
                 document.querySelector('.fixed-nav-buttons').style.display = 'flex';
@@ -3878,9 +3834,6 @@
                 
                 // Ajuster l'affichage de la sidebar
                 document.querySelector('.sidebar').style.display = 'flex';
-                
-                // Cacher la liste des dates pour mobile
-                document.getElementById('mobileDatesList').style.display = 'none';
             }
         });
         
@@ -3888,11 +3841,9 @@
         if (window.innerWidth <= 768) {
             document.querySelector('.fixed-nav-buttons').style.display = 'none';
             document.querySelector('.mobile-floating-buttons').style.display = 'flex';
-            document.getElementById('mobileDatesList').style.display = 'block';
         } else {
             document.querySelector('.fixed-nav-buttons').style.display = 'flex';
             document.querySelector('.mobile-floating-buttons').style.display = 'none';
-            document.getElementById('mobileDatesList').style.display = 'none';
         }
     </script>
 </body>
