@@ -37,10 +37,7 @@
             line-height: 1.6;
             color: var(--text-dark);
             padding: 20px;
-            background: linear-gradient(135deg, #FFF8E1 0%, #FFF5E6 50%, #FFF0D6 100%);
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
+            background-color: #FFF8E1;
             min-height: 100vh;
             font-size: 16px;
         }
@@ -70,11 +67,7 @@
             text-align: center;
             margin-bottom: 10px;
             padding: 15px 20px;
-            background: 
-                linear-gradient(rgba(255, 253, 240, 0.9), rgba(255, 253, 240, 0.95)),
-                url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
+            background: #f5f5f5;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             color: var(--text-dark);
@@ -225,12 +218,11 @@
         }
         
         .search-section {
-            background-color: white;
+            background-color: #f5f5f5;
             padding: 15px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             position: relative;
-            background-image: linear-gradient(to bottom right, rgba(255,255,255,0.95), rgba(255,255,255,0.98));
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -250,6 +242,7 @@
             border: 2px solid var(--gold-light);
             border-radius: var(--border-radius);
             transition: all 0.3s;
+            background-color: white;
         }
         
         .search-input-full:focus {
@@ -334,7 +327,7 @@
         }
         
         .calendar-section {
-            background: white;
+            background: #f5f5f5;
             padding: 15px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
@@ -406,6 +399,7 @@
             position: relative;
             min-height: 45px;
             font-size: 0.9em;
+            background-color: white;
         }
         
         .calendar-day:hover {
@@ -523,7 +517,7 @@
         }
         
         .stats-section {
-            background: linear-gradient(135deg, var(--gold-light), #fcebb6);
+            background: #f5f5f5;
             padding: 15px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
@@ -537,7 +531,7 @@
         }
         
         .stat-card {
-            background: linear-gradient(135deg, white, #f8f9fa);
+            background: white;
             padding: 10px;
             border-radius: var(--border-radius);
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -572,7 +566,7 @@
         }
         
         .filter-group {
-            background: linear-gradient(135deg, #FFF8E1, #FCEBB6);
+            background: #f5f5f5;
             padding: 12px;
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-light);
@@ -589,7 +583,6 @@
             gap: 8px;
             cursor: pointer;
             font-weight: 700;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
         }
         
         .filter-group h3.toggle-title {
@@ -654,7 +647,7 @@
         }
         
         .results-section {
-            background-color: white;
+            background-color: #f5f5f5;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
@@ -683,29 +676,9 @@
             margin-bottom: 20px;
             border-radius: var(--border-radius);
             overflow: hidden;
-            background: linear-gradient(rgba(255, 253, 245, 0.85), rgba(255, 253, 245, 0.9)),
-                        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            background-blend-mode: overlay;
+            background: #f5f5f5;
             position: relative;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .entry-item:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255, 253, 245, 0.7), rgba(255, 253, 245, 0.8));
-            z-index: 0;
-        }
-        
-        .entry-item > * {
-            position: relative;
-            z-index: 1;
         }
         
         .entry-title {
@@ -714,7 +687,7 @@
             color: var(--gold-dark);
             padding: 12px 15px;
             text-align: center;
-            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
+            background: #f5f5f5;
             text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
             border-bottom: 2px solid var(--gold-light);
             font-family: 'Georgia', serif;
@@ -764,11 +737,10 @@
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
         
-        /* Style spécifique pour le nom de l'auteur en ORANGE */
         .header-item.author-name {
             font-size: 1.2em;
             font-weight: 700;
-            color: #FF8C00 !important; /* Orange vif */
+            color: #FF8C00 !important;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
         
@@ -786,7 +758,7 @@
         .message-content {
             margin-top: 15px;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
+            background: white;
             border-radius: var(--border-radius);
             border-left: 4px solid var(--secondary-color);
         }
@@ -827,7 +799,7 @@
         .contact-section {
             margin-top: 15px;
             padding: 15px;
-            background: rgba(248, 249, 250, 0.95);
+            background: white;
             border-radius: var(--border-radius);
             border-left: 4px solid var(--accent-blue);
         }
@@ -853,7 +825,7 @@
             align-items: center;
             gap: 8px;
             padding: 10px;
-            background: white;
+            background: #f8f9fa;
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
@@ -895,7 +867,7 @@
         }
         
         .date-filter-group {
-            background: linear-gradient(135deg, #FFF8E1, #FCEBB6);
+            background: #f5f5f5;
             padding: 12px;
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-light);
@@ -904,7 +876,7 @@
         }
         
         .date-tag {
-            background: linear-gradient(135deg, white, #f8f9fa);
+            background: white;
             padding: 8px 12px;
             border-radius: 20px;
             cursor: pointer;
@@ -918,7 +890,7 @@
         }
         
         .date-tag:hover {
-            background: linear-gradient(135deg, var(--gold-light), #f0e6cc);
+            background: var(--gold-light);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
@@ -985,7 +957,7 @@
         }
         
         .book-section {
-            background: white;
+            background: #f5f5f5;
             padding: 15px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
@@ -995,7 +967,7 @@
         .book-intro {
             margin-bottom: 15px;
             padding: 20px;
-            background: linear-gradient(135deg, #fef5e7, #fcebb6);
+            background: white;
             border-radius: var(--border-radius);
             border-left: 4px solid var(--secondary-color);
             border-right: 4px solid var(--secondary-color);
@@ -1017,7 +989,7 @@
         }
         
         .book-stats {
-            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            background: white;
             padding: 15px;
             border-radius: var(--border-radius);
             margin: 15px 0;
@@ -1037,7 +1009,7 @@
         }
         
         .book-stat-item {
-            background: white;
+            background: #f8f9fa;
             padding: 10px;
             border-radius: 5px;
             font-size: 0.9em;
@@ -1055,7 +1027,7 @@
         }
         
         .country-group {
-            background: #f8f9fa;
+            background: white;
             padding: 15px;
             border-radius: var(--border-radius);
             border: 1px solid #e9ecef;
@@ -1070,7 +1042,7 @@
         }
         
         .tableau-container {
-            background: white;
+            background: #f5f5f5;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
@@ -1118,13 +1090,14 @@
             border-bottom: 1px solid #e9ecef;
             vertical-align: top;
             font-size: 0.85em;
+            background-color: white;
         }
         
-        .tableau-table tr:nth-child(even) {
+        .tableau-table tr:nth-child(even) td {
             background-color: #f9f9f9;
         }
         
-        .tableau-table tr:hover {
+        .tableau-table tr:hover td {
             background-color: #f0f0f0;
         }
         
@@ -1164,6 +1137,8 @@
             text-align: center;
             padding: 30px;
             color: var(--text-medium);
+            background-color: white;
+            border-radius: var(--border-radius);
         }
         
         .error-message {
@@ -1221,6 +1196,7 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
+            background-color: white;
         }
         
         .export-type:hover {
@@ -1258,8 +1234,7 @@
         .title-message-treasure {
             color: #8B6914;
             font-size: 1.2em;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
+            background: #f5f5f5;
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1269,8 +1244,7 @@
         .title-blessing-message {
             color: #8B0000;
             font-size: 1.2em;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
+            background: #f5f5f5;
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1280,8 +1254,7 @@
         .title-european-journey {
             color: #1E3A8A;
             font-size: 1.2em;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
+            background: #f5f5f5;
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1291,8 +1264,7 @@
         .title-spiritual-testimony {
             color: #27ae60;
             font-size: 1.2em;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
+            background: #f5f5f5;
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1302,8 +1274,7 @@
         .title-memory-moment {
             color: #9b59b6;
             font-size: 1.2em;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
+            background: #f5f5f5;
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #D4AF37;
@@ -1314,7 +1285,7 @@
             color: #D4AF37;
             font-size: 1.2em;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-            background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
+            background: #f5f5f5;
             padding: 12px 15px;
             border-radius: 8px;
             border-bottom: 3px solid #8B6914;
@@ -1409,7 +1380,6 @@
                 width: 100%;
             }
             
-            /* Masquer les boutons flottants desktop, afficher ceux pour mobile */
             .fixed-nav-buttons {
                 display: none;
             }
@@ -1424,7 +1394,6 @@
                 z-index: 1000;
             }
             
-            /* Ajuster la position des boutons pour éviter le chevauchement */
             .mobile-floating-buttons .icon-button:nth-child(1) {
                 transform: translateY(0);
             }
@@ -1503,7 +1472,6 @@
                 font-size: 0.85em;
             }
             
-            /* Style spécifique pour le nom de l'auteur en mobile en ORANGE */
             .header-item.author-name {
                 font-size: 1em;
                 font-weight: 700;
@@ -1598,7 +1566,6 @@
                 font-size: 0.8em;
             }
             
-            /* Style spécifique pour le nom de l'auteur en très petit écran en ORANGE */
             .header-item.author-name {
                 font-size: 0.9em;
                 font-weight: 700;
@@ -1680,7 +1647,7 @@
         }
         
         .date-filter-group {
-            background: linear-gradient(135deg, #FFF8E1, #FCEBB6);
+            background: #f5f5f5;
             padding: 12px;
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-light);
@@ -1782,14 +1749,13 @@
             background: linear-gradient(135deg, var(--gold-dark), var(--secondary-color));
         }
         
-        /* Styles améliorés pour la bulle de déverrouillage */
         .unlock-bubble {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
+            background: white;
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.4);
@@ -1919,7 +1885,6 @@
             color: #333;
         }
         
-        /* Style pour le bouton de déverrouillage */
         .icon-button.unlock-btn {
             background: linear-gradient(135deg, #5D4037, #8B6914);
         }
@@ -1927,9 +1892,86 @@
         .icon-button.unlock-btn:hover {
             background: linear-gradient(135deg, #8B6914, #5D4037);
         }
+        
+        /* Nouveaux styles pour l'écran de chargement progressif */
+        #loadingProgress {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        #loadingProgress .spinner {
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #D4AF37;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        #loadingProgress p {
+            margin-top: 15px;
+            color: #8B6914;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        #progressBarContainer {
+            width: 300px;
+            height: 12px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+        
+        #progressBar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(to right, #D4AF37, #B8860B);
+            transition: width 0.3s;
+        }
+        
+        .retry-button {
+            margin-top: 20px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--gold-dark));
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            display: none;
+        }
+        
+        .retry-button:hover {
+            background: linear-gradient(135deg, var(--gold-dark), var(--secondary-color));
+        }
     </style>
 </head>
 <body>
+    <!-- Écran de chargement progressif -->
+    <div id="loadingProgress">
+        <div class="spinner"></div>
+        <p id="loadingText">Chargement des données du livre d'or...</p>
+        <div id="progressBarContainer">
+            <div id="progressBar"></div>
+        </div>
+        <button class="retry-button" onclick="retryLoadData()">Réessayer le chargement</button>
+    </div>
+
     <!-- Boutons de navigation fixes pour desktop -->
     <div class="fixed-nav-buttons">
         <button class="icon-button" onclick="scrollToTop()" title="Accueil">
@@ -2248,6 +2290,8 @@
         let selectedExportType = null;
         let selectedMessages = new Set();
         let isAdminUnlocked = false;
+        let currentRetryCount = 0;
+        const MAX_RETRIES = 3;
 
         // Liste de titres attractifs
         const creativeTitles = [
@@ -2281,6 +2325,11 @@
         // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Démarrage du Livre d\'Or...');
+            
+            // Afficher l'écran de chargement
+            showLoadingProgress();
+            
+            // Commencer le chargement des données
             loadDataFromGoogleSheets();
             
             // Configuration des événements
@@ -2326,16 +2375,55 @@
             // Afficher les statistiques en mobile si cachées
             if (window.innerWidth <= 768) {
                 document.querySelector('.sidebar').style.display = 'flex';
-                // Ajuster la position des boutons flottants pour mobile
                 adjustFloatingButtonsForMobile();
             }
         });
+
+        // Afficher l'écran de chargement progressif
+        function showLoadingProgress() {
+            document.getElementById('loadingProgress').style.display = 'flex';
+            document.getElementById('loadingText').textContent = 'Chargement des données du livre d\'or...';
+            document.getElementById('progressBar').style.width = '10%';
+            document.querySelector('.retry-button').style.display = 'none';
+        }
+
+        // Mettre à jour la barre de progression
+        function updateProgress(percent, message) {
+            const progressBar = document.getElementById('progressBar');
+            const loadingText = document.getElementById('loadingText');
+            
+            if (progressBar) {
+                progressBar.style.width = percent + '%';
+            }
+            if (loadingText && message) {
+                loadingText.textContent = message;
+            }
+        }
+
+        // Afficher une erreur de chargement
+        function showLoadError(message) {
+            const loadingText = document.getElementById('loadingText');
+            const retryButton = document.querySelector('.retry-button');
+            
+            if (loadingText) {
+                loadingText.textContent = message;
+            }
+            if (retryButton) {
+                retryButton.style.display = 'block';
+            }
+        }
+
+        // Réessayer le chargement
+        function retryLoadData() {
+            currentRetryCount = 0;
+            showLoadingProgress();
+            loadDataFromGoogleSheets();
+        }
 
         // Ajuster les boutons flottants pour mobile
         function adjustFloatingButtonsForMobile() {
             const mobileButtons = document.querySelector('.mobile-floating-buttons');
             if (mobileButtons && window.innerWidth <= 768) {
-                // Positionner les boutons en colonne sans chevauchement
                 mobileButtons.style.bottom = '20px';
                 mobileButtons.style.right = '20px';
                 mobileButtons.style.flexDirection = 'column';
@@ -2360,26 +2448,159 @@
             document.getElementById('searchInput').focus();
         }
         
-        // Chargement des données
+        // Fonction fetch avec timeout
+        async function fetchWithTimeout(url, timeout = 10000) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), timeout);
+            
+            try {
+                const response = await fetch(url, {
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+                return response;
+            } catch (error) {
+                clearTimeout(timeoutId);
+                throw error;
+            }
+        }
+
+        // Chargement des données avec retries
         async function loadDataFromGoogleSheets() {
             try {
-                const proxyUrl = 'https://api.allorigins.win/raw?url=';
-                const response = await fetch(proxyUrl + encodeURIComponent(GOOGLE_SHEETS_URL));
+                updateProgress(20, 'Connexion au serveur de données...');
                 
-                if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+                // Liste de proxies CORS alternatifs
+                const proxyConfigs = [
+                    { url: 'https://corsproxy.io/?', name: 'CorsProxy' },
+                    { url: 'https://api.codetabs.com/v1/proxy?quest=', name: 'CodeTabs' },
+                    { url: 'https://api.allorigins.win/raw?url=', name: 'AllOrigins' }
+                ];
                 
-                const csvText = await response.text();
-                processCSVData(csvText);
+                let lastError;
+                
+                for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+                    try {
+                        updateProgress(30 + (attempt * 10), `Tentative de connexion ${attempt + 1}/${MAX_RETRIES}...`);
+                        
+                        // Choisir un proxy différent à chaque tentative
+                        const proxyConfig = proxyConfigs[attempt % proxyConfigs.length];
+                        const proxyUrl = proxyConfig.url;
+                        
+                        console.log(`Tentative ${attempt + 1} avec ${proxyConfig.name}`);
+                        
+                        const response = await fetchWithTimeout(
+                            proxyUrl + encodeURIComponent(GOOGLE_SHEETS_URL),
+                            15000
+                        );
+                        
+                        if (!response.ok) {
+                            throw new Error(`Erreur HTTP: ${response.status}`);
+                        }
+                        
+                        updateProgress(70, 'Téléchargement des données...');
+                        const csvText = await response.text();
+                        
+                        if (!csvText || csvText.trim().length === 0) {
+                            throw new Error('Réponse vide du serveur');
+                        }
+                        
+                        updateProgress(80, 'Traitement des données...');
+                        processCSVData(csvText);
+                        
+                        // Succès
+                        updateProgress(100, 'Chargement terminé !');
+                        setTimeout(() => {
+                            document.getElementById('loadingProgress').style.display = 'none';
+                        }, 500);
+                        
+                        return;
+                        
+                    } catch (error) {
+                        console.warn(`Tentative ${attempt + 1} échouée:`, error);
+                        lastError = error;
+                        
+                        if (attempt < MAX_RETRIES - 1) {
+                            // Attente exponentielle avant de réessayer
+                            const delay = Math.pow(2, attempt) * 1000;
+                            updateProgress(50, `Nouvelle tentative dans ${delay/1000} secondes...`);
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                        }
+                    }
+                }
+                
+                // Toutes les tentatives ont échoué
+                throw lastError;
                 
             } catch (error) {
                 console.error('❌ Erreur de chargement:', error);
-                showError('Impossible de charger les données. Vérifiez votre connexion internet.');
+                
+                let errorMessage = 'Impossible de charger les données. ';
+                if (error.name === 'AbortError') {
+                    errorMessage += 'Le serveur met trop de temps à répondre.';
+                } else if (error.message.includes('HTTP')) {
+                    errorMessage += 'Erreur de connexion au serveur.';
+                } else {
+                    errorMessage += 'Vérifiez votre connexion internet.';
+                }
+                
+                showLoadError(errorMessage);
+                showError(errorMessage);
             }
+        }
+
+        // Parsing CSV optimisé
+        function parseCSVOptimized(csvText) {
+            const lines = [];
+            let currentLine = [];
+            let currentValue = '';
+            let insideQuotes = false;
+            let quoteChar = '"';
+            
+            for (let i = 0; i < csvText.length; i++) {
+                const char = csvText[i];
+                
+                if (char === quoteChar) {
+                    if (insideQuotes && csvText[i + 1] === quoteChar) {
+                        currentValue += quoteChar;
+                        i++;
+                    } else {
+                        insideQuotes = !insideQuotes;
+                    }
+                } else if (char === ',' && !insideQuotes) {
+                    currentLine.push(currentValue);
+                    currentValue = '';
+                } else if (char === '\n' && !insideQuotes) {
+                    currentLine.push(currentValue);
+                    lines.push(currentLine);
+                    currentLine = [];
+                    currentValue = '';
+                } else if (char === '\r') {
+                    if (csvText[i + 1] === '\n' && !insideQuotes) {
+                        currentLine.push(currentValue);
+                        lines.push(currentLine);
+                        currentLine = [];
+                        currentValue = '';
+                        i++;
+                    }
+                } else {
+                    currentValue += char;
+                }
+            }
+            
+            // Dernière ligne
+            if (currentValue !== '' || currentLine.length > 0) {
+                currentLine.push(currentValue);
+                lines.push(currentLine);
+            }
+            
+            return lines;
         }
 
         function processCSVData(csvText) {
             try {
-                const lines = parseCSVWithNewlines(csvText);
+                updateProgress(85, 'Analyse des données...');
+                const lines = parseCSVOptimized(csvText);
                 headers = lines[0] || [];
                 
                 sheetData = [];
@@ -2392,9 +2613,17 @@
                         }
                         sheetData.push(normalizedRow);
                     }
+                    
+                    // Mise à jour de la progression
+                    if (i % 10 === 0) {
+                        const percent = 85 + Math.floor((i / lines.length) * 10);
+                        updateProgress(percent, `Analyse des données (${i}/${lines.length})...`);
+                    }
                 }
                 
                 console.log('✅ Données chargées:', sheetData.length, 'messages');
+                
+                updateProgress(95, 'Préparation de l\'affichage...');
                 
                 // Traitement des données
                 extractDatesWithData();
@@ -2411,63 +2640,17 @@
                 
             } catch (error) {
                 console.error('❌ Erreur de traitement:', error);
-                showError(error.message);
+                showError('Erreur lors du traitement des données: ' + error.message);
+                throw error;
             } finally {
                 document.getElementById('loadingIndicator').style.display = 'none';
             }
         }
 
-        function parseCSVWithNewlines(csvText) {
-            const lines = [];
-            let currentLine = [];
-            let currentField = '';
-            let inQuotes = false;
-            let quoteChar = '"';
-            
-            for (let i = 0; i < csvText.length; i++) {
-                const char = csvText[i];
-                const nextChar = csvText[i + 1];
-                
-                if (char === quoteChar) {
-                    if (inQuotes && nextChar === quoteChar) {
-                        currentField += quoteChar;
-                        i++;
-                    } else {
-                        inQuotes = !inQuotes;
-                    }
-                } else if (char === ',' && !inQuotes) {
-                    currentLine.push(currentField);
-                    currentField = '';
-                } else if (char === '\n' && !inQuotes) {
-                    currentLine.push(currentField);
-                    lines.push(currentLine);
-                    currentLine = [];
-                    currentField = '';
-                } else if (char === '\r') {
-                    if (nextChar === '\n' && !inQuotes) {
-                        currentLine.push(currentField);
-                        lines.push(currentLine);
-                        currentLine = [];
-                        currentField = '';
-                        i++;
-                    }
-                } else {
-                    currentField += char;
-                }
-            }
-            
-            if (currentField !== '' || currentLine.length > 0) {
-                currentLine.push(currentField);
-                lines.push(currentLine);
-            }
-            
-            return lines;
-        }
-
         function extractDatesWithData() {
             datesWithData = [];
             dateMessagesMap = {};
-            const dateColumnIndex = 1; // Colonne B
+            const dateColumnIndex = 1;
             
             sheetData.forEach((row, index) => {
                 const dateStr = row[dateColumnIndex] || '';
@@ -2612,7 +2795,6 @@
             const container = document.getElementById('datesTags');
             container.innerHTML = '';
             
-            // Créer un Set de dates uniques
             const uniqueDates = [...new Set(datesWithData.map(d => 
                 d.date.toISOString().split('T')[0]
             ))].sort().reverse();
@@ -2697,7 +2879,6 @@
             const dateKey = date.toISOString().split('T')[0];
             const messages = dateMessagesMap[dateKey] || [];
             
-            // Récupérer les lieux et pays du jour
             const lieuIndex = headers.findIndex(h => 
                 h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
             );
@@ -2737,7 +2918,6 @@
                 const messages = dateMessagesMap[dateKey] || [];
                 if (messages.length > 0) {
                     if (isAdminUnlocked) {
-                        // Exporter les fiches du jour avec format exact comme dans l'original
                         exportDayMessagesToPDF(messages, popupDate);
                     } else {
                         showUnlockBubble();
@@ -2856,12 +3036,10 @@
                 'Pays de Galles': ['🏴󠁧󠁢󠁷󠁬󠁳󠁿 Welsh memory', '🐑 Gallois souvenir', '🌿 Message du Pays de Galles']
             };
             
-            // Si on a un titre spécifique pour ce pays
             if (titlesByCountry[pays]) {
                 return titlesByCountry[pays][index % titlesByCountry[pays].length];
             }
             
-            // Sinon, retourner un titre aléatoire
             return getRandomCreativeTitle();
         }
 
@@ -2869,7 +3047,6 @@
             const content = document.getElementById('resultContent');
             const resultTitle = document.getElementById('resultTitle');
             
-            // Cacher les autres sections
             document.getElementById('tableauSection').style.display = 'none';
             document.getElementById('bookSection').style.display = 'none';
             
@@ -2910,13 +3087,9 @@
                     const telephone = row[telephoneIndex] || '';
                     const adresse = row[adresseIndex] || '';
                     
-                    // Formater la date en ddd dd-mm-aa
                     const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
-                    
-                    // Obtenir un titre créatif
                     const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
                     
-                    // Classes CSS pour les titres (rotation)
                     const titleClasses = [
                         'title-message-treasure',
                         'title-blessing-message', 
@@ -3012,17 +3185,10 @@
             const date = parseDate(dateStr);
             if (!date) return dateStr;
             
-            // Jour de la semaine abrégé (3 lettres)
             const jours = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
             const jourSemaine = jours[date.getDay()];
-            
-            // Jour du mois (2 chiffres)
             const jour = date.getDate().toString().padStart(2, '0');
-            
-            // Mois (2 chiffres)
             const mois = (date.getMonth() + 1).toString().padStart(2, '0');
-            
-            // Année (2 derniers chiffres)
             const annee = date.getFullYear().toString().slice(-2);
             
             return `${jourSemaine} ${jour}-${mois}-${annee}`;
@@ -3179,7 +3345,7 @@
             `;
         }
 
-        // Fonction pour exporter les fiches du jour en PDF avec format exact comme dans l'original
+        // Fonction pour exporter les fiches du jour en PDF
         function exportDayMessagesToPDF(rows, date) {
             const printWindow = window.open('', '_blank');
             
@@ -3196,7 +3362,7 @@
                 <head>
                     <title>Fiches du jour - ${dateStr} - Livre d'Or Tournée 2026</title>
                     <style>
-                        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: #FFF8E1; font-size: 16px; line-height: 1.6; }
+                        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; font-size: 16px; line-height: 1.6; }
                         .page-container { max-width: 800px; margin: 0 auto; }
                         .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #D4AF37; }
                         .header h1 { color: #8B6914; font-size: 24px; margin-bottom: 10px; }
@@ -3209,7 +3375,7 @@
                         .fiche-content { padding: 25px; }
                         .info-row { display: flex; justify-content: space-between; background: rgba(212, 175, 55, 0.15); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid rgba(212, 175, 55, 0.3); }
                         .info-item { flex: 1; text-align: center; font-weight: bold; color: #8B6914; }
-                        .info-item.author-name { font-size: 1.2em; font-weight: 700; color: #FF8C00 !important; } /* Orange vif */
+                        .info-item.author-name { font-size: 1.2em; font-weight: 700; color: #FF8C00 !important; }
                         .message-section { margin-top: 20px; padding: 20px; background: rgba(255, 255, 255, 0.95); border-radius: 8px; border-left: 4px solid #D4AF37; }
                         .message-label { font-weight: bold; color: #8B6914; margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px; }
                         .message-text { font-family: 'Bradley Hand', 'Segoe Script', cursive; font-size: 17px; line-height: 1.6; color: #5D4037; }
@@ -3266,10 +3432,7 @@
                 const telephone = row[telephoneIndex] || '';
                 const adresse = row[adresseIndex] || '';
                 
-                // Formater la date
                 const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
-                
-                // Titre créatif
                 const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
                 
                 pdfContent += `
@@ -3339,7 +3502,6 @@
                     </div>
                 `;
                 
-                // Ajouter un saut de page entre les fiches si nécessaire
                 if (index < rows.length - 1) {
                     pdfContent += `<div class="page-break"></div>`;
                 }
@@ -3366,20 +3528,15 @@
                 return;
             }
             
-            // Créer le contenu CSV
             let csvContent = "data:text/csv;charset=utf-8,";
-            
-            // En-têtes
             const headersRow = headers.join(",");
             csvContent += headersRow + "\r\n";
             
-            // Données
             sheetData.forEach(row => {
                 const rowData = row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(",");
                 csvContent += rowData + "\r\n";
             });
             
-            // Télécharger
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
@@ -3434,7 +3591,6 @@
                 showUnlockBubble();
                 return;
             }
-            // Utiliser la même fonction que pour l'export du jour mais avec toutes les données
             exportDayMessagesToPDF(sheetData, new Date());
         }
 
@@ -3446,10 +3602,8 @@
             
             const printWindow = window.open('', '_blank');
             
-            // Préparer le contenu du livre
             let bookContent = '';
             
-            // Grouper par pays
             const messagesByCountry = {};
             sheetData.forEach(row => {
                 const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
@@ -3461,7 +3615,6 @@
                 messagesByCountry[pays].push(row);
             });
             
-            // Construire le contenu par pays avec présentation comme les fiches
             Object.keys(messagesByCountry).sort().forEach(pays => {
                 const messages = messagesByCountry[pays];
                 
@@ -3471,7 +3624,6 @@
                         <p style="color: #666; font-style: italic; margin-bottom: 20px;">${messages.length} message${messages.length > 1 ? 's' : ''}</p>
                 `;
                 
-                // Grouper par lieu dans le pays
                 const messagesByLieu = {};
                 messages.forEach(row => {
                     const lieuIndex = headers.findIndex(h => 
@@ -3512,10 +3664,7 @@
                         const telephone = row[telephoneIndex] || '';
                         const adresse = row[adresseIndex] || '';
                         
-                        // Formater la date
                         const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
-                        
-                        // Titre créatif
                         const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
                         
                         bookContent += `
@@ -3555,7 +3704,6 @@
                 bookContent += `</div><div class="page-break"></div>`;
             });
             
-            // Statistiques
             let topCountry = 'Inconnu';
             let maxCount = 0;
             for (const [country, count] of Object.entries(countryStats)) {
@@ -3707,7 +3855,6 @@
             
             content.insertBefore(successDiv, content.firstChild);
             
-            // Retirer le message après 3 secondes
             setTimeout(() => {
                 successDiv.remove();
             }, 3000);
@@ -3717,7 +3864,6 @@
             const bubble = document.getElementById('unlockBubble');
             const content = bubble.querySelector('.unlock-bubble-content');
             
-            // Supprimer tout message d'erreur existant
             const existingError = content.querySelector('.error-message-bubble');
             if (existingError) {
                 existingError.remove();
@@ -3742,7 +3888,6 @@
             
             content.insertBefore(errorDiv, content.firstChild);
             
-            // Animation shake
             const style = document.createElement('style');
             style.innerHTML = `
                 @keyframes shake {
@@ -3776,12 +3921,10 @@
         function unlockAllFeatures() {
             isAdminUnlocked = true;
             
-            // Déverrouiller les boutons
             document.querySelectorAll('.export-btn.locked').forEach(btn => {
                 btn.classList.remove('locked');
                 btn.innerHTML = btn.innerHTML.replace('🔒 ', '');
                 
-                // Mettre à jour les écouteurs d'événements
                 const originalText = btn.textContent;
                 if (originalText.includes('Exporter fiches') || originalText.includes('Exporter toutes les fiches')) {
                     btn.onclick = exportAllToPDF;
@@ -3794,19 +3937,16 @@
                 }
             });
             
-            // Mettre à jour les boutons du tableau
             const excelBtn = document.querySelector('.export-btn.excel');
             const pdfBtn = document.querySelector('.export-btn.pdf');
             if (excelBtn) excelBtn.onclick = exportTableToExcel;
             if (pdfBtn) pdfBtn.onclick = exportTableToPDF;
             
-            // Mettre à jour les boutons de la sidebar desktop
             const sidebarExportBtn = document.querySelector('.desktop-export-buttons .export-btn');
             if (sidebarExportBtn) {
                 sidebarExportBtn.onclick = exportAllToPDF;
             }
             
-            // Mettre à jour les boutons mobile
             const mobileExportBtns = document.querySelectorAll('.mobile-buttons-row .export-btn');
             mobileExportBtns.forEach(btn => {
                 const text = btn.textContent;
@@ -3821,18 +3961,12 @@
         // Adapter l'affichage pour mobile
         window.addEventListener('resize', function() {
             if (window.innerWidth <= 768) {
-                // Afficher les boutons flottants pour mobile, cacher ceux pour desktop
                 document.querySelector('.fixed-nav-buttons').style.display = 'none';
                 document.querySelector('.mobile-floating-buttons').style.display = 'flex';
-                
-                // Ajuster l'affichage de la sidebar
                 document.querySelector('.sidebar').style.display = 'flex';
             } else {
-                // Afficher les boutons flottants pour desktop, cacher ceux pour mobile
                 document.querySelector('.fixed-nav-buttons').style.display = 'flex';
                 document.querySelector('.mobile-floating-buttons').style.display = 'none';
-                
-                // Ajuster l'affichage de la sidebar
                 document.querySelector('.sidebar').style.display = 'flex';
             }
         });
