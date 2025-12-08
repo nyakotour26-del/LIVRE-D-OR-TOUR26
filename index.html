@@ -42,7 +42,7 @@
             background-attachment: fixed;
             background-position: center;
             min-height: 100vh;
-            font-size: 18px;
+            font-size: 16px; /* Réduit de 18px à 16px */
         }
         
         .container {
@@ -177,11 +177,23 @@
             font-size: 12px;
         }
         
+        /* Boutons flottants - version desktop */
         .fixed-nav-buttons {
             position: fixed;
             top: 110px;
             right: 20px;
             display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        /* Boutons flottants - version mobile */
+        .mobile-floating-buttons {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             flex-direction: column;
             gap: 10px;
             z-index: 1000;
@@ -386,14 +398,14 @@
         
         .calendar-day {
             text-align: center;
-            padding: 10px 5px;
+            padding: 8px 4px; /* Réduit le padding */
             cursor: pointer;
             border-radius: 4px;
             transition: background-color 0.2s;
             border: 1px solid #f0f0f0;
             position: relative;
-            min-height: 50px;
-            font-size: 0.95em;
+            min-height: 45px; /* Réduit de 50px à 45px */
+            font-size: 0.9em; /* Réduit la taille du texte */
         }
         
         .calendar-day:hover {
@@ -697,7 +709,7 @@
         }
         
         .entry-title {
-            font-size: 1.4em;
+            font-size: 1.3em; /* Réduit de 1.4em à 1.3em */
             font-weight: bold;
             color: var(--gold-dark);
             padding: 12px 15px;
@@ -714,7 +726,7 @@
             padding: 10px 15px;
             color: white;
             font-weight: bold;
-            font-size: 1em;
+            font-size: 0.95em; /* Réduit de 1em à 0.95em */
             text-align: center;
             border-bottom: 2px solid rgba(212, 175, 55, 0.5);
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
@@ -739,7 +751,7 @@
             text-align: center;
             font-weight: 600;
             color: var(--gold-dark);
-            font-size: 0.95em;
+            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -753,7 +765,7 @@
         }
         
         .header-icon {
-            font-size: 1.3em;
+            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
             margin-bottom: 2px;
             color: var(--gold-dark);
             text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
@@ -774,7 +786,7 @@
         .message-label {
             font-weight: bold;
             color: var(--gold-dark);
-            font-size: 1.1em;
+            font-size: 1em; /* Réduit de 1.1em à 1em */
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -783,7 +795,7 @@
         
         .message-text {
             font-family: 'Bradley Hand', 'Segoe Script', 'Comic Sans MS', cursive;
-            font-size: 1.2em;
+            font-size: 1.1em; /* Réduit de 1.2em à 1.1em */
             line-height: 1.4;
             color: var(--text-medium);
         }
@@ -815,7 +827,7 @@
         .contact-label {
             font-weight: bold;
             color: var(--accent-blue);
-            font-size: 1em;
+            font-size: 0.95em; /* Réduit de 1em à 0.95em */
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -858,7 +870,7 @@
             flex: 1;
             color: var(--text-dark);
             word-break: break-word;
-            font-size: 0.95em;
+            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
         }
         
         .clickable-link {
@@ -866,7 +878,7 @@
             text-decoration: none;
             border-bottom: 1px dotted #2980b9;
             transition: all 0.3s;
-            font-size: 0.95em;
+            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
         }
         
         .clickable-link:hover {
@@ -893,7 +905,7 @@
             border: 2px solid var(--gold-light);
             margin: 4px;
             display: inline-block;
-            font-size: 0.9em;
+            font-size: 0.85em; /* Réduit de 0.9em à 0.85em */
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
@@ -927,7 +939,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.95em;
+            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
             border: 1px solid rgba(0,0,0,0.1);
         }
         
@@ -984,14 +996,14 @@
         .book-intro h3 {
             color: var(--gold-dark);
             margin-bottom: 15px;
-            font-size: 1.4em;
+            font-size: 1.3em; /* Réduit de 1.4em à 1.3em */
             text-align: center;
         }
         
         .book-intro p {
             line-height: 1.7;
             color: var(--text-dark);
-            font-size: 1.05em;
+            font-size: 1em; /* Réduit de 1.05em à 1em */
             margin-bottom: 15px;
             text-align: justify;
         }
@@ -1007,7 +1019,7 @@
         .book-stats h4 {
             color: #219653;
             margin-bottom: 10px;
-            font-size: 1.2em;
+            font-size: 1.1em; /* Réduit de 1.2em à 1.1em */
         }
         
         .book-stats-grid {
@@ -1020,7 +1032,7 @@
             background: white;
             padding: 10px;
             border-radius: 5px;
-            font-size: 0.95em;
+            font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
         }
         
         .book-stat-value {
@@ -1046,7 +1058,7 @@
             margin-bottom: 10px;
             padding-bottom: 5px;
             border-bottom: 2px solid var(--gold-light);
-            font-size: 1.1em;
+            font-size: 1em; /* Réduit de 1.1em à 1em */
         }
         
         .tableau-container {
@@ -1237,7 +1249,7 @@
         
         .title-message-treasure {
             color: #8B6914;
-            font-size: 1.3em;
+            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1248,7 +1260,7 @@
         
         .title-blessing-message {
             color: #8B0000;
-            font-size: 1.3em;
+            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1259,7 +1271,7 @@
         
         .title-european-journey {
             color: #1E3A8A;
-            font-size: 1.3em;
+            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1270,7 +1282,7 @@
         
         .title-spiritual-testimony {
             color: #27ae60;
-            font-size: 1.3em;
+            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1281,7 +1293,7 @@
         
         .title-memory-moment {
             color: #9b59b6;
-            font-size: 1.3em;
+            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
             text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1292,7 +1304,7 @@
         
         .title-golden-words {
             color: #D4AF37;
-            font-size: 1.3em;
+            font-size: 1.2em; /* Réduit de 1.3em à 1.2em */
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
             background: linear-gradient(135deg, rgba(255, 253, 245, 0.95), rgba(255, 253, 245, 0.98));
             padding: 12px 15px;
@@ -1325,7 +1337,7 @@
         
         @media (max-width: 768px) {
             body {
-                font-size: 18px;
+                font-size: 16px; /* Réduit de 18px à 16px */
             }
             
             .container {
@@ -1389,12 +1401,36 @@
                 width: 100%;
             }
             
+            /* Masquer les boutons flottants desktop, afficher ceux pour mobile */
             .fixed-nav-buttons {
+                display: none;
+            }
+            
+            .mobile-floating-buttons {
+                display: flex;
                 position: fixed;
                 bottom: 20px;
-                top: auto;
                 right: 20px;
                 flex-direction: column;
+                gap: 10px;
+                z-index: 1000;
+            }
+            
+            /* Ajuster la position des boutons pour éviter le chevauchement */
+            .mobile-floating-buttons .icon-button:nth-child(1) {
+                transform: translateY(0);
+            }
+            .mobile-floating-buttons .icon-button:nth-child(2) {
+                transform: translateY(0);
+            }
+            .mobile-floating-buttons .icon-button:nth-child(3) {
+                transform: translateY(0);
+            }
+            .mobile-floating-buttons .icon-button:nth-child(4) {
+                transform: translateY(0);
+            }
+            .mobile-floating-buttons .icon-button:nth-child(5) {
+                transform: translateY(0);
             }
             
             .search-form {
@@ -1441,7 +1477,7 @@
             
             .calendar-day {
                 padding: 6px 2px;
-                font-size: 0.95em;
+                font-size: 0.9em; /* Réduit de 0.95em à 0.9em */
                 min-height: 40px;
             }
             
@@ -1456,11 +1492,11 @@
                 flex: 1;
                 min-width: 30%;
                 text-align: center;
-                font-size: 0.85em;
+                font-size: 0.8em; /* Réduit de 0.85em à 0.8em */
             }
             
             .header-icon {
-                font-size: 1.1em;
+                font-size: 1em; /* Réduit de 1.1em à 1em */
             }
             
             .contact-details {
@@ -1481,7 +1517,7 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                font-size: 0.9em;
+                font-size: 0.85em; /* Réduit de 0.9em à 0.85em */
                 padding: 10px 15px;
             }
             
@@ -1519,15 +1555,34 @@
             .title-spiritual-testimony,
             .title-memory-moment,
             .title-golden-words {
-                font-size: 1.1em;
+                font-size: 1em; /* Réduit de 1.1em à 1em */
                 padding: 10px 12px;
+            }
+            
+            /* Style pour la liste des dates sous le bouton "Afficher tous les messages" */
+            .dates-list-container {
+                margin-top: 15px;
+                max-height: 200px;
+                overflow-y: auto;
+                border: 1px solid var(--gold-light);
+                border-radius: var(--border-radius);
+                padding: 10px;
+                background: white;
+            }
+            
+            .dates-list-title {
+                font-weight: bold;
+                color: var(--gold-dark);
+                margin-bottom: 10px;
+                font-size: 0.9em;
+                text-align: center;
             }
         }
         
         @media (max-width: 480px) {
             body {
                 padding: 10px;
-                font-size: 17px;
+                font-size: 15px; /* Réduit de 17px à 15px */
             }
             
             .stats-grid {
@@ -1537,13 +1592,13 @@
             
             .calendar-day {
                 padding: 4px 1px;
-                font-size: 0.9em;
+                font-size: 0.85em; /* Réduit de 0.9em à 0.85em */
                 min-height: 35px;
             }
             
             .header-item {
                 min-width: 30%;
-                font-size: 0.8em;
+                font-size: 0.75em; /* Réduit de 0.8em à 0.75em */
             }
             
             .entry-content {
@@ -1556,7 +1611,7 @@
             }
             
             .message-text {
-                font-size: 1.1em;
+                font-size: 1em; /* Réduit de 1.1em à 1em */
                 line-height: 1.3;
             }
             
@@ -1575,7 +1630,7 @@
             
             .mobile-buttons-row .export-btn {
                 padding: 8px 12px;
-                font-size: 0.85em;
+                font-size: 0.8em; /* Réduit de 0.85em à 0.8em */
             }
             
             .title-message-treasure,
@@ -1584,7 +1639,7 @@
             .title-spiritual-testimony,
             .title-memory-moment,
             .title-golden-words {
-                font-size: 1em;
+                font-size: 0.95em; /* Réduit de 1em à 0.95em */
                 padding: 8px 10px;
             }
         }
@@ -1676,34 +1731,6 @@
             pointer-events: none;
         }
         
-        .search-floating-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
-            font-size: 24px;
-            border: 2px solid white;
-            z-index: 1000;
-        }
-        
-        .search-floating-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
-        }
-        
         .admin-modal {
             display: none;
             position: fixed;
@@ -1750,39 +1777,49 @@
             background: linear-gradient(135deg, var(--gold-dark), var(--secondary-color));
         }
         
-        /* Styles pour la bulle de déverrouillage */
+        /* Styles améliorés pour la bulle de déverrouillage */
         .unlock-bubble {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
             z-index: 2001;
-            min-width: 300px;
-            max-width: 400px;
+            min-width: 320px;
+            max-width: 450px;
             border: 3px solid var(--secondary-color);
+            animation: bubbleAppear 0.3s ease-out;
+        }
+        
+        @keyframes bubbleAppear {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
         
         .unlock-bubble-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 2px solid var(--gold-light);
         }
         
         .unlock-bubble-title {
             font-weight: bold;
             color: var(--gold-dark);
-            font-size: 1.1em;
+            font-size: 1.2em;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+        }
+        
+        .unlock-bubble-title span:first-child {
+            font-size: 1.5em;
         }
         
         .unlock-bubble-close {
@@ -1791,95 +1828,90 @@
             font-size: 1.5em;
             cursor: pointer;
             color: #666;
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             transition: all 0.3s;
+            background: #f0f0f0;
         }
         
         .unlock-bubble-close:hover {
-            background: #f0f0f0;
-            color: #e74c3c;
+            background: #e74c3c;
+            color: white;
+            transform: rotate(90deg);
         }
         
         .unlock-bubble-content {
+            margin-bottom: 20px;
+        }
+        
+        .unlock-bubble-content p {
             margin-bottom: 15px;
+            color: #555;
+            line-height: 1.5;
+            font-size: 0.95em;
         }
         
         .unlock-bubble-input {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
             border: 2px solid var(--gold-light);
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        
+        .unlock-bubble-input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
         }
         
         .unlock-bubble-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: flex-end;
         }
         
         .unlock-bubble-btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            text-align: center;
         }
         
         .unlock-bubble-btn.primary {
             background: linear-gradient(135deg, var(--secondary-color), var(--gold-dark));
             color: white;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
         
         .unlock-bubble-btn.primary:hover {
             background: linear-gradient(135deg, var(--gold-dark), var(--secondary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
         }
         
         .unlock-bubble-btn.secondary {
             background: #f0f0f0;
             color: #666;
+            border: 1px solid #ddd;
         }
         
         .unlock-bubble-btn.secondary:hover {
             background: #e0e0e0;
-        }
-        
-        /* Correction pour mobile : bouton flottant rechercher en dernier */
-        @media (max-width: 768px) {
-            .fixed-nav-buttons {
-                bottom: 20px;
-                right: 20px;
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .fixed-nav-buttons .icon-button {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-            }
-            
-            .search-floating-button {
-                bottom: 90px; /* Position au-dessus des autres boutons */
-                right: 20px;
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-            }
-            
-            /* S'assurer que le bouton déverrouillage a la même taille */
-            .icon-button.unlock-btn {
-                width: 60px;
-                height: 60px;
-                font-size: 24px;
-            }
+            color: #333;
         }
         
         /* Style pour le bouton de déverrouillage */
@@ -1890,10 +1922,21 @@
         .icon-button.unlock-btn:hover {
             background: linear-gradient(135deg, #8B6914, #5D4037);
         }
+        
+        /* Style pour la liste des dates sous le bouton "Afficher tous les messages" */
+        .dates-list-container {
+            display: none; /* Caché par défaut, affiché en mobile */
+        }
+        
+        @media (max-width: 768px) {
+            .dates-list-container {
+                display: block;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Boutons de navigation fixes -->
+    <!-- Boutons de navigation fixes pour desktop -->
     <div class="fixed-nav-buttons">
         <button class="icon-button" onclick="scrollToTop()" title="Accueil">
             🏠
@@ -1907,29 +1950,47 @@
         <button class="icon-button unlock-btn" onclick="showUnlockBubble()" title="Déverrouiller les fonctionnalités">
             🔒
         </button>
+        <button class="icon-button" onclick="scrollToSearch()" title="Rechercher">
+            🔍
+        </button>
     </div>
 
-    <!-- Bouton flottant de recherche -->
-    <button class="search-floating-button" onclick="scrollToSearch()" title="Rechercher">
-        🔍
-    </button>
+    <!-- Boutons de navigation fixes pour mobile -->
+    <div class="mobile-floating-buttons">
+        <button class="icon-button" onclick="scrollToTop()" title="Accueil">
+            🏠
+        </button>
+        <button class="icon-button" onclick="showAllData()" title="Tous les messages">
+            📋
+        </button>
+        <button class="icon-button" onclick="scrollToCalendar()" title="Calendrier">
+            📅
+        </button>
+        <button class="icon-button unlock-btn" onclick="showUnlockBubble()" title="Déverrouiller les fonctionnalités">
+            🔒
+        </button>
+        <button class="icon-button" onclick="scrollToSearch()" title="Rechercher">
+            🔍
+        </button>
+    </div>
 
-    <!-- Bulle de déverrouillage -->
+    <!-- Bulle de déverrouillage améliorée -->
     <div class="unlock-bubble" id="unlockBubble">
         <div class="unlock-bubble-header">
             <div class="unlock-bubble-title">
-                <span>🔒</span>
-                <span>Déverrouiller les fonctionnalités</span>
+                <span>🔓</span>
+                <span>Accès aux fonctionnalités avancées</span>
             </div>
             <button class="unlock-bubble-close" onclick="closeUnlockBubble()">✕</button>
         </div>
         <div class="unlock-bubble-content">
-            <p>Entrez le mot de passe administrateur pour déverrouiller toutes les fonctionnalités d'export.</p>
-            <input type="password" class="unlock-bubble-input" id="unlockPassword" placeholder="Mot de passe">
+            <p>Pour accéder à toutes les fonctionnalités d'export (PDF, Excel, livre complet), veuillez saisir le mot de passe administrateur.</p>
+            <p style="font-size: 0.85em; color: #888; font-style: italic;">Mot de passe par défaut : <strong>admin</strong></p>
+            <input type="password" class="unlock-bubble-input" id="unlockPassword" placeholder="Entrez le mot de passe" autocomplete="off">
         </div>
         <div class="unlock-bubble-actions">
             <button class="unlock-bubble-btn secondary" onclick="closeUnlockBubble()">Annuler</button>
-            <button class="unlock-bubble-btn primary" onclick="unlockFeaturesFromBubble()">Déverrouiller</button>
+            <button class="unlock-bubble-btn primary" onclick="unlockFeaturesFromBubble()">Valider</button>
         </div>
     </div>
 
@@ -1963,12 +2024,18 @@
         <div class="sidebar">
             <!-- Filtres -->
             <div class="filters-sidebar" style="order: 1;">
-                <!-- Bouton Afficher tous les messages en premier -->
+                <!-- Bouton Afficher tous les messages avec la liste des dates en dessous (mobile) -->
                 <button class="action-button" onclick="showAllData()" style="margin-bottom: 15px; font-size: 1em; padding: 14px;">
                     📋 Afficher tous les messages
                 </button>
                 
-                <!-- Dates avec messages -->
+                <!-- Liste des dates pour mobile -->
+                <div class="dates-list-container" id="mobileDatesList">
+                    <div class="dates-list-title">📅 Dates disponibles</div>
+                    <div class="filter-tags" id="mobileDatesTags" style="max-height: 200px;"></div>
+                </div>
+                
+                <!-- Dates avec messages (pour desktop) -->
                 <div class="date-filter-group" style="order: 2;">
                     <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📅 Dates avec messages</h3>
                     <div class="filter-tags" id="datesTags" style="max-height: 200px;"></div>
@@ -2263,9 +2330,8 @@
                 
                 // Fermer la bulle de déverrouillage en cliquant ailleurs
                 const unlockBubble = document.getElementById('unlockBubble');
-                const unlockButton = document.querySelector('.unlock-btn');
                 if (unlockBubble && unlockBubble.style.display === 'block' && 
-                    !unlockBubble.contains(e.target) && !unlockButton.contains(e.target)) {
+                    !unlockBubble.contains(e.target) && !e.target.classList.contains('unlock-btn')) {
                     unlockBubble.style.display = 'none';
                 }
             });
@@ -2273,21 +2339,20 @@
             // Afficher les statistiques en mobile si cachées
             if (window.innerWidth <= 768) {
                 document.querySelector('.sidebar').style.display = 'flex';
-                // Ajuster la position du bouton flottant recherche
+                // Ajuster la position des boutons flottants pour mobile
                 adjustFloatingButtonsForMobile();
             }
         });
 
         // Ajuster les boutons flottants pour mobile
         function adjustFloatingButtonsForMobile() {
-            const floatingButton = document.querySelector('.search-floating-button');
-            if (floatingButton && window.innerWidth <= 768) {
-                // Positionner en dernier (au-dessus des autres boutons)
-                floatingButton.style.bottom = '90px';
-                floatingButton.style.right = '20px';
-                floatingButton.style.width = '60px';
-                floatingButton.style.height = '60px';
-                floatingButton.style.fontSize = '24px';
+            const mobileButtons = document.querySelector('.mobile-floating-buttons');
+            if (mobileButtons && window.innerWidth <= 768) {
+                // Positionner les boutons en colonne sans chevauchement
+                mobileButtons.style.bottom = '20px';
+                mobileButtons.style.right = '20px';
+                mobileButtons.style.flexDirection = 'column';
+                mobileButtons.style.gap = '10px';
             }
         }
 
@@ -2354,6 +2419,7 @@
                 renderFilterTags();
                 renderCalendar();
                 renderDatesTags();
+                renderMobileDatesTags();
                 
                 showDataInfo();
                 
@@ -2584,6 +2650,34 @@
             });
         }
 
+        function renderMobileDatesTags() {
+            const container = document.getElementById('mobileDatesTags');
+            container.innerHTML = '';
+            
+            // Créer un Set de dates uniques
+            const uniqueDates = [...new Set(datesWithData.map(d => 
+                d.date.toISOString().split('T')[0]
+            ))].sort().reverse();
+            
+            uniqueDates.forEach(dateStr => {
+                const date = new Date(dateStr);
+                const count = dateMessagesMap[dateStr]?.length || 0;
+                
+                const tag = document.createElement('div');
+                tag.className = 'date-tag';
+                tag.innerHTML = `
+                    <div style="font-weight: bold; color: var(--gold-dark);">${date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}</div>
+                    <div style="font-size: 0.8em; color: var(--text-medium);">${count} message${count > 1 ? 's' : ''}</div>
+                `;
+                
+                tag.addEventListener('click', () => {
+                    selectDate(date);
+                });
+                
+                container.appendChild(tag);
+            });
+        }
+
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
             const monthElement = document.getElementById('currentMonth');
@@ -2685,7 +2779,8 @@
                 const messages = dateMessagesMap[dateKey] || [];
                 if (messages.length > 0) {
                     if (isAdminUnlocked) {
-                        exportToPDF(messages, `Messages du ${popupDate.toLocaleDateString('fr-FR')}`);
+                        // Exporter les fiches du jour avec format exact comme dans l'original
+                        exportDayMessagesToPDF(messages, popupDate);
                     } else {
                         showUnlockBubble();
                     }
@@ -3086,7 +3181,7 @@
         function searchByDateString(dateStr) {
             const date = parseDate(dateStr);
             if (date) {
-                searchByDate(date);
+                selectDate(date);
             }
         }
 
@@ -3124,6 +3219,186 @@
                     ❌ ${message}
                 </div>
             `;
+        }
+
+        // Fonction pour exporter les fiches du jour en PDF avec format exact comme dans l'original
+        function exportDayMessagesToPDF(rows, date) {
+            const printWindow = window.open('', '_blank');
+            
+            const dateStr = date.toLocaleDateString('fr-FR', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            let pdfContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Fiches du jour - ${dateStr} - Livre d'Or Tournée 2026</title>
+                    <style>
+                        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: #FFF8E1; font-size: 16px; line-height: 1.6; }
+                        .page-container { max-width: 800px; margin: 0 auto; }
+                        .header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #D4AF37; }
+                        .header h1 { color: #8B6914; font-size: 24px; margin-bottom: 10px; }
+                        .header .date { color: #8B6914; font-size: 18px; font-weight: bold; }
+                        .fiche-container { margin-bottom: 40px; page-break-inside: avoid; }
+                        .fiche { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 30px; border: 2px solid #D4AF37; }
+                        .fiche-header { background: linear-gradient(135deg, #D4AF37, #B8860B); color: white; padding: 20px; text-align: center; }
+                        .fiche-title { font-size: 20px; font-weight: bold; margin: 0; font-family: 'Georgia', serif; }
+                        .fiche-date { background: rgba(212, 175, 55, 0.9); color: white; padding: 12px; text-align: center; font-weight: bold; font-size: 16px; }
+                        .fiche-content { padding: 25px; }
+                        .info-row { display: flex; justify-content: space-between; background: rgba(212, 175, 55, 0.15); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 2px solid rgba(212, 175, 55, 0.3); }
+                        .info-item { flex: 1; text-align: center; font-weight: bold; color: #8B6914; }
+                        .message-section { margin-top: 20px; padding: 20px; background: rgba(255, 255, 255, 0.95); border-radius: 8px; border-left: 4px solid #D4AF37; }
+                        .message-label { font-weight: bold; color: #8B6914; margin-bottom: 15px; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+                        .message-text { font-family: 'Bradley Hand', 'Segoe Script', cursive; font-size: 17px; line-height: 1.6; color: #5D4037; }
+                        .message-text p { margin-bottom: 10px; position: relative; padding-left: 30px; }
+                        .message-text p:before { content: '✍️'; position: absolute; left: 0; top: 0; font-size: 20px; color: #D4AF37; }
+                        .contact-section { margin-top: 20px; padding: 20px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #1E3A8A; }
+                        .contact-label { font-weight: bold; color: #1E3A8A; margin-bottom: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+                        .contact-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+                        .contact-item { display: flex; align-items: center; gap: 10px; padding: 12px; background: white; border-radius: 8px; }
+                        .contact-icon { font-size: 24px; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+                        .contact-icon.mail { background: #e3f2fd; color: #1976d2; }
+                        .contact-icon.phone { background: #e8f5e9; color: #388e3c; }
+                        .contact-icon.address { background: #fff3e0; color: #f57c00; }
+                        .contact-text { flex: 1; color: #2c3e50; word-break: break-word; }
+                        .footer { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; color: #7f8c8d; font-size: 14px; }
+                        @media print {
+                            body { padding: 10mm; background: white; }
+                            .fiche { page-break-inside: avoid; }
+                            .page-break { page-break-before: always; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="page-container">
+                        <div class="header">
+                            <h1>📖 Livre d'Or Tournée Europe 2026</h1>
+                            <div class="date">📅 Fiches du jour - ${dateStr}</div>
+                            <p style="color: #666; margin-top: 10px;">${rows.length} fiche(s) de message(s)</p>
+                        </div>
+            `;
+            
+            const dateIndex = 1;
+            const nomIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
+            );
+            const lieuIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
+            );
+            const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
+            const messageIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('votre') && h.toLowerCase().includes('message')
+            );
+            const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
+            const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
+            const adresseIndex = headers.findIndex(h => h.toLowerCase().includes('adresse'));
+            
+            rows.forEach((row, index) => {
+                const dateStr = row[dateIndex] || '';
+                const nom = row[nomIndex] || 'Anonyme';
+                const lieu = row[lieuIndex] || '';
+                const pays = row[paysIndex] || '';
+                const message = row[messageIndex] || '';
+                const email = row[emailIndex] || '';
+                const telephone = row[telephoneIndex] || '';
+                const adresse = row[adresseIndex] || '';
+                
+                // Formater la date
+                const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
+                
+                // Titre créatif
+                const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
+                
+                pdfContent += `
+                    <div class="fiche-container">
+                        <div class="fiche">
+                            <div class="fiche-header">
+                                <h2 class="fiche-title">${creativeTitle}</h2>
+                            </div>
+                            <div class="fiche-date">
+                                ${formattedDate}
+                            </div>
+                            <div class="fiche-content">
+                                <div class="info-row">
+                                    <div class="info-item">
+                                        <div>👤 ${nom}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div>📍 ${lieu}</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div>🌍 ${pays}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="message-section">
+                                    <div class="message-label">💌 Message reçu</div>
+                                    <div class="message-text">
+                                        ${message.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('')}
+                                    </div>
+                                </div>
+                                
+                                ${(adresse || email || telephone) ? `
+                                <div class="contact-section">
+                                    <div class="contact-label">📞 Contact</div>
+                                    <div class="contact-details">
+                                        ${adresse ? `
+                                        <div class="contact-item">
+                                            <div class="contact-icon address">📍</div>
+                                            <div class="contact-text"><strong>Adresse:</strong><br>${adresse.replace(/\n/g, '<br>')}</div>
+                                        </div>
+                                        ` : ''}
+                                        
+                                        ${email ? `
+                                        <div class="contact-item">
+                                            <div class="contact-icon mail">✉️</div>
+                                            <div class="contact-text">
+                                                <strong>Email:</strong><br>
+                                                ${email}
+                                            </div>
+                                        </div>
+                                        ` : ''}
+                                        
+                                        ${telephone ? `
+                                        <div class="contact-item">
+                                            <div class="contact-icon phone">📱</div>
+                                            <div class="contact-text">
+                                                <strong>Téléphone:</strong><br>
+                                                ${telephone}
+                                            </div>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Ajouter un saut de page entre les fiches si nécessaire
+                if (index < rows.length - 1) {
+                    pdfContent += `<div class="page-break"></div>`;
+                }
+            });
+            
+            pdfContent += `
+                        <div class="footer">
+                            <p>Export généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
+                            <p>Livre d'Or Tournée Europe 2026 - NY AKO - Ligue pour la Lecture de la Bible Madagascar</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            printWindow.document.write(pdfContent);
+            printWindow.document.close();
+            printWindow.print();
         }
 
         function exportTableToExcel() {
@@ -3200,145 +3475,8 @@
                 showUnlockBubble();
                 return;
             }
-            exportToPDF(sheetData, 'Messages 🧡🧡🧡');
-        }
-
-        function exportByCountry() {
-            if (!isAdminUnlocked) {
-                showUnlockBubble();
-                return;
-            }
-            
-            const bookSection = document.getElementById('bookSection');
-            const bookContent = document.getElementById('bookContent');
-            
-            let html = '<div class="book-classification">';
-            
-            // Grouper par pays
-            const messagesByCountry = {};
-            sheetData.forEach(row => {
-                const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
-                const pays = row[paysIndex] || 'Non spécifié';
-                
-                if (!messagesByCountry[pays]) {
-                    messagesByCountry[pays] = [];
-                }
-                messagesByCountry[pays].push(row);
-            });
-            
-            // Afficher par pays avec présentation exacte comme les fiches
-            Object.keys(messagesByCountry).sort().forEach(pays => {
-                const messages = messagesByCountry[pays];
-                
-                html += `
-                    <div class="country-group">
-                        <h4>🌍 ${pays} (${messages.length} message${messages.length > 1 ? 's' : ''})</h4>
-                `;
-                
-                // Afficher chaque message comme dans les fiches
-                messages.forEach((row, index) => {
-                    const dateIndex = 1;
-                    const nomIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
-                    );
-                    const lieuIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
-                    );
-                    const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
-                    const messageIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('votre') && h.toLowerCase().includes('message')
-                    );
-                    const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
-                    const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
-                    const adresseIndex = headers.findIndex(h => h.toLowerCase().includes('adresse'));
-                    
-                    const dateStr = row[dateIndex] || '';
-                    const nom = row[nomIndex] || 'Anonyme';
-                    const lieu = row[lieuIndex] || '';
-                    const message = row[messageIndex] || '';
-                    const email = row[emailIndex] || '';
-                    const telephone = row[telephoneIndex] || '';
-                    const adresse = row[adresseIndex] || '';
-                    
-                    // Formater la date
-                    const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
-                    
-                    // Titre créatif pour l'export
-                    const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
-                    
-                    html += `
-                        <div style="margin-bottom: 15px; padding: 10px; background: white; border-radius: 5px; border: 1px solid #eee;">
-                            <div style="font-weight: bold; color: #D4AF37; text-align: center; margin-bottom: 8px; font-size: 1.1em;">
-                                ${creativeTitle}
-                            </div>
-                            <div class="entry-date-line" style="background: rgba(212, 175, 55, 0.9); padding: 8px 10px; color: white; font-weight: bold; border-radius: 3px; margin-bottom: 8px; text-align: center;">
-                                ${formattedDate}
-                            </div>
-                            <div class="entry-header" style="background: rgba(212, 175, 55, 0.3); padding: 10px; display: flex; justify-content: space-between; align-items: center; border-radius: 3px; margin-bottom: 10px; color: #8B6914;">
-                                <div style="flex: 1; text-align: center; font-weight: bold;">
-                                    <div>👤 ${nom}</div>
-                                </div>
-                                <div style="flex: 1; text-align: center; font-weight: bold;">
-                                    <div>📍 ${lieu}</div>
-                                </div>
-                                <div style="flex: 1; text-align: center; font-weight: bold;">
-                                    <div>🌍 ${pays}</div>
-                                </div>
-                            </div>
-                            <div style="font-style: italic; color: #555; margin-bottom: 8px; padding: 10px; background: #f8f9fa; border-radius: 3px;">
-                                ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}
-                            </div>
-                    `;
-                    
-                    if (adresse || email || telephone) {
-                        html += `<div style="font-size: 0.85em; color: #666; padding: 8px; background: #e9ecef; border-radius: 3px;">`;
-                        if (adresse) html += `<div>📍 ${adresse}</div>`;
-                        if (email) html += `<div>✉️ ${email}</div>`;
-                        if (telephone) html += `<div>📱 ${telephone}</div>`;
-                        html += `</div>`;
-                    }
-                    
-                    html += `</div>`;
-                });
-                
-                html += `</div>`;
-            });
-            
-            html += '</div>';
-            bookContent.innerHTML = html;
-            
-            // Ajouter les statistiques au livre
-            let topCountry = 'Inconnu';
-            let maxCount = 0;
-            for (const [country, count] of Object.entries(countryStats)) {
-                if (count > maxCount) {
-                    maxCount = count;
-                    topCountry = country;
-                }
-            }
-            
-            const nomIndex = headers.findIndex(h => 
-                h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
-            );
-            const anonymousCount = sheetData.filter(row => {
-                const nom = row[nomIndex] || '';
-                return !nom.trim() || nom.toLowerCase().includes('anonyme');
-            }).length;
-            
-            const statsHtml = `
-                <div class="book-stat-item"><strong>Messages total:</strong> ${sheetData.length}</div>
-                <div class="book-stat-item"><strong>Auteurs différents:</strong> ${allNoms.length}</div>
-                <div class="book-stat-item"><strong>Pays visités:</strong> ${allPays.length}</div>
-                <div class="book-stat-item"><strong>Lieux différents:</strong> ${allLieux.length}</div>
-                <div class="book-stat-item"><strong>Pays avec plus de messages:</strong> ${topCountry} (${maxCount})</div>
-                <div class="book-stat-item"><strong>Messages anonymes:</strong> ${anonymousCount}</div>
-            `;
-            document.getElementById('bookStats').innerHTML = statsHtml;
-            
-            bookSection.style.display = 'block';
-            document.getElementById('resultsSection').style.display = 'none';
-            document.getElementById('tableauSection').style.display = 'none';
-            bookSection.scrollIntoView({ behavior: 'smooth' });
+            // Utiliser la même fonction que pour l'export du jour mais avec toutes les données
+            exportDayMessagesToPDF(sheetData, new Date());
         }
 
         function generateBookPDF() {
@@ -3564,121 +3702,10 @@
             printWindow.print();
         }
 
-        function exportToPDF(rows, filename) {
-            const printWindow = window.open('', '_blank');
-            
-            let pdfContent = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Messages 🧡🧡🧡 - Livre d'Or Tournée 2026</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 20px; font-size: 14px; }
-                        .fiche { margin-bottom: 40px; page-break-inside: avoid; border: 1px solid #ddd; padding: 20px; border-radius: 5px; }
-                        .fiche-header { background: linear-gradient(135deg, #D4AF37, #B8860B); color: white; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
-                        .fiche-title { color: white; font-size: 1.2em; margin: 0; }
-                        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-                        .info-item { padding: 10px; background: #f8f9fa; border-radius: 5px; }
-                        .info-label { font-weight: bold; color: #D4AF37; font-size: 0.9em; margin-bottom: 5px; }
-                        .info-value { color: #2c3e50; }
-                        .message-content { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 5px; border-left: 4px solid #D4AF37; }
-                        .message-text { font-style: italic; color: #34495e; line-height: 1.6; }
-                        .contact-section { margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 5px; }
-                        @media print {
-                            .fiche { page-break-inside: avoid; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h1 style="color: #8b0000; text-align: center; margin-bottom: 30px;">Messages 🧡🧡🧡 - Tournée Europe 2026</h1>
-                    <p style="text-align: center; color: #666; margin-bottom: 30px;">
-                        Export généré le ${new Date().toLocaleDateString('fr-FR')} - ${rows.length} fiche(s)
-                    </p>
-            `;
-            
-            const dateIndex = 1;
-            const nomIndex = headers.findIndex(h => 
-                h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
-            );
-            const lieuIndex = headers.findIndex(h => 
-                h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
-            );
-            const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
-            const messageIndex = headers.findIndex(h => 
-                h.toLowerCase().includes('votre') && h.toLowerCase().includes('message')
-            );
-            const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
-            const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
-            const adresseIndex = headers.findIndex(h => h.toLowerCase().includes('adresse'));
-            
-            rows.forEach((row, index) => {
-                const dateStr = row[dateIndex] || '';
-                const nom = row[nomIndex] || 'Anonyme';
-                const lieu = row[lieuIndex] || '';
-                const pays = row[paysIndex] || '';
-                const message = row[messageIndex] || '';
-                const email = row[emailIndex] || '';
-                const telephone = row[telephoneIndex] || '';
-                const adresse = row[adresseIndex] || '';
-                
-                // Formater la date
-                const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
-                
-                // Titre créatif pour l'export PDF
-                const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
-                
-                pdfContent += `
-                    <div class="fiche">
-                        <div class="fiche-header">
-                            <h2 class="fiche-title">${creativeTitle}</h2>
-                        </div>
-                        
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <div class="info-label">👤 Auteur:</div>
-                                <div class="info-value">${nom}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">📍 Lieu:</div>
-                                <div class="info-value">${lieu}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">🌍 Pays:</div>
-                                <div class="info-value">${pays}</div>
-                            </div>
-                            <div class="info-item">
-                                <div class="info-label">📅 Date:</div>
-                                <div class="info-value">${formattedDate}</div>
-                            </div>
-                        </div>
-                        
-                        <div class="message-content">
-                            <div class="info-label">💌 Message:</div>
-                            <div class="message-text">${message.replace(/\n/g, '<br>')}</div>
-                        </div>
-                        
-                        ${(adresse || email || telephone) ? `
-                        <div class="contact-section">
-                            <div class="info-label">📞 Contact:</div>
-                            ${adresse ? `<div><strong>Adresse:</strong> ${adresse}</div>` : ''}
-                            ${email ? `<div><strong>Email:</strong> ${email}</div>` : ''}
-                            ${telephone ? `<div><strong>Téléphone:</strong> ${telephone}</div>` : ''}
-                        </div>
-                        ` : ''}
-                    </div>
-                `;
-            });
-            
-            pdfContent += `</body></html>`;
-            
-            printWindow.document.write(pdfContent);
-            printWindow.document.close();
-            printWindow.print();
-        }
-        
         // Fonctions d'administration et de déverrouillage
         function showUnlockBubble() {
             document.getElementById('unlockBubble').style.display = 'block';
+            document.getElementById('unlockPassword').focus();
         }
         
         function closeUnlockBubble() {
@@ -3691,10 +3718,85 @@
             if (password === 'admin') {
                 unlockAllFeatures();
                 closeUnlockBubble();
-                alert('✅ Fonctionnalités déverrouillées !');
+                showSuccessMessage('✅ Fonctionnalités déverrouillées avec succès !');
             } else {
-                alert('❌ Mot de passe incorrect !');
+                showErrorMessage('❌ Mot de passe incorrect. Essayez à nouveau.');
+                document.getElementById('unlockPassword').value = '';
+                document.getElementById('unlockPassword').focus();
             }
+        }
+        
+        function showSuccessMessage(message) {
+            const bubble = document.getElementById('unlockBubble');
+            const content = bubble.querySelector('.unlock-bubble-content');
+            
+            const successDiv = document.createElement('div');
+            successDiv.style.cssText = `
+                background: linear-gradient(135deg, #27ae60, #2ecc71);
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                text-align: center;
+                font-weight: bold;
+                animation: fadeIn 0.3s ease-in;
+            `;
+            successDiv.innerHTML = `
+                <div style="font-size: 1.2em; margin-bottom: 5px;">✅</div>
+                <div>${message}</div>
+            `;
+            
+            content.insertBefore(successDiv, content.firstChild);
+            
+            // Retirer le message après 3 secondes
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+        
+        function showErrorMessage(message) {
+            const bubble = document.getElementById('unlockBubble');
+            const content = bubble.querySelector('.unlock-bubble-content');
+            
+            // Supprimer tout message d'erreur existant
+            const existingError = content.querySelector('.error-message-bubble');
+            if (existingError) {
+                existingError.remove();
+            }
+            
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message-bubble';
+            errorDiv.style.cssText = `
+                background: linear-gradient(135deg, #e74c3c, #c0392b);
+                color: white;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                text-align: center;
+                font-weight: bold;
+                animation: shake 0.5s ease-in-out;
+            `;
+            errorDiv.innerHTML = `
+                <div style="font-size: 1.2em; margin-bottom: 5px;">❌</div>
+                <div>${message}</div>
+            `;
+            
+            content.insertBefore(errorDiv, content.firstChild);
+            
+            // Animation shake
+            const style = document.createElement('style');
+            style.innerHTML = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+                    20%, 40%, 60%, 80% { transform: translateX(5px); }
+                }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(-10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `;
+            document.head.appendChild(style);
         }
         
         function showAdminModal() {
@@ -3719,10 +3821,8 @@
             document.querySelectorAll('.export-btn.locked').forEach(btn => {
                 btn.classList.remove('locked');
                 btn.innerHTML = btn.innerHTML.replace('🔒 ', '');
-            });
-            
-            // Mettre à jour les écouteurs d'événements
-            document.querySelectorAll('.export-btn:not(.locked)').forEach(btn => {
+                
+                // Mettre à jour les écouteurs d'événements
                 const originalText = btn.textContent;
                 if (originalText.includes('Exporter fiches') || originalText.includes('Exporter toutes les fiches')) {
                     btn.onclick = exportAllToPDF;
@@ -3734,17 +3834,66 @@
                     btn.onclick = exportTableToPDF;
                 }
             });
+            
+            // Mettre à jour les boutons du tableau
+            const excelBtn = document.querySelector('.export-btn.excel');
+            const pdfBtn = document.querySelector('.export-btn.pdf');
+            if (excelBtn) excelBtn.onclick = exportTableToExcel;
+            if (pdfBtn) pdfBtn.onclick = exportTableToPDF;
+            
+            // Mettre à jour les boutons de la sidebar desktop
+            const sidebarExportBtn = document.querySelector('.desktop-export-buttons .export-btn');
+            if (sidebarExportBtn) {
+                sidebarExportBtn.onclick = exportAllToPDF;
+            }
+            
+            // Mettre à jour les boutons mobile
+            const mobileExportBtns = document.querySelectorAll('.mobile-buttons-row .export-btn');
+            mobileExportBtns.forEach(btn => {
+                const text = btn.textContent;
+                if (text.includes('Exporter fiches')) {
+                    btn.onclick = exportAllToPDF;
+                } else if (text.includes('Générer livre')) {
+                    btn.onclick = generateBookPDF;
+                }
+            });
         }
         
         // Adapter l'affichage pour mobile
         window.addEventListener('resize', function() {
             if (window.innerWidth <= 768) {
+                // Afficher les boutons flottants pour mobile, cacher ceux pour desktop
+                document.querySelector('.fixed-nav-buttons').style.display = 'none';
+                document.querySelector('.mobile-floating-buttons').style.display = 'flex';
+                
+                // Ajuster l'affichage de la sidebar
                 document.querySelector('.sidebar').style.display = 'flex';
-                adjustFloatingButtonsForMobile();
+                
+                // Afficher la liste des dates sous le bouton "Afficher tous les messages"
+                document.getElementById('mobileDatesList').style.display = 'block';
             } else {
+                // Afficher les boutons flottants pour desktop, cacher ceux pour mobile
+                document.querySelector('.fixed-nav-buttons').style.display = 'flex';
+                document.querySelector('.mobile-floating-buttons').style.display = 'none';
+                
+                // Ajuster l'affichage de la sidebar
                 document.querySelector('.sidebar').style.display = 'flex';
+                
+                // Cacher la liste des dates pour mobile
+                document.getElementById('mobileDatesList').style.display = 'none';
             }
         });
+        
+        // Initialiser l'affichage correct au chargement
+        if (window.innerWidth <= 768) {
+            document.querySelector('.fixed-nav-buttons').style.display = 'none';
+            document.querySelector('.mobile-floating-buttons').style.display = 'flex';
+            document.getElementById('mobileDatesList').style.display = 'block';
+        } else {
+            document.querySelector('.fixed-nav-buttons').style.display = 'flex';
+            document.querySelector('.mobile-floating-buttons').style.display = 'none';
+            document.getElementById('mobileDatesList').style.display = 'none';
+        }
     </script>
-</body>   
+</body>
 </html>
