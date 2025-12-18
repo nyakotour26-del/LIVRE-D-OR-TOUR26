@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1321,6 +1320,209 @@
             font-family: 'Georgia', 'Times New Roman', serif;
         }
         
+        /* Styles pour les photos souvenirs - APERÇU 10cm x 10cm */
+        /* =============== NOUVEAU STYLE POUR LES APERÇUS PHOTOS SOUVENIR =============== */
+.photos-souvenir-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin: 15px 0;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(255, 253, 245, 0.9), rgba(255, 253, 245, 0.95));
+    border-radius: var(--border-radius);
+    border: 2px solid var(--gold-light);
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+}
+
+.photo-preview-container {
+    display: inline-block;
+    margin: 10px;
+    text-align: center;
+    vertical-align: top;
+    width: 10cm; /* 10cm comme demandé */
+    max-width: 100%;
+}
+
+.photo-link-with-preview {
+    display: block;
+    width: 10cm;
+    height: 10cm;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    border: 3px solid var(--gold-light);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.photo-link-with-preview:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    border-color: var(--secondary-color);
+}
+
+.photo-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+
+.photo-link-with-preview:hover .photo-thumbnail {
+    transform: scale(1.1);
+}
+
+/* Texte au survol */
+.photo-link-with-preview::after {
+    content: '🔍 Voir en grand';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px;
+    font-size: 0.9em;
+    font-weight: 600;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    text-align: center;
+}
+
+.photo-link-with-preview:hover::after {
+    transform: translateY(0);
+}
+
+/* Texte sous la photo */
+.photo-label {
+    margin-top: 12px;
+    font-size: 0.95em;
+    font-weight: 600;
+    color: var(--gold-dark);
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    border-left: 4px solid var(--secondary-color);
+}
+
+/* Image de remplacement si erreur */
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Adaptation pour tablette */
+@media (max-width: 1024px) {
+    .photo-preview-container {
+        width: 8cm;
+    }
+    .photo-link-with-preview {
+        width: 8cm;
+        height: 8cm;
+    }
+}
+
+/* Adaptation pour mobile */
+@media (max-width: 768px) {
+    .photo-preview-container {
+        width: 6cm;
+        margin: 8px;
+    }
+    .photo-link-with-preview {
+        width: 6cm;
+        height: 6cm;
+    }
+    .photos-souvenir-container {
+        gap: 15px;
+    }
+    .photo-label {
+        font-size: 0.85em;
+        padding: 6px 8px;
+    }
+    .photo-link-with-preview::after {
+        font-size: 0.8em;
+        padding: 8px;
+    }
+}
+
+/* Adaptation pour petit mobile */
+@media (max-width: 480px) {
+    .photo-preview-container {
+        width: 5cm;
+        margin: 6px;
+    }
+    .photo-link-with-preview {
+        width: 5cm;
+        height: 5cm;
+    }
+    .photos-souvenir-container {
+        gap: 12px;
+    }
+}
+        
+        .photo-souvenir-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .photo-souvenir-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .photo-souvenir-modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .photo-souvenir-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2em;
+            cursor: pointer;
+            padding: 5px 15px;
+        }
+        
+        .admin-source-btn {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+            margin: 10px 0;
+        }
+        
+        .admin-source-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+        }
+        
         @media (max-width: 1024px) {
             .container {
                 grid-template-columns: 35% 1fr;
@@ -1340,6 +1542,12 @@
                 width: 50px;
                 height: 50px;
                 font-size: 20px;
+            }
+            
+            /* Ajustement photos pour tablette */
+            .photo-souvenir {
+                width: 8cm;
+                height: 8cm;
             }
         }
         
@@ -1566,6 +1774,16 @@
                 font-size: 1em;
                 padding: 10px 12px;
             }
+            
+            /* Ajustement photos pour mobile */
+            .photos-souvenir-container {
+                gap: 10px;
+            }
+            
+            .photo-souvenir {
+                width: 6cm;
+                height: 6cm;
+            }
         }
         
         @media (max-width: 480px) {
@@ -1637,6 +1855,16 @@
             .title-golden-words {
                 font-size: 0.95em;
                 padding: 8px 10px;
+            }
+            
+            /* Ajustement photos pour petit mobile */
+            .photos-souvenir-container {
+                gap: 8px;
+            }
+            
+            .photo-souvenir {
+                width: 5cm;
+                height: 5cm;
             }
         }
         
@@ -1917,71 +2145,21 @@
             background: linear-gradient(135deg, #8B6914, #5D4037);
         }
         
-        /* Nouveaux styles pour l'écran de chargement progressif */
-        #loadingProgress {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255,255,255,0.95);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+        /* Styles pour les nouvelles options du calendrier */
+        .calendar-popup-options .popup-option.new-message {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
         }
         
-        #loadingProgress .spinner {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #D4AF37;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+        .calendar-popup-options .popup-option.new-message:hover {
+            background: linear-gradient(135deg, #bbdefb, #90caf9);
         }
         
-        #loadingProgress p {
-            margin-top: 15px;
-            color: #8B6914;
-            font-weight: bold;
-            font-size: 1.1em;
-            text-align: center;
-            max-width: 80%;
+        .calendar-popup-options .popup-option.edit-message {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
         }
         
-        #progressBarContainer {
-            width: 300px;
-            height: 12px;
-            background: #f0f0f0;
-            border-radius: 6px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-        
-        #progressBar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(to right, #D4AF37, #B8860B);
-            transition: width 0.3s;
-        }
-        
-        .retry-button {
-            margin-top: 20px;
-            padding: 10px 25px;
-            background: linear-gradient(135deg, var(--secondary-color), var(--gold-dark));
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 16px;
-            display: none;
-        }
-        
-        .retry-button:hover {
-            background: linear-gradient(135deg, var(--gold-dark), var(--secondary-color));
+        .calendar-popup-options .popup-option.edit-message:hover {
+            background: linear-gradient(135deg, #e1bee7, #ce93d8);
         }
         
         /* MODIFICATION CRITIQUE : Calendrier après barre de recherche en mobile */
@@ -2021,6 +2199,14 @@
     </style>
 </head>
 <body>
+    <!-- Modal pour afficher les photos en grand -->
+    <div class="photo-souvenir-modal" id="photoModal">
+        <button class="photo-souvenir-modal-close" onclick="closePhotoModal()">✕</button>
+        <div class="photo-souvenir-modal-content">
+            <img id="modalPhoto" src="" alt="Photo souvenir">
+        </div>
+    </div>
+
     <!-- Écran de chargement progressif -->
     <div id="loadingProgress">
         <div class="spinner"></div>
@@ -2079,7 +2265,7 @@
             <button class="unlock-bubble-close" onclick="closeUnlockBubble()">✕</button>
         </div>
         <div class="unlock-bubble-content">
-            <p>Pour accéder à toutes les fonctionnalités d'export (PDF, Excel, livre complet), veuillez saisir le mot de passe administrateur.</p>
+            <p>Pour accéder à toutes les fonctionnalités d'export (PDF, Excel, livre complet) et aux fiches de message, veuillez saisir le mot de passe administrateur.</p>
             <input type="password" class="unlock-bubble-input" id="unlockPassword" placeholder="Entrez le mot de passe" autocomplete="off">
         </div>
         <div class="unlock-bubble-actions">
@@ -2198,7 +2384,7 @@
             
             <!-- Boutons d'export pour desktop (en dessous du calendrier) -->
             <div class="desktop-export-buttons" style="order: 5;">
-                <button class="export-btn locked" onclick="showAdminModal()" style="width: 100%;">
+                <button class="export-btn locked" onclick="showUnlockBubble()" style="width: 100%;">
                     🔒 Exporter toutes les fiches
                 </button>
             </div>
@@ -2258,6 +2444,12 @@
                         </div>
                         <div class="popup-option" onclick="exportDayToPDF()">
                             📄 Exporter en PDF les fiches du jour
+                        </div>
+                        <div class="popup-option new-message" onclick="openNewMessageForm()">
+                            📝 Écrire un nouveau message
+                        </div>
+                        <div class="popup-option edit-message" onclick="editDayMessages()">
+                            ✏️ Modifier les fiches de message
                         </div>
                     </div>
                 </div>
@@ -2332,6 +2524,11 @@
         // URL de votre Google Sheet
         const GOOGLE_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSuMh7pUxO2PZav2SaK17r3NiBgft2H5IpCkFy9fntGOoglO_blQzzy6enWlFI_H4jsQMCcfLQYGmrl/pub?gid=1858980590&single=true&output=csv';
         
+        // Liens fournis
+        const SOURCE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1Z_y36XbuuOY88gUi3_YMg90fJQ_--dpJKxQPLnX5oV4/edit?resourcekey=&gid=1858980590#gid=1858980590';
+        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfrJKU6QpRFo8ni9RVDBPUo8H-Wi-rJzxDXHQNWxoeC2LxL0A/viewform?usp=header';
+        const PHOTOS_FOLDER_URL = 'https://drive.google.com/drive/folders/1boVFMMSUPdsmUaMUZ7bnKW3gbbAUS8Ns3NqjPJ5eeomQO7oiagh5EE1qtZMdF4DRUsRL9xCd?usp=sharing';
+        
         // Variables globales
         let sheetData = [];
         let headers = [];
@@ -2351,6 +2548,10 @@
         let isAdminUnlocked = false;
         let currentRetryCount = 0;
         const MAX_RETRIES = 3;
+        
+        // Map des liens de message
+        let messageLinksMap = {};
+        let photoUrlsMap = {};
 
         // Liste de titres attractifs
         const creativeTitles = [
@@ -2428,6 +2629,12 @@
                 if (unlockBubble && unlockBubble.style.display === 'block' && 
                     !unlockBubble.contains(e.target) && !e.target.classList.contains('unlock-btn')) {
                     unlockBubble.style.display = 'none';
+                }
+                
+                // Fermer le modal photo en cliquant ailleurs
+                const photoModal = document.getElementById('photoModal');
+                if (photoModal && photoModal.style.display === 'flex' && !photoModal.contains(e.target)) {
+                    closePhotoModal();
                 }
             });
             
@@ -2507,6 +2714,71 @@
             document.getElementById('searchInput').focus();
         }
         
+        // Fonctions pour les photos
+        function openPhotoModal(photoUrl) {
+            document.getElementById('modalPhoto').src = photoUrl;
+            document.getElementById('photoModal').style.display = 'flex';
+        }
+        
+        function closePhotoModal() {
+            document.getElementById('photoModal').style.display = 'none';
+            document.getElementById('modalPhoto').src = '';
+        }
+        
+// Fonction pour créer une miniature depuis Google Drive
+function generatePhotoThumbnail(url) {
+    if (!url) return '';
+    
+    if (url.includes('drive.google.com')) {
+        // Convertir l'URL Google Drive en URL de preview
+        if (url.includes('/file/d/')) {
+            const fileId = url.split('/file/d/')[1].split('/')[0];
+            return `https://drive.google.com/thumbnail?sz=w400&id=${fileId}`;
+        } else if (url.includes('id=')) {
+            const fileId = url.split('id=')[1].split('&')[0];
+            return `https://drive.google.com/thumbnail?sz=w400&id=${fileId}`;
+        }
+    }
+    
+    // Pour les autres URLs, retourner l'URL originale
+    return url;
+}
+        // Fonctions pour les nouvelles options du calendrier
+        function openNewMessageForm() {
+            window.open(GOOGLE_FORM_URL, '_blank');
+            closeCalendarPopup();
+        }
+        
+        function editDayMessages() {
+            if (popupDate) {
+                const dateKey = popupDate.toISOString().split('T')[0];
+                const messages = dateMessagesMap[dateKey] || [];
+                
+                if (messages.length > 0) {
+                    // Trouver le premier lien de message pour cette date
+                    const messageLinkIndex = headers.findIndex(h => 
+                        h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
+                    );
+                    
+                    if (messageLinkIndex !== -1) {
+                        const firstMessage = messages[0];
+                        const messageLink = firstMessage[messageLinkIndex];
+                        
+                        if (messageLink && messageLink.trim() !== '') {
+                            window.open(messageLink, '_blank');
+                        } else {
+                            alert('Aucun lien de message trouvé pour cette date.');
+                        }
+                    } else {
+                        alert('Colonne "lien du message" non trouvée dans les données.');
+                    }
+                } else {
+                    alert('Aucun message trouvé pour cette date.');
+                }
+            }
+            closeCalendarPopup();
+        }
+
         // Fonction fetch avec timeout
         async function fetchWithTimeout(url, timeout = 10000) {
             const controller = new AbortController();
@@ -2695,6 +2967,10 @@
                 renderCalendar();
                 renderDatesTags();
                 
+                // Extraire les liens de message et les photos
+                extractMessageLinks();
+                extractPhotoUrls();
+                
                 showDataInfo();
                 
             } catch (error) {
@@ -2784,6 +3060,48 @@
             }
             
             allPays = Array.from(allPaysSet).sort();
+        }
+
+        function extractMessageLinks() {
+            messageLinksMap = {};
+            const messageLinkIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
+            );
+            
+            if (messageLinkIndex !== -1) {
+                sheetData.forEach((row, index) => {
+                    const messageLink = row[messageLinkIndex] || '';
+                    if (messageLink && messageLink.trim() !== '') {
+                        messageLinksMap[index] = messageLink.trim();
+                    }
+                });
+            }
+        }
+
+        function extractPhotoUrls() {
+            photoUrlsMap = {};
+            const photo1Index = headers.findIndex(h => 
+                h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('1')
+            );
+            
+            const photo2Index = headers.findIndex(h => 
+                h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('2')
+            );
+            
+            if (photo1Index !== -1 && photo2Index !== -1) {
+                sheetData.forEach((row, index) => {
+                    const photo1 = row[photo1Index] || '';
+                    const photo2 = row[photo2Index] || '';
+                    
+                    // N'ajouter que si au moins une photo est présente
+                    if (photo1.trim() !== '' || photo2.trim() !== '') {
+                        photoUrlsMap[index] = {
+                            photo1: photo1.trim(),
+                            photo2: photo2.trim()
+                        };
+                    }
+                });
+            }
         }
 
         function calculateCountryStats() {
@@ -3159,6 +3477,10 @@
                     ];
                     const titleClass = titleClasses[index % titleClasses.length];
                     
+                    // Vérifier si on a des photos pour cet index
+                    const hasPhotos = photoUrlsMap[index] && (photoUrlsMap[index].photo1 || photoUrlsMap[index].photo2);
+                    const hasMessageLink = messageLinksMap[index];
+                    
                     html += `
                         <div class="entry-item">
                             <div class="${titleClass} title-creative">
@@ -3184,6 +3506,58 @@
                             </div>
                             
                             <div class="entry-content">
+                    `;
+                    
+                   // Afficher les photos seulement si disponibles
+if (hasPhotos) {
+    const photos = photoUrlsMap[index];
+    let photosHtml = '<div class="photos-souvenir-container">';
+    
+    // Fonction pour créer une prévisualisation photo
+    const createPhotoPreview = (photoUrl, photoNumber) => {
+        if (!photoUrl || photoUrl.trim() === '') return '';
+        
+        const thumbnailUrl = generatePhotoThumbnail(photoUrl);
+        
+        return `
+            <div class="photo-preview-container">
+                <div class="photo-link-with-preview" onclick="openPhotoModal('${photoUrl}')">
+                    <img src="${thumbnailUrl}" 
+                         alt="Photo souvenir ${photoNumber}" 
+                         class="photo-thumbnail"
+                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
+                </div>
+                <div class="photo-label">
+                    Photo souvenir ${photoNumber}<br>
+                    <small style="font-size: 0.8em; font-weight: normal; opacity: 0.8;">Cliquer pour agrandir</small>
+                </div>
+            </div>
+        `;
+    };
+    
+    // Photo 1 si disponible
+    if (photos.photo1 && photos.photo1.trim() !== '') {
+        photosHtml += createPhotoPreview(photos.photo1, 1);
+    }
+    
+    // Photo 2 si disponible
+    if (photos.photo2 && photos.photo2.trim() !== '') {
+        photosHtml += createPhotoPreview(photos.photo2, 2);
+    }
+    
+    photosHtml += '</div>';
+    
+    if (photosHtml.includes('photo-preview-container')) {
+        html += `
+            <div style="margin-bottom: 20px;">
+                <div class="message-label" style="margin-bottom: 10px;">📸 Photos souvenir</div>
+                ${photosHtml}
+            </div>
+        `;
+    }
+}
+                    
+                    html += `
                                 <div class="message-content">
                                     <div class="message-label">💌 Message reçu</div>
                                     <div class="message-text">
@@ -3224,6 +3598,14 @@
                                     </div>
                                 </div>
                                 ` : ''}
+                                
+                                ${isAdminUnlocked && hasMessageLink ? `
+                                <div style="margin-top: 15px; text-align: center;">
+                                    <button class="admin-source-btn" onclick="window.open('${messageLinksMap[index]}', '_blank')">
+                                        🔗 Accéder à la fiche source
+                                    </button>
+                                </div>
+                                ` : ''}
                             </div>
                         </div>
                     `;
@@ -3235,6 +3617,22 @@
             resultTitle.textContent = `${title} (${results.length} message${results.length > 1 ? 's' : ''})`;
             document.getElementById('resultsSection').style.display = 'block';
             document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            
+            // Ajouter le bouton d'accès au fichier source si admin déverrouillé
+            if (isAdminUnlocked) {
+                const resultHeader = document.querySelector('.result-header');
+                const existingSourceBtn = resultHeader.querySelector('.admin-source-access-btn');
+                if (!existingSourceBtn) {
+                    const sourceBtn = document.createElement('button');
+                    sourceBtn.className = 'admin-source-btn admin-source-access-btn';
+                    sourceBtn.innerHTML = '📋 Accéder au fichier source';
+                    sourceBtn.style.marginLeft = '10px';
+                    sourceBtn.style.fontSize = '0.9em';
+                    sourceBtn.style.padding = '8px 12px';
+                    sourceBtn.onclick = () => window.open(SOURCE_SHEET_URL, '_blank');
+                    resultHeader.appendChild(sourceBtn);
+                }
+            }
         }
 
         // Fonction pour formater la date en ddd dd-mm-aa
@@ -3299,6 +3697,14 @@
                     <strong>${sheetData.length} message(s) au total</strong>
                 </div>
                 
+                ${isAdminUnlocked ? `
+                <div style="margin-bottom: 15px; text-align: center;">
+                    <button class="admin-source-btn" onclick="window.open('${SOURCE_SHEET_URL}', '_blank')" style="font-size: 1em; padding: 10px 20px;">
+                        📋 Accéder au fichier source
+                    </button>
+                </div>
+                ` : ''}
+                
                 <table class="tableau-table">
                     <thead>
                         <tr>
@@ -3309,6 +3715,7 @@
                             <th>Email</th>
                             <th>Téléphone</th>
                             <th>Message (extrait)</th>
+                            ${isAdminUnlocked ? '<th>Actions</th>' : ''}
                         </tr>
                     </thead>
                     <tbody>
@@ -3337,6 +3744,7 @@
                 const telephone = row[telephoneIndex] || '';
                 const message = row[messageIndex] || '';
                 const messageExcerpt = message.length > 50 ? message.substring(0, 50) + '...' : message;
+                const hasMessageLink = messageLinksMap[index];
                 
                 html += `
                     <tr>
@@ -3347,6 +3755,15 @@
                         <td>${email ? `<a href="mailto:${email}" class="clickable-link">${email}</a>` : ''}</td>
                         <td>${telephone ? `<a href="tel:${telephone.replace(/\s/g, '')}" class="clickable-link">${telephone}</a>` : ''}</td>
                         <td title="${message}">${messageExcerpt}</td>
+                        ${isAdminUnlocked ? `
+                        <td>
+                            ${hasMessageLink ? `
+                            <button class="admin-source-btn" onclick="window.open('${hasMessageLink}', '_blank')" style="padding: 5px 10px; font-size: 0.8em;">
+                                ✏️ Modifier
+                            </button>
+                            ` : '—'}
+                        </td>
+                        ` : ''}
                     </tr>
                 `;
             });
@@ -4015,6 +4432,32 @@
                     btn.onclick = generateBookPDF;
                 }
             });
+            
+            // Ajouter le bouton d'accès au fichier source dans l'en-tête
+            const header = document.querySelector('header');
+            const existingSourceBtn = header.querySelector('.admin-source-header-btn');
+            if (!existingSourceBtn) {
+                const sourceBtn = document.createElement('button');
+                sourceBtn.className = 'admin-source-btn admin-source-header-btn';
+                sourceBtn.innerHTML = '📋 Fichier source';
+                sourceBtn.style.position = 'absolute';
+                sourceBtn.style.right = '20px';
+                sourceBtn.style.top = '15px';
+                sourceBtn.onclick = () => window.open(SOURCE_SHEET_URL, '_blank');
+                header.appendChild(sourceBtn);
+            }
+            
+            // Recharger l'affichage pour montrer les liens de message et boutons admin
+            if (document.getElementById('resultsSection').style.display !== 'none') {
+                const currentTitle = document.getElementById('resultTitle').textContent;
+                if (currentTitle.includes('Résultats pour') || currentTitle.includes('Tous les messages') || currentTitle.includes('Messages du')) {
+                    showAllData();
+                }
+            }
+            
+            if (document.getElementById('tableauSection').style.display !== 'none') {
+                showDataTable();
+            }
         }
         
         // Adapter l'affichage pour mobile
@@ -4023,10 +4466,22 @@
                 document.querySelector('.fixed-nav-buttons').style.display = 'none';
                 document.querySelector('.mobile-floating-buttons').style.display = 'flex';
                 document.querySelector('.sidebar').style.display = 'flex';
+                
+                // Cacher le bouton admin dans l'en-tête en mobile
+                const adminHeaderBtn = document.querySelector('.admin-source-header-btn');
+                if (adminHeaderBtn) {
+                    adminHeaderBtn.style.display = 'none';
+                }
             } else {
                 document.querySelector('.fixed-nav-buttons').style.display = 'flex';
                 document.querySelector('.mobile-floating-buttons').style.display = 'none';
                 document.querySelector('.sidebar').style.display = 'flex';
+                
+                // Montrer le bouton admin dans l'en-tête en desktop
+                const adminHeaderBtn = document.querySelector('.admin-source-header-btn');
+                if (adminHeaderBtn) {
+                    adminHeaderBtn.style.display = 'block';
+                }
             }
         });
         
