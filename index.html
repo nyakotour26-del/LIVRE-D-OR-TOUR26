@@ -25,6 +25,10 @@
             --accent-blue: #1E3A8A;
             --export-btn-color: #5D4037;
             --export-btn-hover: #8B6914;
+            --source-photo: #D4AF37;
+            --source-nophoto: #8B6914;
+            --source-english: #FFA500;
+            --source-english-photo: #FF6347; /* Nouvelle couleur pour anglais avec photo */
         }
         
         * {
@@ -299,7 +303,6 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            margin-top: auto;
         }
         
         .action-button {
@@ -413,17 +416,47 @@
         }
         
         .calendar-day.has-data {
-            background-color: #fef5e7;
             font-weight: bold;
+            position: relative;
         }
         
-        .calendar-day.has-data::before {
-            content: '★';
+        .calendar-day.has-data::after {
+            content: '';
             position: absolute;
-            top: 3px;
-            right: 3px;
-            font-size: 8px;
-            color: var(--secondary-color);
+            bottom: 2px;
+            right: 2px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+        
+        .calendar-day.has-data.photo::after {
+            content: '📸';
+            background: rgba(212, 175, 55, 0.2);
+        }
+        
+        .calendar-day.has-data.nophoto::after {
+            content: '📝';
+            background: rgba(139, 105, 20, 0.2);
+        }
+        
+        .calendar-day.has-data.english::after {
+            content: '🇬🇧';
+            background: rgba(255, 165, 0, 0.2);
+        }
+        
+        .calendar-day.has-data.english-photo::after {
+            content: '📸🇬🇧';
+            background: rgba(255, 99, 71, 0.2);
+        }
+        
+        .calendar-day.has-data.mixed::after {
+            content: '🔗';
+            background: rgba(93, 64, 55, 0.2);
         }
         
         .calendar-day.selected {
@@ -444,18 +477,21 @@
         }
         
         .calendar-popup {
-            position: absolute;
+            position: fixed;
             background: white;
             border-radius: var(--border-radius);
             box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-            padding: 15px;
-            min-width: 280px;
+            padding: 12px;
+            min-width: 250px;
+            max-width: 300px;
             z-index: 1001;
             border: 2px solid var(--secondary-color);
             display: none;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            max-height: 80vh;
+            overflow-y: auto;
         }
         
         .calendar-popup-header {
@@ -470,19 +506,21 @@
         .calendar-popup-title {
             font-weight: bold;
             color: var(--gold-dark);
-            font-size: 1.1em;
+            font-size: 1em;
             margin-bottom: 5px;
+            word-break: break-word;
         }
         
         .calendar-popup-date {
             color: var(--text-medium);
-            font-size: 0.9em;
+            font-size: 0.85em;
+            word-break: break-word;
         }
         
         .calendar-popup-count {
             font-weight: bold;
             color: var(--secondary-color);
-            font-size: 0.9em;
+            font-size: 0.85em;
             margin-top: 5px;
         }
         
@@ -493,6 +531,7 @@
             cursor: pointer;
             color: var(--text-medium);
             padding: 0 5px;
+            flex-shrink: 0;
         }
         
         .close-popup:hover {
@@ -514,12 +553,43 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.95em;
+            font-size: 0.9em;
+            word-break: break-word;
         }
         
         .popup-option:hover {
             background: var(--gold-light);
             transform: translateX(5px);
+        }
+        
+        .popup-option.with-photo {
+            background: linear-gradient(135deg, #e8f4fd, #d4eafc);
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .popup-option.without-photo {
+            background: linear-gradient(135deg, #e8f5e9, #d4edda);
+            border-left: 4px solid var(--source-nophoto);
+        }
+        
+        .popup-option.english {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            border-left: 4px solid var(--source-english);
+        }
+        
+        .popup-option.english-photo {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border-left: 4px solid var(--source-english-photo);
+        }
+        
+        .popup-option.view {
+            background: linear-gradient(135deg, #fef5e7, #fcebb6);
+            border-left: 4px solid var(--gold-secondary);
+        }
+        
+        .popup-option.edit {
+            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+            border-left: 4px solid #9b59b6;
         }
         
         .stats-section {
@@ -729,6 +799,39 @@
             text-align: center;
             border-bottom: 2px solid rgba(212, 175, 55, 0.5);
             text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .date-source-indicator {
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        
+        .date-source-indicator.photo {
+            color: white;
+            background: rgba(212, 175, 55, 0.7);
+        }
+        
+        .date-source-indicator.nophoto {
+            color: white;
+            background: rgba(139, 105, 20, 0.7);
+        }
+        
+        .date-source-indicator.english {
+            color: white;
+            background: rgba(255, 165, 0, 0.7);
+        }
+        
+        .date-source-indicator.english-photo {
+            color: white;
+            background: rgba(255, 99, 71, 0.7);
         }
         
         .entry-header {
@@ -1129,6 +1232,21 @@
             background-color: #f0f0f0;
         }
         
+        .tableau-table tr td:first-child {
+            font-weight: bold;
+            color: black;
+        }
+        
+        .tableau-table tr td:nth-child(3) {
+            color: #8A2BE2;
+            font-weight: bold;
+        }
+        
+        .tableau-table tr td:nth-child(4) {
+            color: #FF0000;
+            font-weight: bold;
+        }
+        
         .clickable-cell {
             cursor: pointer;
             color: #3498db;
@@ -1321,148 +1439,90 @@
         }
         
         /* Styles pour les photos souvenirs - APERÇU 10cm x 10cm */
-        /* =============== NOUVEAU STYLE POUR LES APERÇUS PHOTOS SOUVENIR =============== */
-.photos-souvenir-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    margin: 15px 0;
-    padding: 15px;
-    background: linear-gradient(135deg, rgba(255, 253, 245, 0.9), rgba(255, 253, 245, 0.95));
-    border-radius: var(--border-radius);
-    border: 2px solid var(--gold-light);
-    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
-}
+        .photos-souvenir-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255, 253, 245, 0.9), rgba(255, 253, 245, 0.95));
+            border-radius: var(--border-radius);
+            border: 2px solid var(--gold-light);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+        }
 
-.photo-preview-container {
-    display: inline-block;
-    margin: 10px;
-    text-align: center;
-    vertical-align: top;
-    width: 10cm; /* 10cm comme demandé */
-    max-width: 100%;
-}
+        .photo-preview-container {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            vertical-align: top;
+            width: 10cm;
+            max-width: 100%;
+        }
 
-.photo-link-with-preview {
-    display: block;
-    width: 10cm;
-    height: 10cm;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    border: 3px solid var(--gold-light);
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-}
+        .photo-link-with-preview {
+            display: block;
+            width: 10cm;
+            height: 10cm;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: 3px solid var(--gold-light);
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
 
-.photo-link-with-preview:hover {
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-    border-color: var(--secondary-color);
-}
+        .photo-link-with-preview:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: var(--secondary-color);
+        }
 
-.photo-thumbnail {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-    cursor: pointer;
-}
+        .photo-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            cursor: pointer;
+        }
 
-.photo-link-with-preview:hover .photo-thumbnail {
-    transform: scale(1.1);
-}
+        .photo-link-with-preview:hover .photo-thumbnail {
+            transform: scale(1.1);
+        }
 
-/* Texte au survol */
-.photo-link-with-preview::after {
-    content: '🔍 Voir en grand';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 12px;
-    font-size: 0.9em;
-    font-weight: 600;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-    text-align: center;
-}
+        .photo-link-with-preview::after {
+            content: '🔍 Voir en grand';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px;
+            font-size: 0.9em;
+            font-weight: 600;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
 
-.photo-link-with-preview:hover::after {
-    transform: translateY(0);
-}
+        .photo-link-with-preview:hover::after {
+            transform: translateY(0);
+        }
 
-/* Texte sous la photo */
-.photo-label {
-    margin-top: 12px;
-    font-size: 0.95em;
-    font-weight: 600;
-    color: var(--gold-dark);
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-    border-left: 4px solid var(--secondary-color);
-}
-
-/* Image de remplacement si erreur */
-@keyframes loading {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-}
-
-/* Adaptation pour tablette */
-@media (max-width: 1024px) {
-    .photo-preview-container {
-        width: 8cm;
-    }
-    .photo-link-with-preview {
-        width: 8cm;
-        height: 8cm;
-    }
-}
-
-/* Adaptation pour mobile */
-@media (max-width: 768px) {
-    .photo-preview-container {
-        width: 6cm;
-        margin: 8px;
-    }
-    .photo-link-with-preview {
-        width: 6cm;
-        height: 6cm;
-    }
-    .photos-souvenir-container {
-        gap: 15px;
-    }
-    .photo-label {
-        font-size: 0.85em;
-        padding: 6px 8px;
-    }
-    .photo-link-with-preview::after {
-        font-size: 0.8em;
-        padding: 8px;
-    }
-}
-
-/* Adaptation pour petit mobile */
-@media (max-width: 480px) {
-    .photo-preview-container {
-        width: 5cm;
-        margin: 6px;
-    }
-    .photo-link-with-preview {
-        width: 5cm;
-        height: 5cm;
-    }
-    .photos-souvenir-container {
-        gap: 12px;
-    }
-}
+        .photo-label {
+            margin-top: 12px;
+            font-size: 0.95em;
+            font-weight: 600;
+            color: var(--gold-dark);
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--secondary-color);
+        }
         
         .photo-souvenir-modal {
             display: none;
@@ -1544,8 +1604,10 @@
                 font-size: 20px;
             }
             
-            /* Ajustement photos pour tablette */
-            .photo-souvenir {
+            .photo-preview-container {
+                width: 8cm;
+            }
+            .photo-link-with-preview {
                 width: 8cm;
                 height: 8cm;
             }
@@ -1624,22 +1686,6 @@
                 flex-direction: column;
                 gap: 10px;
                 z-index: 1000;
-            }
-            
-            .mobile-floating-buttons .icon-button:nth-child(1) {
-                transform: translateY(0);
-            }
-            .mobile-floating-buttons .icon-button:nth-child(2) {
-                transform: translateY(0);
-            }
-            .mobile-floating-buttons .icon-button:nth-child(3) {
-                transform: translateY(0);
-            }
-            .mobile-floating-buttons .icon-button:nth-child(4) {
-                transform: translateY(0);
-            }
-            .mobile-floating-buttons .icon-button:nth-child(5) {
-                transform: translateY(0);
             }
             
             .search-form {
@@ -1775,14 +1821,24 @@
                 padding: 10px 12px;
             }
             
-            /* Ajustement photos pour mobile */
-            .photos-souvenir-container {
-                gap: 10px;
+            .photo-preview-container {
+                width: 6cm;
+                margin: 8px;
             }
-            
-            .photo-souvenir {
+            .photo-link-with-preview {
                 width: 6cm;
                 height: 6cm;
+            }
+            .photos-souvenir-container {
+                gap: 15px;
+            }
+            .photo-label {
+                font-size: 0.85em;
+                padding: 6px 8px;
+            }
+            .photo-link-with-preview::after {
+                font-size: 0.8em;
+                padding: 8px;
             }
         }
         
@@ -1857,14 +1913,16 @@
                 padding: 8px 10px;
             }
             
-            /* Ajustement photos pour petit mobile */
-            .photos-souvenir-container {
-                gap: 8px;
+            .photo-preview-container {
+                width: 5cm;
+                margin: 6px;
             }
-            
-            .photo-souvenir {
+            .photo-link-with-preview {
                 width: 5cm;
                 height: 5cm;
+            }
+            .photos-souvenir-container {
+                gap: 12px;
             }
         }
         
@@ -2145,37 +2203,17 @@
             background: linear-gradient(135deg, #8B6914, #5D4037);
         }
         
-        /* Styles pour les nouvelles options du calendrier */
-        .calendar-popup-options .popup-option.new-message {
-            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-        }
-        
-        .calendar-popup-options .popup-option.new-message:hover {
-            background: linear-gradient(135deg, #bbdefb, #90caf9);
-        }
-        
-        .calendar-popup-options .popup-option.edit-message {
-            background: linear-gradient(135deg, #f3e5f5, #e1bee7);
-        }
-        
-        .calendar-popup-options .popup-option.edit-message:hover {
-            background: linear-gradient(135deg, #e1bee7, #ce93d8);
-        }
-        
         /* MODIFICATION CRITIQUE : Calendrier après barre de recherche en mobile */
         @media (max-width: 768px) {
-            /* Réorganisation du contenu principal pour mobile */
             .main-content {
                 order: 0;
             }
             
-            /* Le calendrier vient après la barre de recherche */
             .calendar-section {
                 order: 1;
                 margin-top: 0;
             }
             
-            /* Les autres sections viennent après */
             #loadingIndicator {
                 order: 2;
             }
@@ -2196,6 +2234,223 @@
                 order: 6;
             }
         }
+        
+        /* Sélecteur de source de données */
+        .data-source-selector {
+            margin: 15px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #FFF8E1, #FCEBB6);
+            border-radius: var(--border-radius);
+            border: 2px solid var(--gold-secondary);
+        }
+        
+        .data-source-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .source-btn {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+        }
+        
+        .source-btn:hover {
+            background: linear-gradient(135deg, var(--gold-secondary), var(--gold-primary));
+            transform: translateY(-2px);
+        }
+        
+        .source-btn.active {
+            background: linear-gradient(135deg, #5D4037, #8B6914);
+            box-shadow: 0 4px 12px rgba(93, 64, 55, 0.4);
+        }
+        
+        .source-btn.combined {
+            background: linear-gradient(135deg, #8B6914, #5D4037);
+        }
+        
+        .source-btn.combined:hover {
+            background: linear-gradient(135deg, #5D4037, #8B6914);
+        }
+        
+        .source-btn.combined.active {
+            background: linear-gradient(135deg, #D2691E, #8B4513);
+            box-shadow: 0 4px 12px rgba(210, 105, 30, 0.4);
+        }
+        
+        .source-btn.english {
+            background: linear-gradient(135deg, var(--source-english), #FF8C00);
+        }
+        
+        .source-btn.english:hover {
+            background: linear-gradient(135deg, #FF8C00, var(--source-english));
+        }
+        
+        .source-btn.english.active {
+            background: linear-gradient(135deg, #FF8C00, #FF6B00);
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.4);
+        }
+        
+        .source-btn.english-photo {
+            background: linear-gradient(135deg, var(--source-english-photo), #FF4500);
+        }
+        
+        .source-btn.english-photo:hover {
+            background: linear-gradient(135deg, #FF4500, var(--source-english-photo));
+        }
+        
+        .source-btn.english-photo.active {
+            background: linear-gradient(135deg, #FF4500, #FF0000);
+            box-shadow: 0 4px 12px rgba(255, 69, 0, 0.4);
+        }
+        
+        .book-photo-preview {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid var(--gold-light);
+            margin: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .book-photo-preview:hover {
+            transform: scale(1.1);
+        }
+        
+        .message-links-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .message-link-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.8em;
+        }
+        
+        .message-link-btn:hover {
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-2px);
+        }
+        
+        /* Indicateurs de source dans les fiches */
+        .source-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+        
+        .source-indicator.photo {
+            color: var(--gold-secondary);
+        }
+        
+        .source-indicator.nophoto {
+            color: var(--source-nophoto);
+        }
+        
+        .source-indicator.english {
+            color: var(--source-english);
+        }
+        
+        .source-indicator.english-photo {
+            color: var(--source-english-photo);
+        }
+        
+        /* Nouveaux styles pour les trois boutons fichier source */
+        .source-files-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .source-file-btn {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85em;
+            text-align: left;
+        }
+        
+        .source-file-btn:hover {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+        }
+        
+        .source-file-btn.photo {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+        }
+        
+        .source-file-btn.photo:hover {
+            background: linear-gradient(135deg, var(--gold-secondary), var(--gold-primary));
+        }
+        
+        .source-file-btn.nophoto {
+            background: linear-gradient(135deg, var(--source-nophoto), #8B4513);
+        }
+        
+        .source-file-btn.nophoto:hover {
+            background: linear-gradient(135deg, #8B4513, var(--source-nophoto));
+        }
+        
+        .source-file-btn.english {
+            background: linear-gradient(135deg, var(--source-english), #FF8C00);
+        }
+        
+        .source-file-btn.english:hover {
+            background: linear-gradient(135deg, #FF8C00, var(--source-english));
+        }
+        
+        .source-file-btn.english-photo {
+            background: linear-gradient(135deg, var(--source-english-photo), #FF4500);
+        }
+        
+        .source-file-btn.english-photo:hover {
+            background: linear-gradient(135deg, #FF4500, var(--source-english-photo));
+        }
     </style>
 </head>
 <body>
@@ -2208,13 +2463,13 @@
     </div>
 
     <!-- Écran de chargement progressif -->
-    <div id="loadingProgress">
+    <div id="loadingProgress" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.95); z-index: 2000; flex-direction: column; justify-content: center; align-items: center; gap: 20px;">
         <div class="spinner"></div>
-        <p id="loadingText">Chargement des données du livre d'or...</p>
-        <div id="progressBarContainer">
-            <div id="progressBar"></div>
+        <p id="loadingText" style="font-size: 1.1em; color: var(--gold-dark); font-weight: 600;">Chargement des données du livre d'or...</p>
+        <div id="progressBarContainer" style="width: 300px; max-width: 80%; height: 20px; background: #f0f0f0; border-radius: 10px; overflow: hidden;">
+            <div id="progressBar" style="width: 10%; height: 100%; background: linear-gradient(90deg, var(--gold-primary), var(--gold-secondary)); transition: width 0.3s;"></div>
         </div>
-        <button class="retry-button" onclick="retryLoadData()">Réessayer le chargement</button>
+        <button class="retry-button" onclick="retryLoadData()" style="display: none; background: linear-gradient(135deg, var(--secondary-color), var(--gold-dark)); color: white; border: none; padding: 10px 20px; border-radius: var(--border-radius); cursor: pointer; font-weight: 600; margin-top: 20px;">Réessayer le chargement</button>
     </div>
 
     <!-- Boutons de navigation fixes pour desktop -->
@@ -2309,8 +2564,61 @@
                     📋 Afficher tous les messages
                 </button>
                 
+                <!-- Statistiques - PLACÉ EN PREMIER -->
+                <div class="stats-section" style="order: 1.5;">
+                    <h3 style="margin-bottom: 12px; color: var(--gold-dark); text-align: center; font-size: 1em; font-weight: 700;">📊 Statistiques</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card" onclick="showAllData()">
+                            <div class="stat-value" id="totalMessages">0</div>
+                            <div class="stat-label">Messages total</div>
+                        </div>
+                        <div class="stat-card" onclick="filterByType('nom')">
+                            <div class="stat-value" id="totalAuteurs">0</div>
+                            <div class="stat-label">Auteurs différents</div>
+                        </div>
+                        <div class="stat-card" onclick="filterByType('pays')">
+                            <div class="stat-value" id="totalPays">0</div>
+                            <div class="stat-label">Pays différents</div>
+                        </div>
+                        <div class="stat-card" onclick="filterByType('lieu')">
+                            <div class="stat-value" id="totalLieux">0</div>
+                            <div class="stat-label">Lieux différents</div>
+                        </div>
+                        <div class="stat-card" onclick="showTopCountryMessages()">
+                            <div class="stat-value" id="topCountryCount">0</div>
+                            <div class="stat-label">Pays avec plus de messages</div>
+                        </div>
+                        <div class="stat-card" onclick="showAnonymousMessages()">
+                            <div class="stat-value" id="anonymousCount">0</div>
+                            <div class="stat-label">Messages anonymes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sélecteur de source de données - PLACÉ EN DESSOUS DES STATISTIQUES -->
+                <div class="data-source-selector" style="order: 2;">
+                    <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
+                    <div class="data-source-buttons">
+                        <button class="source-btn" onclick="switchDataSource('sheet1')" id="btnSheet1">
+                            📸 FR avec photo
+                        </button>
+                        <button class="source-btn" onclick="switchDataSource('sheet2')" id="btnSheet2">
+                            📝 FR sans photo
+                        </button>
+                        <button class="source-btn english" onclick="switchDataSource('sheet3')" id="btnSheet3">
+                            🇬🇧 ENG sans photo
+                        </button>
+                        <button class="source-btn english-photo" onclick="switchDataSource('sheet4')" id="btnSheet4">
+                            📸🇬🇧 ENG avec photo
+                        </button>
+                        <button class="source-btn combined active" onclick="switchDataSource('combined')" id="btnCombined">
+                            🔗 Tous combinés
+                        </button>
+                    </div>
+                </div>
+                
                 <!-- Dates avec messages (pour desktop) -->
-                <div class="date-filter-group" style="order: 2;">
+                <div class="date-filter-group" style="order: 3;">
                     <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📅 Dates avec messages</h3>
                     <div class="filter-tags" id="datesTags" style="max-height: 200px;"></div>
                 </div>
@@ -2340,37 +2648,6 @@
                 </div>
             </div>
             
-            <!-- Statistiques -->
-            <div class="stats-section" style="order: 3;">
-                <h3 style="margin-bottom: 12px; color: var(--gold-dark); text-align: center; font-size: 1em; font-weight: 700;">📊 Statistiques</h3>
-                <div class="stats-grid">
-                    <div class="stat-card" onclick="showAllData()">
-                        <div class="stat-value" id="totalMessages">0</div>
-                        <div class="stat-label">Messages total</div>
-                    </div>
-                    <div class="stat-card" onclick="filterByType('nom')">
-                        <div class="stat-value" id="totalAuteurs">0</div>
-                        <div class="stat-label">Auteurs différents</div>
-                    </div>
-                    <div class="stat-card" onclick="filterByType('pays')">
-                        <div class="stat-value" id="totalPays">0</div>
-                        <div class="stat-label">Pays différents</div>
-                    </div>
-                    <div class="stat-card" onclick="filterByType('lieu')">
-                        <div class="stat-value" id="totalLieux">0</div>
-                        <div class="stat-label">Lieux différents</div>
-                    </div>
-                    <div class="stat-card" onclick="showTopCountryMessages()">
-                        <div class="stat-value" id="topCountryCount">0</div>
-                        <div class="stat-label">Pays avec plus de messages</div>
-                    </div>
-                    <div class="stat-card" onclick="showAnonymousMessages()">
-                        <div class="stat-value" id="anonymousCount">0</div>
-                        <div class="stat-label">Messages anonymes</div>
-                    </div>
-                </div>
-            </div>
-            
             <!-- Boutons d'action pour desktop -->
             <div class="action-buttons-sidebar" style="order: 4;">
                 <button class="action-button" onclick="showDataTable()">
@@ -2380,6 +2657,22 @@
                 <button class="action-button book" onclick="generateBookPDF()">
                     📖 Générer le livre PDF
                 </button>
+                
+                <!-- Boutons pour ouvrir les fichiers sources -->
+                <div class="source-files-buttons">
+                    <button class="source-file-btn photo" onclick="openSourceFile('photo')">
+                        📋 Ouvrir fichier FR avec photo
+                    </button>
+                    <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')">
+                        📋 Ouvrir fichier FR sans photo
+                    </button>
+                    <button class="source-file-btn english" onclick="openSourceFile('english')">
+                        📋 Ouvrir fichier ENG sans photo
+                    </button>
+                    <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')">
+                        📋 Ouvrir fichier ENG avec photo
+                    </button>
+                </div>
             </div>
             
             <!-- Boutons d'export pour desktop (en dessous du calendrier) -->
@@ -2413,6 +2706,20 @@
                     <button class="export-btn locked book" onclick="showUnlockBubble()">
                         🔒 Générer livre
                     </button>
+                    <div class="source-files-buttons" style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+                        <button class="source-file-btn photo" onclick="openSourceFile('photo')" style="width: 100%; font-size: 0.85em; padding: 10px;">
+                            📋 Fichier FR avec photo
+                        </button>
+                        <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')" style="width: 100%; font-size: 0.85em; padding: 10px;">
+                            📋 Fichier FR sans photo
+                        </button>
+                        <button class="source-file-btn english" onclick="openSourceFile('english')" style="width: 100%; font-size: 0.85em; padding: 10px;">
+                            📋 Fichier ENG sans photo
+                        </button>
+                        <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')" style="width: 100%; font-size: 0.85em; padding: 10px;">
+                            📋 Fichier ENG avec photo
+                        </button>
+                    </div>
                 </div>
             </section>
             
@@ -2428,7 +2735,7 @@
                 </div>
                 <div class="calendar-grid" id="calendarGrid"></div>
                 
-                <!-- Bulle d'options du calendrier -->
+                <!-- Bulle d'options du calendrier améliorée -->
                 <div class="calendar-popup" id="calendarPopup">
                     <div class="calendar-popup-header">
                         <div>
@@ -2438,25 +2745,14 @@
                         </div>
                         <button class="close-popup" onclick="closeCalendarPopup()">✕</button>
                     </div>
-                    <div class="calendar-popup-options">
-                        <div class="popup-option" onclick="viewDayMessages()">
-                            📖 Voir les fiches de message du jour
-                        </div>
-                        <div class="popup-option" onclick="exportDayToPDF()">
-                            📄 Exporter en PDF les fiches du jour
-                        </div>
-                        <div class="popup-option new-message" onclick="openNewMessageForm()">
-                            📝 Écrire un nouveau message
-                        </div>
-                        <div class="popup-option edit-message" onclick="editDayMessages()">
-                            ✏️ Modifier les fiches de message
-                        </div>
+                    <div class="calendar-popup-options" id="calendarPopupOptions">
+                        <!-- Options seront ajoutées dynamiquement ici -->
                     </div>
                 </div>
             </div>
             
             <!-- Indicateur de chargement -->
-            <div class="loading" id="loadingIndicator">
+            <div class="loading" id="loadingIndicator" style="display: none;">
                 <div class="spinner"></div>
                 <p>Chargement des messages depuis le livre d'or...</p>
             </div>
@@ -2508,7 +2804,7 @@
                     <p>Ils nous rappellent que, malgré les distances géographiques et les différences culturelles, nous formons une seule famille en Christ, unie par la même foi et le même amour. Ces messages traversent les frontières et les barrières linguistiques pour nous toucher au plus profond de notre être.</p>
                     <p>Que ces pages soient un témoignage durable de l'impact de notre tournée et une source d'encouragement pour les années à venir. Notre prière est que ces messages continuent à porter du fruit bien au-delà de cette tournée, inspirant d'autres à chercher leur source en Jésus et à partager leur foi avec créativité et passion.</p>
                     <p><em>"Que la parole de Christ habite parmi vous abondamment ; instruisez-vous et exhortez-vous les uns les autres en toute sagesse, par des psaumes, par des hymnes, par des cantiques spirituels, chantant à Dieu dans vos cœurs sous l'inspiration de la Grâce."</em> (Colossiens 3:16)</p>
-                    <p>Nous remercions chaleureusement toutes les personnes qui ont pris le temps d'écrire dans ce livre d'or. Vos mots sont pour nous un trésor précieux qui nous accompagnera dans notre mission future. Que Dieu bénisse abondamment chacun d'entre vous et vous guide dans vos propres chemins de foi.</p>
+                    <p>Nous remercions chaleureusement toutes les personnes qui ont pris le temps d'écrire dans ce livre d'or. Vos mots sont pour nous un trésor précieux qui nous accompagnera dans notre mission future. Que Dieu bénisse abondamment chacun d'entre vous et vous guide dans vos propres chemins de fait.</p>
                 </div>
                 <div class="book-classification" id="bookContent"></div>
                 <div style="text-align: center; margin-top: 15px;">
@@ -2521,17 +2817,36 @@
     </div>
 
     <script>
-        // URL de votre Google Sheet
-        const GOOGLE_SHEETS_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSuMh7pUxO2PZav2SaK17r3NiBgft2H5IpCkFy9fntGOoglO_blQzzy6enWlFI_H4jsQMCcfLQYGmrl/pub?gid=1858980590&single=true&output=csv';
+        // URLs des quatre Google Sheets (ajout de la quatrième source)
+        const GOOGLE_SHEETS_URL_1 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSuMh7pUxO2PZav2SaK17r3NiBgft2H5IpCkFy9fntGOoglO_blQzzy6enWlFI_H4jsQMCcfLQYGmrl/pub?gid=1858980590&single=true&output=csv';
+        const GOOGLE_SHEETS_URL_2 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQzoYxM09DrqI8HpvC_7P_bwP4Q5N-08tJs7ZrSGE-gX5owSIFz4BGY55v_QSavkrkkDVcSvxNQO4Lp/pub?gid=408727059&single=true&output=csv';
+        const GOOGLE_SHEETS_URL_3 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS1xIpdLPEYZEJ9QQ6Jem8cZ7660M5beAvDa8YfsJuAR5QC6420lZIu0ebeoWahQTMWF1QGKKAkjyo6/pub?gid=762582484&single=true&output=csv';
+        const GOOGLE_SHEETS_URL_4 = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR76ulwLeChTikAx8FWY_hGnntpeyc-W3UGvMh6HBdnxLcWgmWnlgdUlDhiSPGtBVodSKlBoOaDcpry/pub?gid=1841276062&single=true&output=csv';
         
-        // Liens fournis
-        const SOURCE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1Z_y36XbuuOY88gUi3_YMg90fJQ_--dpJKxQPLnX5oV4/edit?resourcekey=&gid=1858980590#gid=1858980590';
-        const GOOGLE_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfrJKU6QpRFo8ni9RVDBPUo8H-Wi-rJzxDXHQNWxoeC2LxL0A/viewform?usp=header';
-        const PHOTOS_FOLDER_URL = 'https://drive.google.com/drive/folders/1boVFMMSUPdsmUaMUZ7bnKW3gbbAUS8Ns3NqjPJ5eeomQO7oiagh5EE1qtZMdF4DRUsRL9xCd?usp=sharing';
+        // Liens pour ouvrir les fichiers sources
+        const SOURCE_SHEET_URL_1 = 'https://docs.google.com/spreadsheets/d/1Z_y36XbuuOY88gUi3_YMg90fJQ_--dpJKxQPLnX5oV4/edit?resourcekey=&gid=1858980590#gid=1858980590';
+        const SOURCE_SHEET_URL_2 = 'https://docs.google.com/spreadsheets/d/1-YrwQCtgLSo8MzX26PMsx5-0ZKzRTPrUrR6PbkbvOr4/edit?resourcekey=&gid=408727059#gid=408727059';
+        const SOURCE_SHEET_URL_3 = 'https://docs.google.com/spreadsheets/d/1mpo1wPpMUnvSfN2f25BLL988qNX482nI5d3ExVAEsp8/edit?resourcekey=&gid=495568030#gid=495568030';
+        const SOURCE_SHEET_URL_4 = 'https://docs.google.com/spreadsheets/d/1e4lqntLV3LFHJp8Y8vveA_E4BdFMXKQwfbJoEvjQCbQ/edit?resourcekey=&gid=1581487665#gid=1581487665';
+        
+        // Liens pour écrire de nouveaux messages (mise à jour des liens anglais)
+        const GOOGLE_FORM_URL_WITH_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfrJKU6QpRFo8ni9RVDBPUo8H-Wi-rJzxDXHQNWxoeC2LxL0A/viewform?usp=header';
+        const GOOGLE_FORM_URL_WITHOUT_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSf6yaozp179sFPngu4Fz1aVPwp9tEnz-YwrV9lzQLkGUIX7MQ/viewform?usp=header';
+        const GOOGLE_FORM_URL_ENGLISH = 'https://docs.google.com/forms/d/e/1FAIpQLSfe_SQ6xObVzDfX4r68kCo3RiwXpKpeH3lwa_6DoGgJUSprAw/viewform?usp=header';
+        const GOOGLE_FORM_URL_ENGLISH_WITH_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfe_SQ6xObVzDfX4r68kCo3RiwXpKpeH3lwa_6DoGgJUSprAw/viewform?usp=header';
         
         // Variables globales
         let sheetData = [];
+        let sheetData1 = [];
+        let sheetData2 = [];
+        let sheetData3 = [];
+        let sheetData4 = [];
+        let combinedData = [];
         let headers = [];
+        let headers1 = [];
+        let headers2 = [];
+        let headers3 = [];
+        let headers4 = [];
         let datesWithData = [];
         let currentDate = new Date();
         let selectedDate = null;
@@ -2548,10 +2863,12 @@
         let isAdminUnlocked = false;
         let currentRetryCount = 0;
         const MAX_RETRIES = 3;
+        let currentDataSource = 'combined'; // Par défaut: Tous combinés
         
         // Map des liens de message
         let messageLinksMap = {};
         let photoUrlsMap = {};
+        let messageSourceMap = {}; // Pour stocker la source de chaque message
 
         // Liste de titres attractifs
         const creativeTitles = [
@@ -2586,8 +2903,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 Démarrage du Livre d\'Or...');
             
-            // Afficher l'écran de chargement
-            showLoadingProgress();
+            // Cacher les indicateurs de chargement
+            document.getElementById('loadingProgress').style.display = 'none';
+            document.getElementById('loadingIndicator').style.display = 'none';
             
             // Commencer le chargement des données
             loadDataFromGoogleSheets();
@@ -2714,6 +3032,45 @@
             document.getElementById('searchInput').focus();
         }
         
+        // Ouvrir le fichier source selon le type
+        function openSourceFile(type) {
+            let url;
+            switch(type) {
+                case 'photo':
+                    url = SOURCE_SHEET_URL_1;
+                    break;
+                case 'nophoto':
+                    url = SOURCE_SHEET_URL_2;
+                    break;
+                case 'english':
+                    url = SOURCE_SHEET_URL_3;
+                    break;
+                case 'english-photo':
+                    url = SOURCE_SHEET_URL_4;
+                    break;
+                default:
+                    // Si aucun type spécifié, ouvrir selon la source actuelle
+                    switch(currentDataSource) {
+                        case 'sheet1':
+                            url = SOURCE_SHEET_URL_1;
+                            break;
+                        case 'sheet2':
+                            url = SOURCE_SHEET_URL_2;
+                            break;
+                        case 'sheet3':
+                            url = SOURCE_SHEET_URL_3;
+                            break;
+                        case 'sheet4':
+                            url = SOURCE_SHEET_URL_4;
+                            break;
+                        case 'combined':
+                        default:
+                            url = SOURCE_SHEET_URL_1;
+                    }
+            }
+            window.open(url, '_blank');
+        }
+        
         // Fonctions pour les photos
         function openPhotoModal(photoUrl) {
             document.getElementById('modalPhoto').src = photoUrl;
@@ -2725,27 +3082,139 @@
             document.getElementById('modalPhoto').src = '';
         }
         
-// Fonction pour créer une miniature depuis Google Drive
-function generatePhotoThumbnail(url) {
-    if (!url) return '';
-    
-    if (url.includes('drive.google.com')) {
-        // Convertir l'URL Google Drive en URL de preview
-        if (url.includes('/file/d/')) {
-            const fileId = url.split('/file/d/')[1].split('/')[0];
-            return `https://drive.google.com/thumbnail?sz=w400&id=${fileId}`;
-        } else if (url.includes('id=')) {
-            const fileId = url.split('id=')[1].split('&')[0];
-            return `https://drive.google.com/thumbnail?sz=w400&id=${fileId}`;
+        // Fonction pour créer une miniature depuis Google Drive
+        function generatePhotoThumbnail(url) {
+            if (!url) return '';
+            
+            if (url.includes('drive.google.com')) {
+                // Convertir l'URL Google Drive en URL de preview
+                if (url.includes('/file/d/')) {
+                    const fileId = url.split('/file/d/')[1].split('/')[0];
+                    return `https://drive.google.com/thumbnail?sz=w400&id=${fileId}`;
+                } else if (url.includes('id=')) {
+                    const fileId = url.split('id=')[1].split('&')[0];
+                    return `https://drive.google.com/thumbnail?sz=w400&id=${fileId}`;
+                }
+            }
+            
+            // Pour les autres URLs, retourner l'URL originale
+            return url;
         }
-    }
-    
-    // Pour les autres URLs, retourner l'URL originale
-    return url;
-}
-        // Fonctions pour les nouvelles options du calendrier
-        function openNewMessageForm() {
-            window.open(GOOGLE_FORM_URL, '_blank');
+        
+        // Fonctions pour les nouvelles options du calendrier améliorées
+        function showCalendarPopup(date) {
+            const popup = document.getElementById('calendarPopup');
+            const popupOptions = document.getElementById('calendarPopupOptions');
+            const dateKey = date.toISOString().split('T')[0];
+            const messages = dateMessagesMap[dateKey] || [];
+            
+            const lieuIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
+            );
+            const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
+            
+            let lieu = '';
+            let pays = '';
+            if (messages.length > 0) {
+                lieu = messages[0].row[lieuIndex] || '';
+                pays = messages[0].row[paysIndex] || '';
+            }
+            
+            document.getElementById('popupTitle').textContent = lieu || 'Non spécifié';
+            document.getElementById('popupDate').textContent = 
+                `${date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
+                 ${pays ? `- ${pays}` : ''}`;
+            document.getElementById('popupCount').textContent = `${messages.length} message${messages.length > 1 ? 's' : ''}`;
+            
+            // Nettoyer les options précédentes
+            popupOptions.innerHTML = '';
+            
+            // Ajouter les options appropriées
+            if (messages.length === 0) {
+                // Si pas de messages, proposer d'en écrire
+                popupOptions.innerHTML = `
+                    <div class="popup-option view" onclick="viewDayMessages()">
+                        📖 Voir le calendrier
+                    </div>
+                    <div class="popup-option with-photo" onclick="openNewMessageForm('with-photo')">
+                        📸 Écrire un message avec photo
+                    </div>
+                    <div class="popup-option without-photo" onclick="openNewMessageForm('without-photo')">
+                        📝 Écrire un message sans photo
+                    </div>
+                    <div class="popup-option english" onclick="openNewMessageForm('english')">
+                        🇬🇧 Écrire un message en anglais sans photo
+                    </div>
+                    <div class="popup-option english-photo" onclick="openNewMessageForm('english-photo')">
+                        📸🇬🇧 Écrire un message en anglais avec photo
+                    </div>
+                `;
+            } else {
+                // Si des messages existent, améliorer l'interface
+                popupOptions.innerHTML = `
+                    <div class="popup-option view" onclick="viewDayMessages()">
+                        📖 Voir les ${messages.length} fiche(s) de message(s) du jour
+                    </div>
+                `;
+                
+                // Ajouter l'option de modification seulement si admin déverrouillé
+                if (isAdminUnlocked) {
+                    popupOptions.innerHTML += `
+                        <div class="popup-option edit" onclick="editDayMessages()">
+                            ✏️ Modifier les fiches de message
+                        </div>
+                    `;
+                }
+                
+                // Ajouter les options pour écrire de nouveaux messages
+                popupOptions.innerHTML += `
+                    <div class="popup-option with-photo" onclick="openNewMessageForm('with-photo')">
+                        📸 Écrire un nouveau message avec photo
+                    </div>
+                    <div class="popup-option without-photo" onclick="openNewMessageForm('without-photo')">
+                        📝 Écrire un nouveau message sans photo
+                    </div>
+                    <div class="popup-option english" onclick="openNewMessageForm('english')">
+                        🇬🇧 Écrire un nouveau message en anglais sans photo
+                    </div>
+                    <div class="popup-option english-photo" onclick="openNewMessageForm('english-photo')">
+                        📸🇬🇧 Écrire un nouveau message en anglais avec photo
+                    </div>
+                `;
+                
+                // Option pour exporter en PDF si admin déverrouillé
+                if (isAdminUnlocked) {
+                    popupOptions.innerHTML += `
+                        <div class="popup-option" onclick="exportDayToPDF()" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); border-left: 4px solid #9b59b6;">
+                            📄 Exporter en PDF les fiches du jour
+                        </div>
+                    `;
+                }
+            }
+            
+            popup.style.display = 'block';
+            popupDate = date;
+        }
+
+        function openNewMessageForm(type) {
+            let url;
+            switch(type) {
+                case 'with-photo':
+                    url = GOOGLE_FORM_URL_WITH_PHOTO;
+                    break;
+                case 'without-photo':
+                    url = GOOGLE_FORM_URL_WITHOUT_PHOTO;
+                    break;
+                case 'english':
+                    url = GOOGLE_FORM_URL_ENGLISH;
+                    break;
+                case 'english-photo':
+                    url = GOOGLE_FORM_URL_ENGLISH_WITH_PHOTO;
+                    break;
+                default:
+                    url = GOOGLE_FORM_URL_WITH_PHOTO;
+            }
+            window.open(url, '_blank');
             closeCalendarPopup();
         }
         
@@ -2754,15 +3223,17 @@ function generatePhotoThumbnail(url) {
                 const dateKey = popupDate.toISOString().split('T')[0];
                 const messages = dateMessagesMap[dateKey] || [];
                 
-                if (messages.length > 0) {
-                    // Trouver le premier lien de message pour cette date
+                if (messages.length === 0) {
+                    alert('Aucun message trouvé pour cette date.');
+                } else if (messages.length === 1) {
+                    // Si un seul message, ouvrir directement le lien
                     const messageLinkIndex = headers.findIndex(h => 
                         h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
                     );
                     
                     if (messageLinkIndex !== -1) {
                         const firstMessage = messages[0];
-                        const messageLink = firstMessage[messageLinkIndex];
+                        const messageLink = firstMessage.row[messageLinkIndex];
                         
                         if (messageLink && messageLink.trim() !== '') {
                             window.open(messageLink, '_blank');
@@ -2773,10 +3244,127 @@ function generatePhotoThumbnail(url) {
                         alert('Colonne "lien du message" non trouvée dans les données.');
                     }
                 } else {
-                    alert('Aucun message trouvé pour cette date.');
+                    // Si plusieurs messages, afficher une liste améliorée pour choisir
+                    let messageListHtml = `
+                        <div style="max-width: 400px; max-height: 400px; overflow-y: auto;">
+                            <h3 style="color: var(--gold-dark); margin-bottom: 15px; font-size: 1.1em;">Sélectionnez le message à modifier:</h3>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                    `;
+                    
+                    messages.forEach((msg, index) => {
+                        const nomIndex = headers.findIndex(h => 
+                            h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
+                        );
+                        const nom = msg.row[nomIndex] || 'Anonyme';
+                        const source = msg.source || 'unknown';
+                        const sourceIcon = getSourceIcon(source);
+                        const sourceLabel = getSourceIndicator(source);
+                        
+                        messageListHtml += `
+                            <div style="padding: 12px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid ${getSourceColor(source)}; cursor: pointer; transition: all 0.3s;"
+                                 onclick="openMessageLink(${index})"
+                                 onmouseover="this.style.background='#e9ecef'"
+                                 onmouseout="this.style.background='#f8f9fa'">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <strong>${nom}</strong>
+                                        <div style="font-size: 0.85em; color: #666; margin-top: 5px;">
+                                            ${sourceIcon} ${sourceLabel}
+                                        </div>
+                                    </div>
+                                    <div style="color: #3498db; font-weight: bold;">→</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    messageListHtml += `
+                            </div>
+                            <div style="margin-top: 20px; text-align: center; color: #666; font-size: 0.9em;">
+                                Cliquez sur un message pour accéder au formulaire de modification
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Créer une bulle de sélection améliorée
+                    const selectionBubble = document.createElement('div');
+                    selectionBubble.style.cssText = `
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background: white;
+                        padding: 25px;
+                        border-radius: 15px;
+                        box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+                        z-index: 2002;
+                        min-width: 350px;
+                        max-width: 450px;
+                        border: 3px solid var(--secondary-color);
+                        animation: bubbleAppear 0.3s ease-out;
+                    `;
+                    
+                    selectionBubble.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--gold-light);">
+                            <div style="font-weight: bold; color: var(--gold-dark); font-size: 1.2em; display: flex; align-items: center; gap: 10px;">
+                                <span>✏️</span>
+                                <span>Modifier un message</span>
+                            </div>
+                            <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; font-size: 1.5em; cursor: pointer; color: #666; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s; background: #f0f0f0;"
+                                    onmouseover="this.style.background='#e74c3c'; this.style.color='white'"
+                                    onmouseout="this.style.background='#f0f0f0'; this.style.color='#666'">
+                                ✕
+                            </button>
+                        </div>
+                        ${messageListHtml}
+                    `;
+                    
+                    // Fonction pour ouvrir le lien du message
+                    window.openMessageLink = function(index) {
+                        const selectedMessage = messages[index];
+                        const messageLinkIndex = headers.findIndex(h => 
+                            h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
+                        );
+                        
+                        if (messageLinkIndex !== -1) {
+                            const messageLink = selectedMessage.row[messageLinkIndex];
+                            if (messageLink && messageLink.trim() !== '') {
+                                window.open(messageLink, '_blank');
+                                selectionBubble.remove();
+                                closeCalendarPopup();
+                            } else {
+                                alert('Aucun lien de message trouvé pour ce message.');
+                            }
+                        }
+                    };
+                    
+                    document.body.appendChild(selectionBubble);
+                    
+                    // Fermer la bulle en cliquant à l'extérieur
+                    setTimeout(() => {
+                        selectionBubble.addEventListener('click', function(e) {
+                            if (e.target === this) {
+                                this.remove();
+                            }
+                        });
+                    }, 100);
                 }
             }
-            closeCalendarPopup();
+        }
+
+        // Fonction pour obtenir la couleur selon la source
+        function getSourceColor(source) {
+            switch(source) {
+                case 'photo': return '#D4AF37';
+                case 'nophoto': return '#8B6914';
+                case 'english': return '#FFA500';
+                case 'english-photo': return '#FF6347';
+                default: return '#666';
+            }
+        }
+
+        function closeCalendarPopup() {
+            document.getElementById('calendarPopup').style.display = 'none';
         }
 
         // Fonction fetch avec timeout
@@ -2799,7 +3387,8 @@ function generatePhotoThumbnail(url) {
         // Chargement des données avec retries
         async function loadDataFromGoogleSheets() {
             try {
-                updateProgress(20, 'Connexion au serveur de données...');
+                showLoadingProgress();
+                updateProgress(20, 'Connexion aux serveurs de données...');
                 
                 // Liste de proxies CORS alternatifs
                 const proxyConfigs = [
@@ -2810,58 +3399,59 @@ function generatePhotoThumbnail(url) {
                 
                 let lastError;
                 
-                for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
-                    try {
-                        updateProgress(30 + (attempt * 10), `Tentative de connexion ${attempt + 1}/${MAX_RETRIES}...`);
-                        
-                        // Choisir un proxy différent à chaque tentative
-                        const proxyConfig = proxyConfigs[attempt % proxyConfigs.length];
-                        const proxyUrl = proxyConfig.url;
-                        
-                        console.log(`Tentative ${attempt + 1} avec ${proxyConfig.name}`);
-                        
-                        const response = await fetchWithTimeout(
-                            proxyUrl + encodeURIComponent(GOOGLE_SHEETS_URL),
-                            15000
-                        );
-                        
-                        if (!response.ok) {
-                            throw new Error(`Erreur HTTP: ${response.status}`);
-                        }
-                        
-                        updateProgress(70, 'Téléchargement des données...');
-                        const csvText = await response.text();
-                        
-                        if (!csvText || csvText.trim().length === 0) {
-                            throw new Error('Réponse vide du serveur');
-                        }
-                        
-                        updateProgress(80, 'Traitement des données...');
-                        processCSVData(csvText);
-                        
-                        // Succès
-                        updateProgress(100, 'Chargement terminé !');
-                        setTimeout(() => {
-                            document.getElementById('loadingProgress').style.display = 'none';
-                        }, 500);
-                        
-                        return;
-                        
-                    } catch (error) {
-                        console.warn(`Tentative ${attempt + 1} échouée:`, error);
-                        lastError = error;
-                        
-                        if (attempt < MAX_RETRIES - 1) {
-                            // Attente exponentielle avant de réessayer
-                            const delay = Math.pow(2, attempt) * 1000;
-                            updateProgress(50, `Nouvelle tentative dans ${delay/1000} secondes...`);
-                            await new Promise(resolve => setTimeout(resolve, delay));
-                        }
-                    }
-                }
+                // Charger les quatre feuilles en parallèle
+                updateProgress(25, 'Chargement du livre d\'or FR avec photo...');
+                const data1 = await loadSingleSheet(GOOGLE_SHEETS_URL_1, 'sheet1');
                 
-                // Toutes les tentatives ont échoué
-                throw lastError;
+                updateProgress(35, 'Chargement du livre d\'or FR sans photo...');
+                const data2 = await loadSingleSheet(GOOGLE_SHEETS_URL_2, 'sheet2');
+                
+                updateProgress(45, 'Chargement du livre d\'or ENG sans photo...');
+                const data3 = await loadSingleSheet(GOOGLE_SHEETS_URL_3, 'sheet3');
+                
+                updateProgress(55, 'Chargement du livre d\'or ENG avec photo...');
+                const data4 = await loadSingleSheet(GOOGLE_SHEETS_URL_4, 'sheet4');
+                
+                updateProgress(70, 'Combinaison des données...');
+                
+                // Stocker les données séparément
+                sheetData1 = data1.data;
+                headers1 = data1.headers;
+                sheetData2 = data2.data;
+                headers2 = data2.headers;
+                sheetData3 = data3.data;
+                headers3 = data3.headers;
+                sheetData4 = data4.data;
+                headers4 = data4.headers;
+                
+                // Initialiser la map des sources
+                sheetData1.forEach((row, index) => {
+                    messageSourceMap[`sheet1-${index}`] = 'photo';
+                });
+                
+                sheetData2.forEach((row, index) => {
+                    messageSourceMap[`sheet2-${index}`] = 'nophoto';
+                });
+                
+                sheetData3.forEach((row, index) => {
+                    messageSourceMap[`sheet3-${index}`] = 'english';
+                });
+                
+                sheetData4.forEach((row, index) => {
+                    messageSourceMap[`sheet4-${index}`] = 'english-photo';
+                });
+                
+                // Combiner les données
+                combineData();
+                
+                // Initialiser avec les données combinées par défaut
+                switchDataSource('combined');
+                
+                // Succès
+                updateProgress(100, 'Chargement terminé !');
+                setTimeout(() => {
+                    document.getElementById('loadingProgress').style.display = 'none';
+                }, 500);
                 
             } catch (error) {
                 console.error('❌ Erreur de chargement:', error);
@@ -2878,6 +3468,172 @@ function generatePhotoThumbnail(url) {
                 showLoadError(errorMessage);
                 showError(errorMessage);
             }
+        }
+
+        // Charger une seule feuille
+        async function loadSingleSheet(url, sheetName) {
+            const proxyConfigs = [
+                { url: 'https://corsproxy.io/?', name: 'CorsProxy' },
+                { url: 'https://api.codetabs.com/v1/proxy?quest=', name: 'CodeTabs' },
+                { url: 'https://api.allorigins.win/raw?url=', name: 'AllOrigins' }
+            ];
+            
+            let lastError;
+            
+            for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+                try {
+                    // Choisir un proxy différent à chaque tentative
+                    const proxyConfig = proxyConfigs[attempt % proxyConfigs.length];
+                    const proxyUrl = proxyConfig.url;
+                    
+                    console.log(`Tentative ${attempt + 1} pour ${sheetName} avec ${proxyConfig.name}`);
+                    
+                    const response = await fetchWithTimeout(
+                        proxyUrl + encodeURIComponent(url),
+                        15000
+                    );
+                    
+                    if (!response.ok) {
+                        throw new Error(`Erreur HTTP: ${response.status}`);
+                    }
+                    
+                    const csvText = await response.text();
+                    
+                    if (!csvText || csvText.trim().length === 0) {
+                        throw new Error('Réponse vide du serveur');
+                    }
+                    
+                    const lines = parseCSVOptimized(csvText);
+                    const sheetHeaders = lines[0] || [];
+                    
+                    const sheetData = [];
+                    for (let i = 1; i < lines.length; i++) {
+                        const row = lines[i] || [];
+                        if (row.some(cell => cell && cell.trim() !== '')) {
+                            const normalizedRow = [];
+                            for (let j = 0; j < sheetHeaders.length; j++) {
+                                normalizedRow.push(row[j] || '');
+                            }
+                            sheetData.push(normalizedRow);
+                        }
+                    }
+                    
+                    console.log(`✅ ${sheetName} chargé:`, sheetData.length, 'messages');
+                    return { headers: sheetHeaders, data: sheetData };
+                    
+                } catch (error) {
+                    console.warn(`Tentative ${attempt + 1} pour ${sheetName} échouée:`, error);
+                    lastError = error;
+                    
+                    if (attempt < MAX_RETRIES - 1) {
+                        // Attente exponentielle avant de réessayer
+                        const delay = Math.pow(2, attempt) * 1000;
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                    }
+                }
+            }
+            
+            throw lastError;
+        }
+
+        // Combiner les données des quatre feuilles
+        function combineData() {
+            // Pour la combinaison, on va utiliser les headers de la première feuille comme référence
+            // et adapter les autres feuilles si nécessaire
+            combinedData = [...sheetData1];
+            
+            // Ajouter les données de la deuxième feuille
+            sheetData2.forEach((row, index) => {
+                combinedData.push(row);
+                // Stocker la source pour les données combinées
+                messageSourceMap[`combined-${sheetData1.length + index}`] = 'nophoto';
+            });
+            
+            // Ajouter les données de la troisième feuille
+            sheetData3.forEach((row, index) => {
+                combinedData.push(row);
+                // Stocker la source pour les données combinées
+                messageSourceMap[`combined-${sheetData1.length + sheetData2.length + index}`] = 'english';
+            });
+            
+            // Ajouter les données de la quatrième feuille
+            sheetData4.forEach((row, index) => {
+                combinedData.push(row);
+                // Stocker la source pour les données combinées
+                messageSourceMap[`combined-${sheetData1.length + sheetData2.length + sheetData3.length + index}`] = 'english-photo';
+            });
+            
+            console.log('✅ Données combinées:', combinedData.length, 'messages au total');
+        }
+
+        // Changer la source de données
+        function switchDataSource(source) {
+            currentDataSource = source;
+            
+            // Mettre à jour les boutons actifs
+            document.getElementById('btnSheet1').classList.toggle('active', source === 'sheet1');
+            document.getElementById('btnSheet2').classList.toggle('active', source === 'sheet2');
+            document.getElementById('btnSheet3').classList.toggle('active', source === 'sheet3');
+            document.getElementById('btnSheet4').classList.toggle('active', source === 'sheet4');
+            document.getElementById('btnCombined').classList.toggle('active', source === 'combined');
+            
+            // Mettre à jour les données affichées
+            switch(source) {
+                case 'sheet1':
+                    sheetData = sheetData1;
+                    headers = headers1;
+                    break;
+                case 'sheet2':
+                    sheetData = sheetData2;
+                    headers = headers2;
+                    break;
+                case 'sheet3':
+                    sheetData = sheetData3;
+                    headers = headers3;
+                    break;
+                case 'sheet4':
+                    sheetData = sheetData4;
+                    headers = headers4;
+                    break;
+                case 'combined':
+                    sheetData = combinedData;
+                    headers = headers1; // On utilise les headers de la première feuille comme référence
+                    break;
+            }
+            
+            console.log(`🔁 Source changée: ${source} (${sheetData.length} messages)`);
+            
+            // Recalculer et réafficher tout
+            processCurrentData();
+            
+            // Mettre à jour le titre si des résultats sont affichés
+            if (document.getElementById('resultsSection').style.display !== 'none') {
+                const currentTitle = document.getElementById('resultTitle').textContent;
+                if (currentTitle.includes('Tous les messages')) {
+                    showAllData();
+                } else if (currentTitle.includes('Résultats pour')) {
+                    const searchValue = document.getElementById('searchInput').value;
+                    if (searchValue) {
+                        handleSearch();
+                    }
+                }
+            }
+        }
+
+        // Traiter les données courantes
+        function processCurrentData() {
+            extractDatesWithData();
+            extractAllLieux();
+            extractAllNoms();
+            extractAllPays();
+            calculateCountryStats();
+            updateStats();
+            renderFilterTags();
+            renderCalendar();
+            renderDatesTags();
+            extractMessageLinks();
+            extractPhotoUrls();
+            showDataInfo();
         }
 
         // Parsing CSV optimisé
@@ -2928,85 +3684,43 @@ function generatePhotoThumbnail(url) {
             return lines;
         }
 
-        function processCSVData(csvText) {
-            try {
-                updateProgress(85, 'Analyse des données...');
-                const lines = parseCSVOptimized(csvText);
-                headers = lines[0] || [];
-                
-                sheetData = [];
-                for (let i = 1; i < lines.length; i++) {
-                    const row = lines[i] || [];
-                    if (row.some(cell => cell && cell.trim() !== '')) {
-                        const normalizedRow = [];
-                        for (let j = 0; j < headers.length; j++) {
-                            normalizedRow.push(row[j] || '');
-                        }
-                        sheetData.push(normalizedRow);
-                    }
-                    
-                    // Mise à jour de la progression
-                    if (i % 10 === 0) {
-                        const percent = 85 + Math.floor((i / lines.length) * 10);
-                        updateProgress(percent, `Analyse des données (${i}/${lines.length})...`);
-                    }
-                }
-                
-                console.log('✅ Données chargées:', sheetData.length, 'messages');
-                
-                updateProgress(95, 'Préparation de l\'affichage...');
-                
-                // Traitement des données
-                extractDatesWithData();
-                extractAllLieux();
-                extractAllNoms();
-                extractAllPays();
-                calculateCountryStats();
-                updateStats();
-                renderFilterTags();
-                renderCalendar();
-                renderDatesTags();
-                
-                // Extraire les liens de message et les photos
-                extractMessageLinks();
-                extractPhotoUrls();
-                
-                showDataInfo();
-                
-            } catch (error) {
-                console.error('❌ Erreur de traitement:', error);
-                showError('Erreur lors du traitement des données: ' + error.message);
-                throw error;
-            } finally {
-                document.getElementById('loadingIndicator').style.display = 'none';
-            }
-        }
-
         function extractDatesWithData() {
             datesWithData = [];
             dateMessagesMap = {};
-            const dateColumnIndex = 1;
+            const dateColumnIndex = 1; // Colonne B (index 1)
             
             sheetData.forEach((row, index) => {
                 const dateStr = row[dateColumnIndex] || '';
                 if (dateStr && dateStr.trim() !== '') {
                     const date = parseDate(dateStr);
                     if (date) {
+                        // MODIFICATION: Utiliser la date exacte des fiches (sans ajustement)
                         const dateKey = date.toISOString().split('T')[0];
                         if (!dateMessagesMap[dateKey]) {
                             dateMessagesMap[dateKey] = [];
                         }
-                        dateMessagesMap[dateKey].push(row);
+                        
+                        // Stocker l'index original pour retrouver la source
+                        const sourceKey = `${currentDataSource}-${index}`;
+                        const source = messageSourceMap[sourceKey] || 'unknown';
+                        
+                        dateMessagesMap[dateKey].push({
+                            row: row,
+                            index: index,
+                            source: source
+                        });
                         
                         datesWithData.push({
                             date: date,
                             dateStr: dateStr,
-                            rowIndex: index
+                            rowIndex: index,
+                            source: source
                         });
                     }
                 }
             });
             
+            // Trier par date
             datesWithData.sort((a, b) => a.date - b.date);
         }
 
@@ -3172,6 +3886,7 @@ function generatePhotoThumbnail(url) {
             const container = document.getElementById('datesTags');
             container.innerHTML = '';
             
+            // MODIFICATION: Utiliser les dates exactes des fiches (sans ajustement)
             const uniqueDates = [...new Set(datesWithData.map(d => 
                 d.date.toISOString().split('T')[0]
             ))].sort().reverse();
@@ -3235,12 +3950,28 @@ function generatePhotoThumbnail(url) {
                 
                 const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
                 const dateKey = date.toISOString().split('T')[0];
-                const hasData = dateMessagesMap[dateKey] && dateMessagesMap[dateKey].length > 0;
+                const messages = dateMessagesMap[dateKey] || [];
                 
-                if (hasData) {
+                if (messages.length > 0) {
                     day.classList.add('has-data');
-                    day.title = `${dateMessagesMap[dateKey].length} message${dateMessagesMap[dateKey].length > 1 ? 's' : ''}`;
                     
+                    // Déterminer la source principale pour ce jour
+                    let sourceType = 'mixed';
+                    const sources = new Set(messages.map(m => m.source));
+                    
+                    if (sources.size === 1) {
+                        sourceType = Array.from(sources)[0];
+                    }
+                    
+                    day.classList.add(sourceType);
+                    day.title = `${messages.length} message${messages.length > 1 ? 's' : ''}`;
+                    
+                    day.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showCalendarPopup(date);
+                    });
+                } else {
+                    // Si pas de messages, permettre quand même de cliquer pour écrire
                     day.addEventListener('click', (e) => {
                         e.stopPropagation();
                         showCalendarPopup(date);
@@ -3249,37 +3980,6 @@ function generatePhotoThumbnail(url) {
                 
                 grid.appendChild(day);
             }
-        }
-
-        function showCalendarPopup(date) {
-            const popup = document.getElementById('calendarPopup');
-            const dateKey = date.toISOString().split('T')[0];
-            const messages = dateMessagesMap[dateKey] || [];
-            
-            const lieuIndex = headers.findIndex(h => 
-                h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
-            );
-            const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
-            
-            let lieu = '';
-            let pays = '';
-            if (messages.length > 0) {
-                lieu = messages[0][lieuIndex] || '';
-                pays = messages[0][paysIndex] || '';
-            }
-            
-            document.getElementById('popupTitle').textContent = lieu || 'Non spécifié';
-            document.getElementById('popupDate').textContent = 
-                `${date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
-                 ${pays ? `- ${pays}` : ''}`;
-            document.getElementById('popupCount').textContent = `${messages.length} message${messages.length > 1 ? 's' : ''}`;
-            
-            popup.style.display = 'block';
-            popupDate = date;
-        }
-
-        function closeCalendarPopup() {
-            document.getElementById('calendarPopup').style.display = 'none';
         }
 
         function viewDayMessages() {
@@ -3295,7 +3995,9 @@ function generatePhotoThumbnail(url) {
                 const messages = dateMessagesMap[dateKey] || [];
                 if (messages.length > 0) {
                     if (isAdminUnlocked) {
-                        exportDayMessagesToPDF(messages, popupDate);
+                        // Convertir les objets message en lignes simples
+                        const rows = messages.map(m => m.row);
+                        exportDayMessagesToPDF(rows, popupDate);
                     } else {
                         showUnlockBubble();
                     }
@@ -3313,7 +4015,8 @@ function generatePhotoThumbnail(url) {
 
         function findEntriesByDate(date) {
             const dateKey = date.toISOString().split('T')[0];
-            return dateMessagesMap[dateKey] || [];
+            const messages = dateMessagesMap[dateKey] || [];
+            return messages.map(m => m.row);
         }
 
         function parseDate(dateStr) {
@@ -3327,6 +4030,7 @@ function generatePhotoThumbnail(url) {
                 const match = dateStr.match(format);
                 if (match) {
                     if (format === formats[0]) {
+                        // Format dd/mm/yyyy
                         return new Date(match[3], match[2] - 1, match[1]);
                     } else {
                         return new Date(match[1], match[2] - 1, match[3]);
@@ -3433,6 +4137,9 @@ function generatePhotoThumbnail(url) {
                 let html = `
                     <div style="margin-bottom: 15px; padding: 12px; background: #ecf0f1; border-radius: 5px; font-size: 0.95em;">
                         <strong>${results.length} message${results.length > 1 ? 's' : ''} trouvé${results.length > 1 ? 's' : ''}</strong>
+                        <div style="font-size: 0.85em; color: #666; margin-top: 5px;">
+                            Source: ${getDataSourceName(currentDataSource)}
+                        </div>
                     </div>
                 `;
                 
@@ -3464,6 +4171,7 @@ function generatePhotoThumbnail(url) {
                     const telephone = row[telephoneIndex] || '';
                     const adresse = row[adresseIndex] || '';
                     
+                    // MODIFICATION: Afficher la date exacte de la fiche (sans ajustement)
                     const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
                     const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
                     
@@ -3477,17 +4185,30 @@ function generatePhotoThumbnail(url) {
                     ];
                     const titleClass = titleClasses[index % titleClasses.length];
                     
+                    // Déterminer la source du message
+                    const sourceKey = `${currentDataSource}-${index}`;
+                    const source = messageSourceMap[sourceKey] || 'unknown';
+                    const sourceIndicator = getSourceIndicator(source);
+                    const sourceClass = source;
+                    const sourceIcon = getSourceIcon(source);
+                    
                     // Vérifier si on a des photos pour cet index
                     const hasPhotos = photoUrlsMap[index] && (photoUrlsMap[index].photo1 || photoUrlsMap[index].photo2);
                     const hasMessageLink = messageLinksMap[index];
                     
                     html += `
                         <div class="entry-item">
+                            <div class="source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
+                                ${sourceIcon}
+                            </div>
                             <div class="${titleClass} title-creative">
                                 ${creativeTitle}
                             </div>
                             <div class="entry-date-line">
-                                ${formattedDate}
+                                <span>${formattedDate}</span>
+                                <span class="date-source-indicator ${sourceClass}">
+                                    ${sourceIcon} ${sourceIndicator}
+                                </span>
                             </div>
                             
                             <div class="entry-header">
@@ -3508,54 +4229,54 @@ function generatePhotoThumbnail(url) {
                             <div class="entry-content">
                     `;
                     
-                   // Afficher les photos seulement si disponibles
-if (hasPhotos) {
-    const photos = photoUrlsMap[index];
-    let photosHtml = '<div class="photos-souvenir-container">';
-    
-    // Fonction pour créer une prévisualisation photo
-    const createPhotoPreview = (photoUrl, photoNumber) => {
-        if (!photoUrl || photoUrl.trim() === '') return '';
-        
-        const thumbnailUrl = generatePhotoThumbnail(photoUrl);
-        
-        return `
-            <div class="photo-preview-container">
-                <div class="photo-link-with-preview" onclick="openPhotoModal('${photoUrl}')">
-                    <img src="${thumbnailUrl}" 
-                         alt="Photo souvenir ${photoNumber}" 
-                         class="photo-thumbnail"
-                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
-                </div>
-                <div class="photo-label">
-                    Photo souvenir ${photoNumber}<br>
-                    <small style="font-size: 0.8em; font-weight: normal; opacity: 0.8;">Cliquer pour agrandir</small>
-                </div>
-            </div>
-        `;
-    };
-    
-    // Photo 1 si disponible
-    if (photos.photo1 && photos.photo1.trim() !== '') {
-        photosHtml += createPhotoPreview(photos.photo1, 1);
-    }
-    
-    // Photo 2 si disponible
-    if (photos.photo2 && photos.photo2.trim() !== '') {
-        photosHtml += createPhotoPreview(photos.photo2, 2);
-    }
-    
-    photosHtml += '</div>';
-    
-    if (photosHtml.includes('photo-preview-container')) {
-        html += `
-            <div style="margin-bottom: 20px;">
-                <div class="message-label" style="margin-bottom: 10px;">📸 Photos souvenir</div>
-                ${photosHtml}
-            </div>
-        `;
-    }
-}
+                    // Afficher les photos seulement si disponibles
+                    if (hasPhotos) {
+                        const photos = photoUrlsMap[index];
+                        let photosHtml = '<div class="photos-souvenir-container">';
+                        
+                        // Fonction pour créer une prévisualisation photo
+                        const createPhotoPreview = (photoUrl, photoNumber) => {
+                            if (!photoUrl || photoUrl.trim() === '') return '';
+                            
+                            const thumbnailUrl = generatePhotoThumbnail(photoUrl);
+                            
+                            return `
+                                <div class="photo-preview-container">
+                                    <div class="photo-link-with-preview" onclick="openPhotoModal('${photoUrl}')">
+                                        <img src="${thumbnailUrl}" 
+                                             alt="Photo souvenir ${photoNumber}" 
+                                             class="photo-thumbnail"
+                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
+                                    </div>
+                                    <div class="photo-label">
+                                        Photo souvenir ${photoNumber}<br>
+                                        <small style="font-size: 0.8em; font-weight: normal; opacity: 0.8;">Cliquer pour agrandir</small>
+                                    </div>
+                                </div>
+                            `;
+                        };
+                        
+                        // Photo 1 si disponible
+                        if (photos.photo1 && photos.photo1.trim() !== '') {
+                            photosHtml += createPhotoPreview(photos.photo1, 1);
+                        }
+                        
+                        // Photo 2 si disponible
+                        if (photos.photo2 && photos.photo2.trim() !== '') {
+                            photosHtml += createPhotoPreview(photos.photo2, 2);
+                        }
+                        
+                        photosHtml += '</div>';
+                        
+                        if (photosHtml.includes('photo-preview-container')) {
+                            html += `
+                                <div style="margin-bottom: 20px;">
+                                    <div class="message-label" style="margin-bottom: 10px;">📸 Photos souvenir</div>
+                                    ${photosHtml}
+                                </div>
+                            `;
+                        }
+                    }
                     
                     html += `
                                 <div class="message-content">
@@ -3598,14 +4319,6 @@ if (hasPhotos) {
                                     </div>
                                 </div>
                                 ` : ''}
-                                
-                                ${isAdminUnlocked && hasMessageLink ? `
-                                <div style="margin-top: 15px; text-align: center;">
-                                    <button class="admin-source-btn" onclick="window.open('${messageLinksMap[index]}', '_blank')">
-                                        🔗 Accéder à la fiche source
-                                    </button>
-                                </div>
-                                ` : ''}
                             </div>
                         </div>
                     `;
@@ -3618,20 +4331,51 @@ if (hasPhotos) {
             document.getElementById('resultsSection').style.display = 'block';
             document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
             
-            // Ajouter le bouton d'accès au fichier source si admin déverrouillé
-            if (isAdminUnlocked) {
-                const resultHeader = document.querySelector('.result-header');
-                const existingSourceBtn = resultHeader.querySelector('.admin-source-access-btn');
-                if (!existingSourceBtn) {
-                    const sourceBtn = document.createElement('button');
-                    sourceBtn.className = 'admin-source-btn admin-source-access-btn';
-                    sourceBtn.innerHTML = '📋 Accéder au fichier source';
-                    sourceBtn.style.marginLeft = '10px';
-                    sourceBtn.style.fontSize = '0.9em';
-                    sourceBtn.style.padding = '8px 12px';
-                    sourceBtn.onclick = () => window.open(SOURCE_SHEET_URL, '_blank');
-                    resultHeader.appendChild(sourceBtn);
-                }
+            // SUPPRESSION: On ne montre plus le bouton vert "Accéder au fichier source" car on a déjà les boutons spécifiques
+        }
+
+        // Fonction pour obtenir le nom complet de la source
+        function getSourceFullName(source) {
+            switch(source) {
+                case 'photo': return 'FR avec photo';
+                case 'nophoto': return 'FR sans photo';
+                case 'english': return 'ENG sans photo';
+                case 'english-photo': return 'ENG avec photo';
+                default: return source;
+            }
+        }
+
+        // Fonction pour obtenir le nom de la source de données
+        function getDataSourceName(source) {
+            switch(source) {
+                case 'sheet1': return 'FR avec photo';
+                case 'sheet2': return 'FR sans photo';
+                case 'sheet3': return 'ENG sans photo';
+                case 'sheet4': return 'ENG avec photo';
+                case 'combined': return 'Tous combinés';
+                default: return source;
+            }
+        }
+
+        // Fonction pour obtenir l'indicateur de source
+        function getSourceIndicator(source) {
+            switch(source) {
+                case 'photo': return 'FR';
+                case 'nophoto': return 'FR';
+                case 'english': return 'ENG';
+                case 'english-photo': return 'ENG';
+                default: return source;
+            }
+        }
+
+        // Fonction pour obtenir l'icône de source
+        function getSourceIcon(source) {
+            switch(source) {
+                case 'photo': return '📸';
+                case 'nophoto': return '📝';
+                case 'english': return '🇬🇧';
+                case 'english-photo': return '📸🇬🇧';
+                default: return '📄';
             }
         }
 
@@ -3695,13 +4439,27 @@ if (hasPhotos) {
             let html = `
                 <div style="margin-bottom: 15px; padding: 12px; background: #ecf0f1; border-radius: 5px; font-size: 0.95em;">
                     <strong>${sheetData.length} message(s) au total</strong>
+                    <div style="font-size: 0.85em; color: #666; margin-top: 5px;">
+                        Source: ${getDataSourceName(currentDataSource)}
+                    </div>
                 </div>
                 
                 ${isAdminUnlocked ? `
                 <div style="margin-bottom: 15px; text-align: center;">
-                    <button class="admin-source-btn" onclick="window.open('${SOURCE_SHEET_URL}', '_blank')" style="font-size: 1em; padding: 10px 20px;">
-                        📋 Accéder au fichier source
-                    </button>
+                    <div class="source-files-buttons" style="display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin: 0 auto;">
+                        <button class="source-file-btn photo" onclick="openSourceFile('photo')">
+                            📋 Ouvrir fichier FR avec photo
+                        </button>
+                        <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')">
+                            📋 Ouvrir fichier FR sans photo
+                        </button>
+                        <button class="source-file-btn english" onclick="openSourceFile('english')">
+                            📋 Ouvrir fichier ENG sans photo
+                        </button>
+                        <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')">
+                            📋 Ouvrir fichier ENG avec photo
+                        </button>
+                    </div>
                 </div>
                 ` : ''}
                 
@@ -3715,6 +4473,7 @@ if (hasPhotos) {
                             <th>Email</th>
                             <th>Téléphone</th>
                             <th>Message (extrait)</th>
+                            <th>Source</th>
                             ${isAdminUnlocked ? '<th>Actions</th>' : ''}
                         </tr>
                     </thead>
@@ -3746,15 +4505,27 @@ if (hasPhotos) {
                 const messageExcerpt = message.length > 50 ? message.substring(0, 50) + '...' : message;
                 const hasMessageLink = messageLinksMap[index];
                 
+                // Déterminer la source
+                const sourceKey = `${currentDataSource}-${index}`;
+                const source = messageSourceMap[sourceKey] || 'unknown';
+                const sourceIcon = getSourceIcon(source);
+                const sourceIndicator = getSourceIndicator(source);
+                
                 html += `
                     <tr>
-                        <td><span class="clickable-cell" onclick="searchByDateString('${date}')">${date}</span></td>
+                        <td style="font-weight: bold; color: black;">${formatDateToDDD_DD_MM_AA(date)}</td>
                         <td><span class="clickable-cell" onclick="filterByValue('${nom.replace(/'/g, "\\'")}', 'nom')">${nom}</span></td>
-                        <td><span class="clickable-cell" onclick="filterByValue('${lieu.replace(/'/g, "\\'")}', 'lieu')">${lieu}</span></td>
-                        <td><span class="clickable-cell" onclick="filterByValue('${pays.replace(/'/g, "\\'")}', 'pays')">${pays}</span></td>
+                        <td style="color: #8A2BE2; font-weight: bold;"><span class="clickable-cell" onclick="filterByValue('${lieu.replace(/'/g, "\\'")}', 'lieu')">${lieu}</span></td>
+                        <td style="color: #FF0000; font-weight: bold;"><span class="clickable-cell" onclick="filterByValue('${pays.replace(/'/g, "\\'")}', 'pays')">${pays}</span></td>
                         <td>${email ? `<a href="mailto:${email}" class="clickable-link">${email}</a>` : ''}</td>
                         <td>${telephone ? `<a href="tel:${telephone.replace(/\s/g, '')}" class="clickable-link">${telephone}</a>` : ''}</td>
                         <td title="${message}">${messageExcerpt}</td>
+                        <td style="text-align: center;" title="${getSourceFullName(source)}">
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+                                ${sourceIcon}
+                                <span style="font-size: 0.85em;">${sourceIndicator}</span>
+                            </div>
+                        </td>
                         ${isAdminUnlocked ? `
                         <td>
                             ${hasMessageLink ? `
@@ -3805,9 +4576,11 @@ if (hasPhotos) {
         }
 
         function showDataInfo() {
+            const sourceText = getDataSourceName(currentDataSource);
+            
             document.getElementById('dataInfo').innerHTML = `
                 <div class="success-message">
-                    ✅ Livre d'or chargé avec succès : ${sheetData.length} message${sheetData.length > 1 ? 's' : ''}
+                    ✅ ${sourceText} chargé avec succès : ${sheetData.length} message${sheetData.length > 1 ? 's' : ''}
                     <br><small>${allNoms.length} auteur${allNoms.length > 1 ? 's' : ''} - ${allPays.length} pays - ${allLieux.length} lieux</small>
                 </div>
             `;
@@ -3857,6 +4630,11 @@ if (hasPhotos) {
                         .message-text { font-family: 'Lucida Handwriting', 'Brush Script MT', cursive; font-size: 18px; line-height: 1.7; color: #5D4037; font-style: italic; }
                         .message-text p { margin-bottom: 10px; position: relative; padding-left: 30px; }
                         .message-text p:before { content: '✍️'; position: absolute; left: 0; top: 0; font-size: 20px; color: #D4AF37; }
+                        .photo-section { margin-top: 20px; padding: 20px; background: #f0f7ff; border-radius: 8px; border-left: 4px solid #3498db; }
+                        .photo-label { font-weight: bold; color: #3498db; margin-bottom: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+                        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+                        .photo-item { text-align: center; }
+                        .photo-thumb { max-width: 100%; height: auto; border-radius: 8px; border: 2px solid #3498db; }
                         .contact-section { margin-top: 20px; padding: 20px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #1E3A8A; }
                         .contact-label { font-weight: bold; color: #1E3A8A; margin-bottom: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
                         .contact-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
@@ -3897,6 +4675,12 @@ if (hasPhotos) {
             const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
             const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
             const adresseIndex = headers.findIndex(h => h.toLowerCase().includes('adresse'));
+            const photo1Index = headers.findIndex(h => 
+                h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('1')
+            );
+            const photo2Index = headers.findIndex(h => 
+                h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('2')
+            );
             
             rows.forEach((row, index) => {
                 const dateStr = row[dateIndex] || '';
@@ -3907,9 +4691,12 @@ if (hasPhotos) {
                 const email = row[emailIndex] || '';
                 const telephone = row[telephoneIndex] || '';
                 const adresse = row[adresseIndex] || '';
+                const photo1 = row[photo1Index] || '';
+                const photo2 = row[photo2Index] || '';
                 
                 const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
                 const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
+                const hasPhotos = photo1.trim() !== '' || photo2.trim() !== '';
                 
                 pdfContent += `
                     <div class="fiche-container">
@@ -3939,6 +4726,26 @@ if (hasPhotos) {
                                         ${message.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('')}
                                     </div>
                                 </div>
+                                
+                                ${hasPhotos ? `
+                                <div class="photo-section">
+                                    <div class="photo-label">📸 Photos souvenir</div>
+                                    <div class="photo-grid">
+                                        ${photo1.trim() !== '' ? `
+                                        <div class="photo-item">
+                                            <img src="${photo1}" alt="Photo souvenir 1" class="photo-thumb" style="max-width: 100%; height: auto;">
+                                            <div style="margin-top: 8px; font-size: 0.9em; color: #666;">Photo 1</div>
+                                        </div>
+                                        ` : ''}
+                                        ${photo2.trim() !== '' ? `
+                                        <div class="photo-item">
+                                            <img src="${photo2}" alt="Photo souvenir 2" class="photo-thumb" style="max-width: 100%; height: auto;">
+                                            <div style="margin-top: 8px; font-size: 0.9em; color: #666;">Photo 2</div>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                ` : ''}
                                 
                                 ${(adresse || email || telephone) ? `
                                 <div class="contact-section">
@@ -4016,7 +4823,7 @@ if (hasPhotos) {
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "livre_dor_tournee_2026.csv");
+            link.setAttribute("download", `livre_dor_${currentDataSource}_tournee_2026.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -4049,6 +4856,8 @@ if (hasPhotos) {
                         tr:nth-child(even) { background-color: #f9f9f9; }
                         .export-date { color: #666; margin-bottom: 15px; font-size: 11px; }
                         a { color: #2980b9; text-decoration: none; font-size: 11px; }
+                        .date-cell { font-weight: bold; color: black; }
+                        .lieu-cell { color: #8A2BE2; font-weight: bold; }
                     </style>
                 </head>
                 <body>
@@ -4081,14 +4890,14 @@ if (hasPhotos) {
             let bookContent = '';
             
             const messagesByCountry = {};
-            sheetData.forEach(row => {
+            sheetData.forEach((row, index) => {
                 const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
                 const pays = row[paysIndex] || 'Non spécifié';
                 
                 if (!messagesByCountry[pays]) {
                     messagesByCountry[pays] = [];
                 }
-                messagesByCountry[pays].push(row);
+                messagesByCountry[pays].push({row: row, index: index});
             });
             
             Object.keys(messagesByCountry).sort().forEach(pays => {
@@ -4101,16 +4910,16 @@ if (hasPhotos) {
                 `;
                 
                 const messagesByLieu = {};
-                messages.forEach(row => {
+                messages.forEach(item => {
                     const lieuIndex = headers.findIndex(h => 
                         h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
                     );
-                    const lieu = row[lieuIndex] || 'Non spécifié';
+                    const lieu = item.row[lieuIndex] || 'Non spécifié';
                     
                     if (!messagesByLieu[lieu]) {
                         messagesByLieu[lieu] = [];
                     }
-                    messagesByLieu[lieu].push(row);
+                    messagesByLieu[lieu].push(item);
                 });
                 
                 Object.keys(messagesByLieu).sort().forEach(lieu => {
@@ -4118,10 +4927,13 @@ if (hasPhotos) {
                     
                     bookContent += `
                         <div class="lieu-section" style="margin-left: 20px; margin-bottom: 30px;">
-                            <h3 style="color: #D4AF37; margin-bottom: 15px;">📍 ${lieu}</h3>
+                            <h3 style="color: #8A2BE2; margin-bottom: 15px;">📍 ${lieu}</h3>
                     `;
                     
-                    lieuMessages.forEach((row, index) => {
+                    lieuMessages.forEach((item, index) => {
+                        const row = item.row;
+                        const rowIndex = item.index;
+                        
                         const dateIndex = 1;
                         const nomIndex = headers.findIndex(h => 
                             h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
@@ -4132,6 +4944,12 @@ if (hasPhotos) {
                         const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
                         const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
                         const adresseIndex = headers.findIndex(h => h.toLowerCase().includes('adresse'));
+                        const photo1Index = headers.findIndex(h => 
+                            h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('1')
+                        );
+                        const photo2Index = headers.findIndex(h => 
+                            h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('2')
+                        );
                         
                         const dateStr = row[dateIndex] || '';
                         const nom = row[nomIndex] || 'Anonyme';
@@ -4139,9 +4957,12 @@ if (hasPhotos) {
                         const email = row[emailIndex] || '';
                         const telephone = row[telephoneIndex] || '';
                         const adresse = row[adresseIndex] || '';
+                        const photo1 = row[photo1Index] || '';
+                        const photo2 = row[photo2Index] || '';
                         
                         const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
                         const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
+                        const hasPhotos = photo1.trim() !== '' || photo2.trim() !== '';
                         
                         bookContent += `
                             <div class="message-item" style="margin: 20px 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #f9f9f9; page-break-inside: avoid;">
@@ -4159,8 +4980,29 @@ if (hasPhotos) {
                                 <div class="message-text" style="font-family: 'Lucida Handwriting', 'Brush Script MT', cursive; font-style: italic; color: #34495e; line-height: 1.7; margin-bottom: 15px; padding: 15px; background: white; border-radius: 5px; border-left: 4px solid #D4AF37;">
                                     ${message.replace(/\n/g, '<br>')}
                                 </div>
-                                ${(adresse || email || telephone) ? `
+                                
+                                ${hasPhotos ? `
                                 <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 5px; font-size: 0.9em; color: #666;">
+                                    <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">📸 Photos souvenir</div>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                        ${photo1.trim() !== '' ? `
+                                        <div style="text-align: center;">
+                                            <img src="${photo1}" alt="Photo souvenir 1" style="max-width: 200px; height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid #3498db; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                            <div style="font-size: 0.9em; margin-top: 8px; font-weight: bold;">Photo 1</div>
+                                        </div>
+                                        ` : ''}
+                                        ${photo2.trim() !== '' ? `
+                                        <div style="text-align: center;">
+                                            <img src="${photo2}" alt="Photo souvenir 2" style="max-width: 200px; height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid #3498db; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                            <div style="font-size: 0.9em; margin-top: 8px; font-weight: bold;">Photo 2</div>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                                ` : ''}
+                                
+                                ${(adresse || email || telephone) ? `
+                                <div style="margin-top: 15px; padding: 15px; background: #f0f7ff; border-radius: 5px; font-size: 0.9em; color: #666;">
                                     ${adresse ? `<div><strong>📍 Adresse:</strong> ${adresse}</div>` : ''}
                                     ${email ? `<div><strong>✉️ Email:</strong> ${email}</div>` : ''}
                                     ${telephone ? `<div><strong>📱 Téléphone:</strong> ${telephone}</div>` : ''}
@@ -4234,8 +5076,8 @@ if (hasPhotos) {
                     <style>
                         body { font-family: Arial, sans-serif; margin: 25px; line-height: 1.6; color: #333; font-size: 16px; }
                         h1 { color: #8b0000; text-align: center; margin-bottom: 10px; padding-bottom: 15px; border-bottom: 3px solid #D4AF37; font-size: 28px; }
-                        h2 { color: #D4AF37; margin-top: 40px; padding-bottom: 8px; border-bottom: 2px solid #eee; font-size: 22px; }
-                        h3 { color: #666; margin-top: 25px; font-size: 18px; }
+                        h2 { color: #8b0000; margin-top: 40px; padding-bottom: 8px; border-bottom: 2px solid #eee; font-size: 22px; }
+                        h3 { color: #8A2BE2; margin-top: 25px; font-size: 18px; }
                         .intro { background: #fef5e7; padding: 25px; border-radius: 10px; margin-bottom: 30px; border: 2px solid #D4AF37; }
                         .country-section { margin-bottom: 50px; page-break-inside: avoid; }
                         .lieu-section { margin-left: 20px; margin-bottom: 30px; }
@@ -4277,6 +5119,7 @@ if (hasPhotos) {
                     <div style="margin-top: 50px; text-align: center; color: #7f8c8d; font-size: 14px; padding-top: 20px; border-top: 1px solid #eee;">
                         <p>Export généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
                         <p>Total des messages: ${sheetData.length} | Pays visités: ${Object.keys(messagesByCountry).length} | Auteurs: ${allNoms.length}</p>
+                        <p>Source: ${getDataSourceName(currentDataSource)}</p>
                     </div>
                 </body>
                 </html>
@@ -4433,20 +5276,6 @@ if (hasPhotos) {
                 }
             });
             
-            // Ajouter le bouton d'accès au fichier source dans l'en-tête
-            const header = document.querySelector('header');
-            const existingSourceBtn = header.querySelector('.admin-source-header-btn');
-            if (!existingSourceBtn) {
-                const sourceBtn = document.createElement('button');
-                sourceBtn.className = 'admin-source-btn admin-source-header-btn';
-                sourceBtn.innerHTML = '📋 Fichier source';
-                sourceBtn.style.position = 'absolute';
-                sourceBtn.style.right = '20px';
-                sourceBtn.style.top = '15px';
-                sourceBtn.onclick = () => window.open(SOURCE_SHEET_URL, '_blank');
-                header.appendChild(sourceBtn);
-            }
-            
             // Recharger l'affichage pour montrer les liens de message et boutons admin
             if (document.getElementById('resultsSection').style.display !== 'none') {
                 const currentTitle = document.getElementById('resultTitle').textContent;
@@ -4466,22 +5295,10 @@ if (hasPhotos) {
                 document.querySelector('.fixed-nav-buttons').style.display = 'none';
                 document.querySelector('.mobile-floating-buttons').style.display = 'flex';
                 document.querySelector('.sidebar').style.display = 'flex';
-                
-                // Cacher le bouton admin dans l'en-tête en mobile
-                const adminHeaderBtn = document.querySelector('.admin-source-header-btn');
-                if (adminHeaderBtn) {
-                    adminHeaderBtn.style.display = 'none';
-                }
             } else {
                 document.querySelector('.fixed-nav-buttons').style.display = 'flex';
                 document.querySelector('.mobile-floating-buttons').style.display = 'none';
                 document.querySelector('.sidebar').style.display = 'flex';
-                
-                // Montrer le bouton admin dans l'en-tête en desktop
-                const adminHeaderBtn = document.querySelector('.admin-source-header-btn');
-                if (adminHeaderBtn) {
-                    adminHeaderBtn.style.display = 'block';
-                }
             }
         });
         
