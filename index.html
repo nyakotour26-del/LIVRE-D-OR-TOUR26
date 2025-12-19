@@ -2872,7 +2872,7 @@
         const SOURCE_SHEET_URL_4 = 'https://docs.google.com/spreadsheets/d/1e4lqntLV3LFHJp8Y8vveA_E4BdFMXKQwfbJoEvjQCbQ/edit?resourcekey=&gid=1581487665#gid=1581487665';
         
         // Liens pour écrire de nouveaux messages (mise à jour des liens anglais)
-        const GOOGLE_FORM_URL_WITH_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfrJKU6QpRFo8ni9RVDBPUo8H-Wi-rJzxDXHQNWxoeC2LxL0A/viewform?usp=header';
+        const GOOGLE_FORM_URL_WITH_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfrJKU6QpRFo8ni9RVDBPUo8H-Wi-rJzxDXHQNWxoeC2LxL0A/viewform?usp=preview';
         const GOOGLE_FORM_URL_WITHOUT_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSf6yaozp179sFPngu4Fz1aVPwp9tEnz-YwrV9lzQLkGUIX7MQ/viewform?usp=header';
         const GOOGLE_FORM_URL_ENGLISH = 'https://docs.google.com/forms/d/e/1FAIpQLSfe_SQ6xObVzDfX4r68kCo3RiwXpKpeH3lwa_6DoGgJUSprAw/viewform?usp=header';
         const GOOGLE_FORM_URL_ENGLISH_WITH_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfe_SQ6xObVzDfX4r68kCo3RiwXpKpeH3lwa_6DoGgJUSprAw/viewform?usp=header';
@@ -4015,33 +4015,46 @@
         }
 
         // MODIFICATION: Correction du rendu des dates - utiliser les dates exactes
-        function renderDatesTags() {
-            const container = document.getElementById('datesTags');
-            container.innerHTML = '';
-            
-            // Utiliser les dates exactes des fiches (sans ajustement)
-            const uniqueDates = [...new Set(datesWithData.map(d => 
-                d.date.toISOString().split('T')[0]
-            ))].sort().reverse();
-            
-            uniqueDates.forEach(dateStr => {
-                const date = new Date(dateStr);
-                const count = dateMessagesMap[dateStr]?.length || 0;
-                
-                const tag = document.createElement('div');
-                tag.className = 'date-tag';
-                tag.innerHTML = `
-                    <div style="font-weight: bold; color: var(--gold-dark);">${date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}</div>
-                    <div style="font-size: 0.8em; color: var(--text-medium);">${count} message${count > 1 ? 's' : ''}</div>
-                `;
-                
-                tag.addEventListener('click', () => {
-                    selectDate(date);
-                });
-                
-                container.appendChild(tag);
-            });
-        }
+       function renderDatesTags() {
+    const container = document.getElementById('datesTags');
+    container.innerHTML = '';
+    
+    const uniqueDates = [...new Set(datesWithData.map(d => 
+        d.date.toISOString().split('T')[0]
+    ))].sort().reverse();
+    
+    console.log('=== DATES DANS L\'ACCUEIL ===');
+    
+    uniqueDates.forEach(dateStr => {
+        const date = new Date(dateStr);
+        const displayDate = new Date(date);
+        displayDate.setDate(displayDate.getDate() + 1);
+        
+        const count = dateMessagesMap[dateStr]?.length || 0;
+        
+        console.log(`Originale: ${date.toLocaleDateString('fr-FR')} -> Affichée: ${displayDate.toLocaleDateString('fr-FR')} (+1 jour)`);
+        
+        const tag = document.createElement('div');
+        tag.className = 'date-tag';
+        tag.innerHTML = `
+            <div style="font-weight: bold; color: var(--gold-dark);">
+                ${displayDate.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+            </div>
+            <div style="font-size: 0.8em; color: var(--text-medium);">
+                ${count} message${count > 1 ? 's' : ''}
+            </div>
+        `;
+        
+        tag.addEventListener('click', () => {
+            console.log(`Clic sur: ${displayDate.toLocaleDateString('fr-FR')} (date originale: ${date.toLocaleDateString('fr-FR')})`);
+            selectDate(date);
+        });
+        
+        container.appendChild(tag);
+    });
+    
+    console.log('=== FIN DATES ACCUEIL ===');
+}
 
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
@@ -4529,20 +4542,20 @@
         }
 
         // Fonction pour formater la date en ddd dd-mm-aa
-        function formatDateToDDD_DD_MM_AA(dateStr) {
-            if (!dateStr) return '';
-            
-            const date = parseDate(dateStr);
-            if (!date) return dateStr;
-            
-            const jours = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-            const jourSemaine = jours[date.getDay()];
-            const jour = date.getDate().toString().padStart(2, '0');
-            const mois = (date.getMonth() + 1).toString().padStart(2, '0');
-            const annee = date.getFullYear().toString().slice(-2);
-            
-            return `${jourSemaine} ${jour}-${mois}-${annee}`;
-        }
+       function formatDateToDDD_DD_MM_AA(dateStr) {
+    if (!dateStr) return '';
+    
+    const date = parseDate(dateStr);
+    if (!date) return dateStr;
+    
+    const jours = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+    const jourSemaine = jours[date.getDay()];
+    const jour = date.getDate().toString().padStart(2, '0');
+    const mois = (date.getMonth() + 1).toString().padStart(2, '0');
+    const annee = date.getFullYear().toString().slice(-2);
+    
+    return `${jourSemaine} ${jour}-${mois}-${annee}`;
+}
 
         function filterByType(type) {
             if (type === 'nom') {
