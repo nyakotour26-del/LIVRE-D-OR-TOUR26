@@ -2528,6 +2528,17 @@
         .suggestion-item:last-child {
             border-bottom: none;
         }
+        
+        /* MODIFICATION: Options du calendrier désactivées sans mot de passe */
+        .popup-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .popup-option.disabled:hover {
+            background: #f8f9fa;
+            transform: none;
+        }
     </style>
 </head>
 <body>
@@ -3268,6 +3279,19 @@
                     </div>
                 `;
                 
+                // MODIFICATION: Les 4 options d'écriture sont toujours visibles mais désactivées sans mot de passe
+                let withPhotoOption = `<div class="popup-option with-photo" onclick="${isAdminUnlocked ? "openNewMessageForm('with-photo')" : "showUnlockBubble()"}">`;
+                let withoutPhotoOption = `<div class="popup-option without-photo" onclick="${isAdminUnlocked ? "openNewMessageForm('without-photo')" : "showUnlockBubble()"}">`;
+                let englishOption = `<div class="popup-option english" onclick="${isAdminUnlocked ? "openNewMessageForm('english')" : "showUnlockBubble()"}">`;
+                let englishPhotoOption = `<div class="popup-option english-photo" onclick="${isAdminUnlocked ? "openNewMessageForm('english-photo')" : "showUnlockBubble()"}">`;
+                
+                if (!isAdminUnlocked) {
+                    withPhotoOption = `<div class="popup-option with-photo disabled" onclick="showUnlockBubble()">`;
+                    withoutPhotoOption = `<div class="popup-option without-photo disabled" onclick="showUnlockBubble()">`;
+                    englishOption = `<div class="popup-option english disabled" onclick="showUnlockBubble()">`;
+                    englishPhotoOption = `<div class="popup-option english-photo disabled" onclick="showUnlockBubble()">`;
+                }
+                
                 // Ajouter l'option de modification seulement si admin déverrouillé
                 if (isAdminUnlocked) {
                     popupOptions.innerHTML += `
@@ -3278,25 +3302,25 @@
                 } else {
                     // Si non déverrouillé, montrer mais désactivé
                     popupOptions.innerHTML += `
-                        <div class="popup-option edit" style="opacity: 0.5; cursor: not-allowed;" onclick="showUnlockBubble()">
+                        <div class="popup-option edit disabled" onclick="showUnlockBubble()">
                             ✏️ Modifier les fiches de message (🔒)
                         </div>
                     `;
                 }
                 
-                // Ajouter les options pour écrire de nouveaux messages (toujours visibles)
+                // MODIFICATION: Ajouter les options pour écrire de nouveaux messages (toujours visibles)
                 popupOptions.innerHTML += `
-                    <div class="popup-option with-photo" onclick="openNewMessageForm('with-photo')">
-                        📸 Ecrire nouveau FR avec upload
+                    ${withPhotoOption}
+                        ${isAdminUnlocked ? '📸' : '🔒'} Ecrire nouveau FR avec upload
                     </div>
-                    <div class="popup-option without-photo" onclick="openNewMessageForm('without-photo')">
-                        📝 Ecrire nouveau FR avec photo
+                    ${withoutPhotoOption}
+                        ${isAdminUnlocked ? '📝' : '🔒'} Ecrire nouveau FR avec photo
                     </div>
-                    <div class="popup-option english" onclick="openNewMessageForm('english')">
-                        🇬🇧 Ecrire nouveau ENG sans photo
+                    ${englishOption}
+                        ${isAdminUnlocked ? '🇬🇧' : '🔒'} Ecrire nouveau ENG sans photo
                     </div>
-                    <div class="popup-option english-photo" onclick="openNewMessageForm('english-photo')">
-                        📸🇬🇧 Ecrire nouveau ENG avec photo
+                    ${englishPhotoOption}
+                        ${isAdminUnlocked ? '📸🇬🇧' : '🔒'} Ecrire nouveau ENG avec photo
                     </div>
                 `;
                 
@@ -3310,7 +3334,7 @@
                 } else {
                     // Si non déverrouillé, montrer mais désactivé
                     popupOptions.innerHTML += `
-                        <div class="popup-option" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); border-left: 4px solid #9b59b6; opacity: 0.5; cursor: not-allowed;" onclick="showUnlockBubble()">
+                        <div class="popup-option disabled" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); border-left: 4px solid #9b59b6;" onclick="showUnlockBubble()">
                             📄 Exporter en PDF les fiches du jour (🔒)
                         </div>
                     `;
@@ -4236,105 +4260,108 @@
             });
         }
 
-       function renderCalendar() {
-    const grid = document.getElementById('calendarGrid');
-    const monthElement = document.getElementById('currentMonth');
-    
-    monthElement.textContent = currentDate.toLocaleDateString('fr-FR', {
-        month: 'long',
-        year: 'numeric'
-    });
-    
-    grid.innerHTML = '';
-    
-    // En-têtes des jours
-    ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].forEach(day => {
-        const dayHeader = document.createElement('div');
-        dayHeader.className = 'calendar-day-header';
-        dayHeader.textContent = day;
-        grid.appendChild(dayHeader);
-    });
-    
-    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-    
-    let startDay = firstDay.getDay();
-    startDay = startDay === 0 ? 6 : startDay - 1;
-    
-    // Jours vides du début
-    for (let i = 0; i < startDay; i++) {
-        const emptyDay = document.createElement('div');
-        emptyDay.className = 'calendar-day other-month';
-        grid.appendChild(emptyDay);
-    }
-    
-    // Jours du mois
-    for (let i = 1; i <= lastDay.getDate(); i++) {
-        const day = document.createElement('div');
-        day.className = 'calendar-day';
-        day.textContent = i;
-        
-        const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
-        const dateKey = date.toISOString().split('T')[0];
-        const messages = dateMessagesMap[dateKey] || [];
-        
-        if (messages.length > 0) {
-            day.classList.add('has-data');
+        // MODIFICATION: Ajout des indicateurs de drapeau dans les cellules du calendrier
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const monthElement = document.getElementById('currentMonth');
             
-            // Déterminer la source principale pour ce jour
-            let sourceType = 'mixed';
-            const sources = new Set(messages.map(m => m.source));
+            monthElement.textContent = currentDate.toLocaleDateString('fr-FR', {
+                month: 'long',
+                year: 'numeric'
+            });
             
-            if (sources.size === 1) {
-                sourceType = Array.from(sources)[0];
+            grid.innerHTML = '';
+            
+            // En-têtes des jours
+            ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-day-header';
+                dayHeader.textContent = day;
+                grid.appendChild(dayHeader);
+            });
+            
+            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+            
+            let startDay = firstDay.getDay();
+            startDay = startDay === 0 ? 6 : startDay - 1;
+            
+            // Jours vides du début
+            for (let i = 0; i < startDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.className = 'calendar-day other-month';
+                grid.appendChild(emptyDay);
             }
             
-            day.classList.add(sourceType);
-            
-            // Ajouter le nombre de messages dans un cercle coloré en haut à droite
-            const countSpan = document.createElement('span');
-            countSpan.className = 'message-count';
-            countSpan.textContent = messages.length;
-            day.appendChild(countSpan);
-            
-            // Ajouter l'icône de source
-            const sourceIcon = document.createElement('span');
-            sourceIcon.className = 'flag-indicator';
-            
-            // Vérifier s'il y a des messages anglais
-            const hasEnglish = messages.some(m => m.source === 'english' || m.source === 'english-photo');
-            const hasFrench = messages.some(m => m.source === 'photo' || m.source === 'nophoto');
-            
-            if (hasEnglish && hasFrench) {
-                sourceIcon.textContent = '🌍';
-                sourceIcon.title = 'Messages FR et ENG';
-            } else if (hasEnglish) {
-                sourceIcon.textContent = '🇬🇧';
-                sourceIcon.title = 'Messages en anglais';
-            } else if (hasFrench) {
-                sourceIcon.textContent = '🇫🇷';
-                sourceIcon.title = 'Messages en français';
+            // Jours du mois
+            for (let i = 1; i <= lastDay.getDate(); i++) {
+                const day = document.createElement('div');
+                day.className = 'calendar-day';
+                day.textContent = i;
+                
+                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+                const dateKey = date.toISOString().split('T')[0];
+                const messages = dateMessagesMap[dateKey] || [];
+                
+                if (messages.length > 0) {
+                    day.classList.add('has-data');
+                    
+                    // Déterminer la source principale pour ce jour
+                    let sourceType = 'mixed';
+                    const sources = new Set(messages.map(m => m.source));
+                    
+                    if (sources.size === 1) {
+                        sourceType = Array.from(sources)[0];
+                    }
+                    
+                    day.classList.add(sourceType);
+                    
+                    // Ajouter le nombre de messages dans un cercle coloré en haut à droite
+                    const countSpan = document.createElement('span');
+                    countSpan.className = 'message-count';
+                    countSpan.textContent = messages.length;
+                    day.appendChild(countSpan);
+                    
+                    // MODIFICATION: Ajouter l'icône de drapeau selon la langue des messages
+                    const flagIcon = document.createElement('span');
+                    flagIcon.className = 'flag-indicator';
+                    
+                    // Vérifier s'il y a des messages anglais
+                    const hasEnglish = messages.some(m => m.source === 'english' || m.source === 'english-photo');
+                    const hasFrench = messages.some(m => m.source === 'photo' || m.source === 'nophoto');
+                    
+                    if (hasEnglish && hasFrench) {
+                        flagIcon.textContent = '🌍';
+                        flagIcon.title = 'Messages FR et ENG';
+                    } else if (hasEnglish) {
+                        flagIcon.textContent = '🇬🇧';
+                        flagIcon.title = 'Messages en anglais';
+                    } else if (hasFrench) {
+                        flagIcon.textContent = '🇫🇷';
+                        flagIcon.title = 'Messages en français';
+                    }
+                    
+                    if (hasEnglish || hasFrench) {
+                        day.appendChild(flagIcon);
+                    }
+                    
+                    day.title = `${messages.length} message${messages.length > 1 ? 's' : ''}`;
+                    
+                    day.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showCalendarPopup(date);
+                    });
+                } else {
+                    // Si pas de messages, permettre quand même de cliquer pour écrire
+                    day.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        showCalendarPopup(date);
+                    });
+                }
+                
+                grid.appendChild(day);
             }
-            
-            day.appendChild(sourceIcon);
-            
-            day.title = `${messages.length} message${messages.length > 1 ? 's' : ''}`;
-            
-            day.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showCalendarPopup(date);
-            });
-        } else {
-            // Si pas de messages, permettre quand même de cliquer pour écrire
-            day.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showCalendarPopup(date);
-            });
         }
-        
-        grid.appendChild(day);
-    }
-}
 
         function viewDayMessages() {
             if (popupDate) {
