@@ -591,47 +591,51 @@
             border-left: 4px solid #9b59b6;
         }
         
+        /* MODIFICATION: Réduire la hauteur des statistiques */
         .stats-section {
             background: linear-gradient(135deg, var(--gold-light), #fcebb6);
-            padding: 15px;
+            padding: 12px 15px; /* Réduit le padding */
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             border: 2px solid var(--secondary-color);
+            min-height: auto; /* Supprimer la hauteur minimale */
         }
         
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+            gap: 5px; /* Réduit l'espacement */
         }
         
         .stat-card {
             background: linear-gradient(135deg, white, #f8f9fa);
-            padding: 10px;
+            padding: 8px 6px; /* Réduit le padding */
             border-radius: var(--border-radius);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Ombre plus légère */
             text-align: center;
             border: 1px solid #e9ecef;
             transition: transform 0.3s ease;
             cursor: pointer;
+            min-height: auto; /* Supprimer la hauteur minimale */
         }
         
         .stat-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
         
         .stat-value {
-            font-size: 1.2em;
+            font-size: 1.1em; /* Réduit la taille de police */
             font-weight: bold;
             color: var(--secondary-color);
             margin-bottom: 2px;
+            line-height: 1.2;
         }
         
         .stat-label {
             color: var(--text-medium);
-            font-size: 0.75em;
-            line-height: 1.2;
+            font-size: 0.7em; /* Réduit la taille de police */
+            line-height: 1.1; /* Réduit l'interligne */
         }
         
         .filters-sidebar {
@@ -2488,22 +2492,22 @@
         }
         
         /* Indicateur de nombre de messages dans les cellules du calendrier */
-.calendar-day .message-count {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    background: var(--secondary-color);
-    color: white;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    font-size: 0.7em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    z-index: 2;
-}
+        .calendar-day .message-count {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: var(--secondary-color);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 2;
+        }
         
         .suggestions-container {
             position: absolute;
@@ -2562,6 +2566,57 @@
                 font-size: 0.8em;
                 padding: 8px 12px;
             }
+        }
+        
+        /* MODIFICATION: Style pour les statistiques sur une même ligne */
+        .stats-line {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gold-light);
+        }
+        
+        .stats-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-width: 100px;
+            padding: 8px;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .stats-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            background: linear-gradient(135deg, #f8f9fa, #fff);
+        }
+        
+        .stats-item-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 3px;
+        }
+        
+        .stats-item-label {
+            font-size: 0.8em;
+            color: var(--text-medium);
+            line-height: 1.2;
+        }
+        
+        .stats-item.clickable:hover {
+            cursor: pointer;
+            background: linear-gradient(135deg, #fef5e7, #fcebb6);
         }
     </style>
 </head>
@@ -2706,24 +2761,9 @@
                         </div>
                     </div>
                     
-                    <!-- MODIFICATION: Ajout des statistiques supplémentaires -->
-                    <div class="additional-stats-grid">
-                        <div class="additional-stat-card">
-                            <div class="additional-stat-value" id="totalWithPhotos">0</div>
-                            <div class="additional-stat-label">Fiches avec photos</div>
-                        </div>
-                        <div class="additional-stat-card">
-                            <div class="additional-stat-value" id="totalEnglishMessages">0</div>
-                            <div class="additional-stat-label">Messages anglais</div>
-                        </div>
-                        <div class="additional-stat-card">
-                            <div class="additional-stat-value" id="totalFrenchMessages">0</div>
-                            <div class="additional-stat-label">Messages français</div>
-                        </div>
-                        <div class="additional-stat-card">
-                            <div class="additional-stat-value" id="totalEnglishWithPhotos">0</div>
-                            <div class="additional-stat-label">Anglais avec photos</div>
-                        </div>
+                    <!-- MODIFICATION: Ligne des statistiques supplémentaires avec fiches cliquables -->
+                    <div class="stats-line" id="statsLine">
+                        <!-- Les statistiques seront ajoutées dynamiquement ici -->
                     </div>
                 </div>
                 
@@ -3006,9 +3046,9 @@
         
         // Variables pour les statistiques supplémentaires
         let totalWithPhotos = 0;
-        let totalEnglishMessages = 0;
-        let totalFrenchMessages = 0;
-        let totalEnglishWithPhotos = 0;
+        let totalEnglishMessages = 0; // Total des messages anglais (sheet3 + sheet4)
+        let totalFrenchMessages = 0; // Total des messages français (sheet1 + sheet2)
+        let totalEnglishWithPhotos = 0; // Messages anglais avec photos (sheet4)
         
         // Pour les suggestions de recherche
         let allSearchTerms = new Set();
@@ -3817,6 +3857,7 @@
             calculateCountryStats();
             calculateAdditionalStats();
             updateStats();
+            updateStatsLine(); // MODIFICATION: Mettre à jour la ligne des statistiques
             renderFilterTags();
             renderCalendar();
             renderDatesTags();
@@ -4120,12 +4161,10 @@
                 h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('2')
             );
             
-            // MODIFICATION: Nouvelle méthode pour compter les fiches avec photos
-            // On vérifie si les colonnes de photo existent et si elles contiennent des valeurs
             if (currentDataSource === 'combined') {
                 // Pour les données combinées, calculer à partir de toutes les sources
+                
                 // Fiches avec photos (sheet1 + sheet4)
-                // MODIFICATION: Compter uniquement les fiches où les colonnes photo ont des valeurs
                 sheetData1.forEach((row, index) => {
                     const hasPhoto = (photo1Index !== -1 && row[photo1Index] && row[photo1Index].trim() !== '') || 
                                     (photo2Index !== -1 && row[photo2Index] && row[photo2Index].trim() !== '');
@@ -4142,10 +4181,10 @@
                     }
                 });
                 
-                // Messages anglais (sheet3 + sheet4)
+                // Messages anglais = sheet3 (sans photos) + sheet4 (avec photos)
                 totalEnglishMessages = sheetData3.length + sheetData4.length;
                 
-                // Messages français (sheet1 + sheet2)
+                // Messages français = sheet1 (avec photos) + sheet2 (sans photos)
                 totalFrenchMessages = sheetData1.length + sheetData2.length;
                 
                 // Messages anglais avec photos (sheet4)
@@ -4162,7 +4201,7 @@
                     const sourceKey = `${currentDataSource}-${index}`;
                     const source = messageSourceMap[sourceKey] || 'unknown';
                     
-                    // MODIFICATION: Vérifier si c'est une fiche avec photo (colonnes photo ont des valeurs)
+                    // Vérifier si c'est une fiche avec photo (colonnes photo ont des valeurs)
                     if (photo1Index !== -1 && photo2Index !== -1) {
                         const hasPhoto = (row[photo1Index] && row[photo1Index].trim() !== '') || 
                                         (row[photo2Index] && row[photo2Index].trim() !== '');
@@ -4178,7 +4217,7 @@
                             break;
                         case 'english-photo':
                             totalEnglishMessages++;
-                            // MODIFICATION: Compter anglais avec photos seulement si colonnes photo ont des valeurs
+                            // Compter anglais avec photos seulement si colonnes photo ont des valeurs
                             if (photo1Index !== -1 && photo2Index !== -1) {
                                 const hasPhoto = (row[photo1Index] && row[photo1Index].trim() !== '') || 
                                                 (row[photo2Index] && row[photo2Index].trim() !== '');
@@ -4230,13 +4269,92 @@
                 return !nom.trim() || nom.toLowerCase().includes('anonyme');
             }).length;
             document.getElementById('anonymousCount').textContent = anonymousCount;
+        }
+
+        // MODIFICATION: Mettre à jour la ligne des statistiques
+        function updateStatsLine() {
+            const statsLine = document.getElementById('statsLine');
             
-            // MODIFICATION: Mettre à jour les statistiques supplémentaires
-            document.getElementById('totalWithPhotos').textContent = totalWithPhotos;
-            // MODIFICATION: Supprimer les messages anglais avec photos des statistiques totales anglaises
-            document.getElementById('totalEnglishMessages').textContent = totalEnglishMessages - totalEnglishWithPhotos;
-            document.getElementById('totalFrenchMessages').textContent = totalFrenchMessages;
-            document.getElementById('totalEnglishWithPhotos').textContent = totalEnglishWithPhotos;
+            // Calculer les statistiques selon la source de données
+            let withPhotosCount = totalWithPhotos;
+            let englishMessagesCount = totalEnglishMessages; // sheet3 + sheet4
+            let frenchMessagesCount = totalFrenchMessages; // sheet1 + sheet2
+            let englishWithPhotosCount = totalEnglishWithPhotos; // sheet4 seulement
+            
+            statsLine.innerHTML = `
+                <div class="stats-item clickable" onclick="showMessagesWithPhotos()" title="Cliquer pour afficher les fiches avec photos">
+                    <div class="stats-item-value">${withPhotosCount}</div>
+                    <div class="stats-item-label">Fiches avec photos</div>
+                </div>
+                <div class="stats-item clickable" onclick="showEnglishMessages()" title="Cliquer pour afficher les messages anglais">
+                    <div class="stats-item-value">${englishMessagesCount}</div>
+                    <div class="stats-item-label">Messages anglais</div>
+                </div>
+                <div class="stats-item clickable" onclick="showFrenchMessages()" title="Cliquer pour afficher les messages français">
+                    <div class="stats-item-value">${frenchMessagesCount}</div>
+                    <div class="stats-item-label">Messages français</div>
+                </div>
+            `;
+        }
+
+        // MODIFICATION: Fonction pour afficher les fiches avec photos
+        function showMessagesWithPhotos() {
+            const photo1Index = headers.findIndex(h => 
+                h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('1')
+            );
+            const photo2Index = headers.findIndex(h => 
+                h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('2')
+            );
+            
+            if (photo1Index === -1 || photo2Index === -1) {
+                alert('Aucune information de photo disponible dans cette source de données.');
+                return;
+            }
+            
+            const results = sheetData.filter((row, index) => {
+                const sourceKey = `${currentDataSource}-${index}`;
+                const source = messageSourceMap[sourceKey] || 'unknown';
+                
+                // Vérifier si la fiche a des photos (colonne photo1 ou photo2 non vide)
+                const hasPhoto = (row[photo1Index] && row[photo1Index].trim() !== '') || 
+                                (row[photo2Index] && row[photo2Index].trim() !== '');
+                
+                // Pour les données combinées, inclure toutes les fiches avec photos
+                // Pour les sources spécifiques, inclure selon le type
+                if (currentDataSource === 'combined') {
+                    return hasPhoto && (source === 'photo' || source === 'english-photo');
+                } else {
+                    return hasPhoto;
+                }
+            });
+            
+            displayResults(results, `Fiches avec photos (${results.length})`);
+        }
+
+        // MODIFICATION: Fonction pour afficher les messages anglais
+        function showEnglishMessages() {
+            const results = sheetData.filter((row, index) => {
+                const sourceKey = `${currentDataSource}-${index}`;
+                const source = messageSourceMap[sourceKey] || 'unknown';
+                
+                // Inclure les messages des sheets 3 et 4 (anglais)
+                return source === 'english' || source === 'english-photo';
+            });
+            
+            displayResults(results, `Messages anglais (${results.length})`);
+        }
+
+        // MODIFICATION: Fonction pour afficher les messages français
+        function showFrenchMessages() {
+            const results = sheetData.filter((row, index) => {
+                const sourceKey = `${currentDataSource}-${index}`;
+                const source = messageSourceMap[sourceKey] || 'unknown';
+                
+                // Inclure les messages des sheets 1 et 2 (français)
+                return source === 'photo' || source === 'nophoto';
+            });
+            
+            displayResults(results, `Messages français (${results.length})`);
         }
 
         function renderFilterTags() {
