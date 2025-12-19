@@ -2387,9 +2387,10 @@
         /* Nouveaux styles pour les trois boutons fichier source */
         .source-files-buttons {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             gap: 10px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
         
         .source-file-btn {
@@ -2406,6 +2407,8 @@
             gap: 8px;
             font-size: 0.85em;
             text-align: left;
+            flex: 1;
+            min-width: 200px;
         }
         
         .source-file-btn:hover {
@@ -2538,6 +2541,27 @@
         .popup-option.disabled:hover {
             background: #f8f9fa;
             transform: none;
+        }
+        
+        /* MODIFICATION: Ajustement pour les boutons sur la même ligne */
+        .mobile-buttons-row {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        
+        .mobile-buttons-row .export-btn,
+        .mobile-buttons-row .source-file-btn {
+            flex: 1;
+            min-width: 45%;
+        }
+        
+        @media (max-width: 480px) {
+            .mobile-buttons-row .export-btn,
+            .mobile-buttons-row .source-file-btn {
+                min-width: 100%;
+                font-size: 0.8em;
+                padding: 8px 12px;
+            }
         }
     </style>
 </head>
@@ -2769,16 +2793,16 @@
                 <!-- Boutons pour ouvrir les fichiers sources (VISIBLES SEULEMENT POUR ADMIN) -->
                 <div class="source-files-buttons" id="adminSourceButtons" style="display: none;">
                     <button class="source-file-btn photo" onclick="openSourceFile('photo')">
-                        📋 Ouvrir fichier FR avec photo
+                        📋 Fichier FR avec photo
                     </button>
                     <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')">
-                        📋 Ouvrir fichier FR sans photo
+                        📋 Fichier FR sans photo
                     </button>
                     <button class="source-file-btn english" onclick="openSourceFile('english')">
-                        📋 Ouvrir fichier ENG sans photo
+                        📋 Fichier ENG sans photo
                     </button>
                     <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')">
-                        📋 Ouvrir fichier ENG avec photo
+                        📋 Fichier ENG avec photo
                     </button>
                 </div>
             </div>
@@ -2816,17 +2840,17 @@
                         🔒 Générer livre
                     </button>
                     <!-- Boutons admin pour mobile (CACHÉS PAR DÉFAUT) -->
-                    <div class="source-files-buttons" id="mobileAdminSourceButtons" style="display: none; flex-direction: column; gap: 10px; width: 100%;">
-                        <button class="source-file-btn photo" onclick="openSourceFile('photo')" style="width: 100%; font-size: 0.85em; padding: 10px;">
+                    <div class="source-files-buttons" id="mobileAdminSourceButtons" style="display: none; width: 100%;">
+                        <button class="source-file-btn photo" onclick="openSourceFile('photo')">
                             📋 Fichier FR avec photo
                         </button>
-                        <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')" style="width: 100%; font-size: 0.85em; padding: 10px;">
+                        <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')">
                             📋 Fichier FR sans photo
                         </button>
-                        <button class="source-file-btn english" onclick="openSourceFile('english')" style="width: 100%; font-size: 0.85em; padding: 10px;">
+                        <button class="source-file-btn english" onclick="openSourceFile('english')">
                             📋 Fichier ENG sans photo
                         </button>
-                        <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')" style="width: 100%; font-size: 0.85em; padding: 10px;">
+                        <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')">
                             📋 Fichier ENG avec photo
                         </button>
                     </div>
@@ -4088,7 +4112,7 @@
             totalFrenchMessages = 0;
             totalEnglishWithPhotos = 0;
             
-            // Indices des colonnes
+            // Indices des colonnes pour vérifier les photos
             const photo1Index = headers.findIndex(h => 
                 h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('1')
             );
@@ -4096,10 +4120,27 @@
                 h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('2')
             );
             
+            // MODIFICATION: Nouvelle méthode pour compter les fiches avec photos
+            // On vérifie si les colonnes de photo existent et si elles contiennent des valeurs
             if (currentDataSource === 'combined') {
                 // Pour les données combinées, calculer à partir de toutes les sources
                 // Fiches avec photos (sheet1 + sheet4)
-                totalWithPhotos = sheetData1.length + sheetData4.length;
+                // MODIFICATION: Compter uniquement les fiches où les colonnes photo ont des valeurs
+                sheetData1.forEach((row, index) => {
+                    const hasPhoto = (photo1Index !== -1 && row[photo1Index] && row[photo1Index].trim() !== '') || 
+                                    (photo2Index !== -1 && row[photo2Index] && row[photo2Index].trim() !== '');
+                    if (hasPhoto) {
+                        totalWithPhotos++;
+                    }
+                });
+                
+                sheetData4.forEach((row, index) => {
+                    const hasPhoto = (photo1Index !== -1 && row[photo1Index] && row[photo1Index].trim() !== '') || 
+                                    (photo2Index !== -1 && row[photo2Index] && row[photo2Index].trim() !== '');
+                    if (hasPhoto) {
+                        totalWithPhotos++;
+                    }
+                });
                 
                 // Messages anglais (sheet3 + sheet4)
                 totalEnglishMessages = sheetData3.length + sheetData4.length;
@@ -4108,14 +4149,20 @@
                 totalFrenchMessages = sheetData1.length + sheetData2.length;
                 
                 // Messages anglais avec photos (sheet4)
-                totalEnglishWithPhotos = sheetData4.length;
+                sheetData4.forEach((row, index) => {
+                    const hasPhoto = (photo1Index !== -1 && row[photo1Index] && row[photo1Index].trim() !== '') || 
+                                    (photo2Index !== -1 && row[photo2Index] && row[photo2Index].trim() !== '');
+                    if (hasPhoto) {
+                        totalEnglishWithPhotos++;
+                    }
+                });
             } else {
                 // Pour une source spécifique
                 sheetData.forEach((row, index) => {
                     const sourceKey = `${currentDataSource}-${index}`;
                     const source = messageSourceMap[sourceKey] || 'unknown';
                     
-                    // Vérifier si c'est une fiche avec photo
+                    // MODIFICATION: Vérifier si c'est une fiche avec photo (colonnes photo ont des valeurs)
                     if (photo1Index !== -1 && photo2Index !== -1) {
                         const hasPhoto = (row[photo1Index] && row[photo1Index].trim() !== '') || 
                                         (row[photo2Index] && row[photo2Index].trim() !== '');
@@ -4131,24 +4178,17 @@
                             break;
                         case 'english-photo':
                             totalEnglishMessages++;
-                            totalEnglishWithPhotos++;
+                            // MODIFICATION: Compter anglais avec photos seulement si colonnes photo ont des valeurs
                             if (photo1Index !== -1 && photo2Index !== -1) {
                                 const hasPhoto = (row[photo1Index] && row[photo1Index].trim() !== '') || 
                                                 (row[photo2Index] && row[photo2Index].trim() !== '');
                                 if (hasPhoto) {
-                                    totalWithPhotos++;
+                                    totalEnglishWithPhotos++;
                                 }
                             }
                             break;
                         case 'photo':
                             totalFrenchMessages++;
-                            if (photo1Index !== -1 && photo2Index !== -1) {
-                                const hasPhoto = (row[photo1Index] && row[photo1Index].trim() !== '') || 
-                                                (row[photo2Index] && row[photo2Index].trim() !== '');
-                                if (hasPhoto) {
-                                    totalWithPhotos++;
-                                }
-                            }
                             break;
                         case 'nophoto':
                             totalFrenchMessages++;
@@ -4193,7 +4233,8 @@
             
             // MODIFICATION: Mettre à jour les statistiques supplémentaires
             document.getElementById('totalWithPhotos').textContent = totalWithPhotos;
-            document.getElementById('totalEnglishMessages').textContent = totalEnglishMessages;
+            // MODIFICATION: Supprimer les messages anglais avec photos des statistiques totales anglaises
+            document.getElementById('totalEnglishMessages').textContent = totalEnglishMessages - totalEnglishWithPhotos;
             document.getElementById('totalFrenchMessages').textContent = totalFrenchMessages;
             document.getElementById('totalEnglishWithPhotos').textContent = totalEnglishWithPhotos;
         }
