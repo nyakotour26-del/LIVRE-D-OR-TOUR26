@@ -583,6 +583,7 @@
         .popup-option.view {
             background: linear-gradient(135deg, #fef5e7, #fcebb6);
             border-left: 4px solid var(--gold-secondary);
+            font-weight: bold;
         }
         
         .popup-option.edit {
@@ -1474,7 +1475,7 @@
 
         .photo-link-with-preview:hover {
             transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
             border-color: var(--secondary-color);
         }
 
@@ -2256,6 +2257,7 @@
             align-items: center;
             gap: 8px;
             font-size: 0.9em;
+            text-align: center;
         }
         
         .source-btn:hover {
@@ -2472,6 +2474,60 @@
             line-height: 1.2;
             margin-top: 3px;
         }
+        
+        /* Indicateur de drapeau dans les cellules du calendrier */
+        .flag-indicator {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            font-size: 10px;
+            z-index: 1;
+        }
+        
+        /* Indicateur de nombre de messages dans les cellules du calendrier */
+.calendar-day .message-count {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: var(--secondary-color);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 2;
+}
+        
+        .suggestions-container {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .suggestion-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .suggestion-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 <body>
@@ -2597,6 +2653,10 @@
                             <div class="stat-value" id="totalAuteurs">0</div>
                             <div class="stat-label">Auteurs différents</div>
                         </div>
+                        <div class="stat-card" onclick="showAnonymousMessages()">
+                            <div class="stat-value" id="anonymousCount">0</div>
+                            <div class="stat-label">Messages anonymes</div>
+                        </div>
                         <div class="stat-card" onclick="filterByType('pays')">
                             <div class="stat-value" id="totalPays">0</div>
                             <div class="stat-label">Pays différents</div>
@@ -2608,10 +2668,6 @@
                         <div class="stat-card" onclick="showTopCountryMessages()">
                             <div class="stat-value" id="topCountryCount">0</div>
                             <div class="stat-label">Pays avec plus de messages</div>
-                        </div>
-                        <div class="stat-card" onclick="showAnonymousMessages()">
-                            <div class="stat-value" id="anonymousCount">0</div>
-                            <div class="stat-label">Messages anonymes</div>
                         </div>
                     </div>
                     
@@ -2641,19 +2697,19 @@
                     <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
                     <div class="data-source-buttons">
                         <button class="source-btn" onclick="switchDataSource('sheet1')" id="btnSheet1">
-                            📸 FR avec photo
+                            <span id="sheet1Count">0</span> FR avec photos
                         </button>
                         <button class="source-btn" onclick="switchDataSource('sheet2')" id="btnSheet2">
-                            📝 FR sans photo
+                            <span id="sheet2Count">0</span> FR sans photos
                         </button>
                         <button class="source-btn english" onclick="switchDataSource('sheet3')" id="btnSheet3">
-                            🇬🇧 ENG sans photo
+                            <span id="sheet3Count">0</span> ENG sans photos
                         </button>
                         <button class="source-btn english-photo" onclick="switchDataSource('sheet4')" id="btnSheet4">
-                            📸🇬🇧 ENG avec photo
+                            <span id="sheet4Count">0</span> ENG avec photos
                         </button>
                         <button class="source-btn combined active" onclick="switchDataSource('combined')" id="btnCombined">
-                            🔗 Tous combinés
+                            <span id="combinedCount">0</span> Tous combinés
                         </button>
                     </div>
                 </div>
@@ -2695,8 +2751,8 @@
                     📊 Tableau récapitulatif
                 </button>
                 
-                <button class="action-button book" onclick="generateBookPDF()">
-                    📖 Générer le livre PDF
+                <button class="action-button book locked" onclick="showUnlockBubble()">
+                    🔒 Générer le livre PDF
                 </button>
                 
                 <!-- Boutons pour ouvrir les fichiers sources (VISIBLES SEULEMENT POUR ADMIN) -->
@@ -2726,10 +2782,11 @@
         
         <!-- Contenu principal -->
         <div class="main-content">
-            <!-- Section de recherche -->
+            <!-- Section de recherche avec suggestions -->
             <section class="search-section" id="searchSection">
                 <div class="search-form">
                     <input type="text" class="search-input-full" id="searchInput" placeholder="Rechercher dans tous les messages...">
+                    <div class="suggestions-container" id="searchSuggestions"></div>
                     <button class="search-button-circle mobile-search-button" onclick="handleSearch()" title="Rechercher">
                         🔍
                     </button>
@@ -2871,11 +2928,11 @@
         const SOURCE_SHEET_URL_3 = 'https://docs.google.com/spreadsheets/d/1mpo1wPpMUnvSfN2f25BLL988qNX482nI5d3ExVAEsp8/edit?resourcekey=&gid=495568030#gid=495568030';
         const SOURCE_SHEET_URL_4 = 'https://docs.google.com/spreadsheets/d/1e4lqntLV3LFHJp8Y8vveA_E4BdFMXKQwfbJoEvjQCbQ/edit?resourcekey=&gid=1581487665#gid=1581487665';
         
-        // Liens pour écrire de nouveaux messages (mise à jour des liens anglais)
-        const GOOGLE_FORM_URL_WITH_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfrJKU6QpRFo8ni9RVDBPUo8H-Wi-rJzxDXHQNWxoeC2LxL0A/viewform?usp=preview';
-        const GOOGLE_FORM_URL_WITHOUT_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSf6yaozp179sFPngu4Fz1aVPwp9tEnz-YwrV9lzQLkGUIX7MQ/viewform?usp=header';
-        const GOOGLE_FORM_URL_ENGLISH = 'https://docs.google.com/forms/d/e/1FAIpQLSfe_SQ6xObVzDfX4r68kCo3RiwXpKpeH3lwa_6DoGgJUSprAw/viewform?usp=header';
-        const GOOGLE_FORM_URL_ENGLISH_WITH_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfe_SQ6xObVzDfX4r68kCo3RiwXpKpeH3lwa_6DoGgJUSprAw/viewform?usp=header';
+        // Liens pour écrire de nouveaux messages
+        const GOOGLE_FORM_URL_FR_WITH_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfrJKU6QpRFo8ni9RVDBPUo8H-Wi-rJzxDXHQNWxoeC2LxL0A/viewform?usp=preview';
+        const GOOGLE_FORM_URL_FR_WITHOUT_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSf6yaozp179sFPngu4Fz1aVPwp9tEnz-YwrV9lzQLkGUIX7MQ/viewform?usp=header';
+        const GOOGLE_FORM_URL_EN_WITHOUT_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfe_SQ6xObVzDfX4r68kCo3RiwXpKpeH3lwa_6DoGgJUSprAw/viewform?usp=header';
+        const GOOGLE_FORM_URL_EN_WITH_PHOTO = 'https://docs.google.com/forms/d/e/1FAIpQLSfe_SQ6xObVzDfX4r68kCo3RiwXpKpeH3lwa_6DoGgJUSprAw/viewform?usp=header';
         
         // Variables globales
         let sheetData = [];
@@ -2917,6 +2974,9 @@
         let totalEnglishMessages = 0;
         let totalFrenchMessages = 0;
         let totalEnglishWithPhotos = 0;
+        
+        // Pour les suggestions de recherche
+        let allSearchTerms = new Set();
 
         // Liste de titres attractifs
         const creativeTitles = [
@@ -2967,6 +3027,10 @@
                 if (e.key === 'Enter') handleSearch();
             });
             
+            document.getElementById('searchInput').addEventListener('input', function() {
+                showSearchSuggestions(this.value);
+            });
+            
             document.getElementById('prevMonth').addEventListener('click', prevMonth);
             document.getElementById('nextMonth').addEventListener('click', nextMonth);
             
@@ -3005,6 +3069,12 @@
                 const photoModal = document.getElementById('photoModal');
                 if (photoModal && photoModal.style.display === 'flex' && !photoModal.contains(e.target)) {
                     closePhotoModal();
+                }
+                
+                // Fermer les suggestions en cliquant ailleurs
+                const suggestions = document.getElementById('searchSuggestions');
+                if (suggestions && !e.target.classList.contains('search-input-full')) {
+                    suggestions.style.display = 'none';
                 }
             });
             
@@ -3160,12 +3230,13 @@
                 pays = messages[0].row[paysIndex] || '';
             }
             
+            // NE PAS ajouter +1 jour pour le popup du calendrier
             document.getElementById('popupTitle').textContent = lieu || 'Non spécifié';
             document.getElementById('popupDate').textContent = 
                 `${date.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}
                  ${pays ? `- ${pays}` : ''}`;
             document.getElementById('popupCount').textContent = `${messages.length} message${messages.length > 1 ? 's' : ''}`;
-            
+    
             // Nettoyer les options précédentes
             popupOptions.innerHTML = '';
             
@@ -3177,23 +3248,23 @@
                         📖 Voir le calendrier
                     </div>
                     <div class="popup-option with-photo" onclick="openNewMessageForm('with-photo')">
-                        📸 Écrire un message avec photo
+                        📸 Ecrire nouveau FR avec upload
                     </div>
                     <div class="popup-option without-photo" onclick="openNewMessageForm('without-photo')">
-                        📝 Écrire un message sans photo
+                        📝 Ecrire nouveau FR avec photo
                     </div>
                     <div class="popup-option english" onclick="openNewMessageForm('english')">
-                        🇬🇧 Écrire un message en anglais sans photo
+                        🇬🇧 Ecrire nouveau ENG sans photo
                     </div>
                     <div class="popup-option english-photo" onclick="openNewMessageForm('english-photo')">
-                        📸🇬🇧 Écrire un message en anglais avec photo
+                        📸🇬🇧 Ecrire nouveau ENG avec photo
                     </div>
                 `;
             } else {
                 // Si des messages existent, améliorer l'interface
                 popupOptions.innerHTML = `
                     <div class="popup-option view" onclick="viewDayMessages()">
-                        📖 Voir les ${messages.length} fiche(s) de message(s) du jour
+                        📖 <strong>Voir les ${messages.length} fiche(s) de message(s) du jour</strong>
                     </div>
                 `;
                 
@@ -3204,21 +3275,28 @@
                             ✏️ Modifier les fiches de message
                         </div>
                     `;
+                } else {
+                    // Si non déverrouillé, montrer mais désactivé
+                    popupOptions.innerHTML += `
+                        <div class="popup-option edit" style="opacity: 0.5; cursor: not-allowed;" onclick="showUnlockBubble()">
+                            ✏️ Modifier les fiches de message (🔒)
+                        </div>
+                    `;
                 }
                 
-                // Ajouter les options pour écrire de nouveaux messages
+                // Ajouter les options pour écrire de nouveaux messages (toujours visibles)
                 popupOptions.innerHTML += `
                     <div class="popup-option with-photo" onclick="openNewMessageForm('with-photo')">
-                        📸 Écrire un nouveau message avec photo
+                        📸 Ecrire nouveau FR avec upload
                     </div>
                     <div class="popup-option without-photo" onclick="openNewMessageForm('without-photo')">
-                        📝 Écrire un nouveau message sans photo
+                        📝 Ecrire nouveau FR avec photo
                     </div>
                     <div class="popup-option english" onclick="openNewMessageForm('english')">
-                        🇬🇧 Écrire un nouveau message en anglais sans photo
+                        🇬🇧 Ecrire nouveau ENG sans photo
                     </div>
                     <div class="popup-option english-photo" onclick="openNewMessageForm('english-photo')">
-                        📸🇬🇧 Écrire un nouveau message en anglais avec photo
+                        📸🇬🇧 Ecrire nouveau ENG avec photo
                     </div>
                 `;
                 
@@ -3227,6 +3305,13 @@
                     popupOptions.innerHTML += `
                         <div class="popup-option" onclick="exportDayToPDF()" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); border-left: 4px solid #9b59b6;">
                             📄 Exporter en PDF les fiches du jour
+                        </div>
+                    `;
+                } else {
+                    // Si non déverrouillé, montrer mais désactivé
+                    popupOptions.innerHTML += `
+                        <div class="popup-option" style="background: linear-gradient(135deg, #9b59b6, #8e44ad); border-left: 4px solid #9b59b6; opacity: 0.5; cursor: not-allowed;" onclick="showUnlockBubble()">
+                            📄 Exporter en PDF les fiches du jour (🔒)
                         </div>
                     `;
                 }
@@ -3240,25 +3325,30 @@
             let url;
             switch(type) {
                 case 'with-photo':
-                    url = GOOGLE_FORM_URL_WITH_PHOTO;
+                    url = GOOGLE_FORM_URL_FR_WITH_PHOTO;
                     break;
                 case 'without-photo':
-                    url = GOOGLE_FORM_URL_WITHOUT_PHOTO;
+                    url = GOOGLE_FORM_URL_FR_WITHOUT_PHOTO;
                     break;
                 case 'english':
-                    url = GOOGLE_FORM_URL_ENGLISH;
+                    url = GOOGLE_FORM_URL_EN_WITHOUT_PHOTO;
                     break;
                 case 'english-photo':
-                    url = GOOGLE_FORM_URL_ENGLISH_WITH_PHOTO;
+                    url = GOOGLE_FORM_URL_EN_WITH_PHOTO;
                     break;
                 default:
-                    url = GOOGLE_FORM_URL_WITH_PHOTO;
+                    url = GOOGLE_FORM_URL_FR_WITH_PHOTO;
             }
             window.open(url, '_blank');
             closeCalendarPopup();
         }
         
         function editDayMessages() {
+            if (!isAdminUnlocked) {
+                showUnlockBubble();
+                return;
+            }
+            
             if (popupDate) {
                 const dateKey = popupDate.toISOString().split('T')[0];
                 const messages = dateMessagesMap[dateKey] || [];
@@ -3437,8 +3527,6 @@
                     { url: 'https://api.allorigins.win/raw?url=', name: 'AllOrigins' }
                 ];
                 
-                let lastError;
-                
                 // Charger les quatre feuilles en parallèle
                 updateProgress(25, 'Chargement du livre d\'or FR avec photo...');
                 const data1 = await loadSingleSheet(GOOGLE_SHEETS_URL_1, 'sheet1');
@@ -3481,6 +3569,9 @@
                     messageSourceMap[`sheet4-${index}`] = 'english-photo';
                 });
                 
+                // Mettre à jour les comptes des boutons
+                updateSourceButtonsCount();
+                
                 // Combiner les données
                 combineData();
                 
@@ -3508,6 +3599,15 @@
                 showLoadError(errorMessage);
                 showError(errorMessage);
             }
+        }
+
+        // Mettre à jour les comptes des boutons de source
+        function updateSourceButtonsCount() {
+            document.getElementById('sheet1Count').textContent = sheetData1.length;
+            document.getElementById('sheet2Count').textContent = sheetData2.length;
+            document.getElementById('sheet3Count').textContent = sheetData3.length;
+            document.getElementById('sheet4Count').textContent = sheetData4.length;
+            document.getElementById('combinedCount').textContent = sheetData1.length + sheetData2.length + sheetData3.length + sheetData4.length;
         }
 
         // Charger une seule feuille
@@ -3667,14 +3767,98 @@
             extractAllNoms();
             extractAllPays();
             calculateCountryStats();
-            calculateAdditionalStats(); // MODIFICATION: Ajout du calcul des stats supplémentaires
+            calculateAdditionalStats();
             updateStats();
             renderFilterTags();
             renderCalendar();
             renderDatesTags();
             extractMessageLinks();
             extractPhotoUrls();
+            extractSearchTerms();
             showDataInfo();
+        }
+
+        // Extraire les termes de recherche
+        function extractSearchTerms() {
+            allSearchTerms.clear();
+            
+            // Ajouter tous les noms
+            allNoms.forEach(nom => {
+                if (nom && nom.trim() !== '') {
+                    allSearchTerms.add(nom.trim().toLowerCase());
+                }
+            });
+            
+            // Ajouter tous les pays
+            allPays.forEach(pays => {
+                if (pays && pays.trim() !== '') {
+                    allSearchTerms.add(pays.trim().toLowerCase());
+                }
+            });
+            
+            // Ajouter tous les lieux
+            allLieux.forEach(lieu => {
+                if (lieu && lieu.trim() !== '') {
+                    allSearchTerms.add(lieu.trim().toLowerCase());
+                }
+            });
+            
+            // Extraire des mots des messages
+            const messageIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('votre') && h.toLowerCase().includes('message')
+            );
+            
+            if (messageIndex !== -1) {
+                sheetData.forEach(row => {
+                    const message = row[messageIndex] || '';
+                    if (message.trim() !== '') {
+                        // Extraire les mots de 3 caractères ou plus
+                        const words = message.toLowerCase().split(/\s+/);
+                        words.forEach(word => {
+                            if (word.length >= 3 && /^[a-zàâäéèêëîïôöùûüç]+$/i.test(word)) {
+                                allSearchTerms.add(word);
+                            }
+                        });
+                    }
+                });
+            }
+            
+            console.log(`📋 ${allSearchTerms.size} termes de recherche extraits`);
+        }
+
+        // Afficher les suggestions de recherche
+        function showSearchSuggestions(query) {
+            const suggestionsContainer = document.getElementById('searchSuggestions');
+            suggestionsContainer.innerHTML = '';
+            
+            if (!query || query.trim() === '') {
+                suggestionsContainer.style.display = 'none';
+                return;
+            }
+            
+            const queryLower = query.toLowerCase().trim();
+            const matches = Array.from(allSearchTerms)
+                .filter(term => term.includes(queryLower))
+                .slice(0, 10); // Limiter à 10 suggestions
+            
+            if (matches.length === 0) {
+                suggestionsContainer.style.display = 'none';
+                return;
+            }
+            
+            matches.forEach(match => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.textContent = match;
+                div.onclick = function() {
+                    document.getElementById('searchInput').value = match;
+                    suggestionsContainer.style.display = 'none';
+                    handleSearch();
+                };
+                suggestionsContainer.appendChild(div);
+            });
+            
+            suggestionsContainer.style.display = 'block';
         }
 
         // Parsing CSV optimisé
@@ -3725,7 +3909,7 @@
             return lines;
         }
 
-        // MODIFICATION: Correction de l'extraction des dates - utilisation des dates exactes
+        // MODIFICATION: Correction de l'extraction des dates
         function extractDatesWithData() {
             datesWithData = [];
             dateMessagesMap = {};
@@ -3736,7 +3920,7 @@
                 if (dateStr && dateStr.trim() !== '') {
                     const date = parseDate(dateStr);
                     if (date) {
-                        // Utiliser la date exacte des fiches (sans ajustement -1 jour)
+                        // Utiliser la date exacte des fiches
                         const dateKey = date.toISOString().split('T')[0];
                         if (!dateMessagesMap[dateKey]) {
                             dateMessagesMap[dateKey] = [];
@@ -4014,148 +4198,183 @@
             });
         }
 
-        // MODIFICATION: Correction du rendu des dates - utiliser les dates exactes
-       function renderDatesTags() {
-    const container = document.getElementById('datesTags');
-    container.innerHTML = '';
+        // MODIFICATION: Correction du rendu des dates
+        function renderDatesTags() {
+            const container = document.getElementById('datesTags');
+            container.innerHTML = '';
+            
+            const uniqueDates = [...new Set(datesWithData.map(d => 
+                d.date.toISOString().split('T')[0]
+            ))].sort().reverse();
+            
+            uniqueDates.forEach(dateStr => {
+                const date = new Date(dateStr);
+                
+                // AJOUTER 1 JOUR UNIQUEMENT POUR L'AFFICHAGE DANS L'ACCUEIL
+                const displayDate = new Date(date);
+                displayDate.setDate(displayDate.getDate() + 1);
+                
+                const count = dateMessagesMap[dateStr]?.length || 0;
+                
+                const tag = document.createElement('div');
+                tag.className = 'date-tag';
+                tag.innerHTML = `
+                    <div style="font-weight: bold; color: var(--gold-dark);">
+                        ${displayDate.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+                    </div>
+                    <div style="font-size: 0.8em; color: var(--text-medium);">
+                        ${count} message${count > 1 ? 's' : ''}
+                    </div>
+                `;
+                
+                tag.addEventListener('click', () => {
+                    // Appeler avec fromCalendar = false (car vient des dates extraites)
+                    selectDate(date, false);
+                });
+                
+                container.appendChild(tag);
+            });
+        }
+
+       function renderCalendar() {
+    const grid = document.getElementById('calendarGrid');
+    const monthElement = document.getElementById('currentMonth');
     
-    const uniqueDates = [...new Set(datesWithData.map(d => 
-        d.date.toISOString().split('T')[0]
-    ))].sort().reverse();
-    
-    console.log('=== DATES DANS L\'ACCUEIL ===');
-    
-    uniqueDates.forEach(dateStr => {
-        const date = new Date(dateStr);
-        const displayDate = new Date(date);
-        displayDate.setDate(displayDate.getDate() + 1);
-        
-        const count = dateMessagesMap[dateStr]?.length || 0;
-        
-        console.log(`Originale: ${date.toLocaleDateString('fr-FR')} -> Affichée: ${displayDate.toLocaleDateString('fr-FR')} (+1 jour)`);
-        
-        const tag = document.createElement('div');
-        tag.className = 'date-tag';
-        tag.innerHTML = `
-            <div style="font-weight: bold; color: var(--gold-dark);">
-                ${displayDate.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
-            </div>
-            <div style="font-size: 0.8em; color: var(--text-medium);">
-                ${count} message${count > 1 ? 's' : ''}
-            </div>
-        `;
-        
-        tag.addEventListener('click', () => {
-            console.log(`Clic sur: ${displayDate.toLocaleDateString('fr-FR')} (date originale: ${date.toLocaleDateString('fr-FR')})`);
-            selectDate(date);
-        });
-        
-        container.appendChild(tag);
+    monthElement.textContent = currentDate.toLocaleDateString('fr-FR', {
+        month: 'long',
+        year: 'numeric'
     });
     
-    console.log('=== FIN DATES ACCUEIL ===');
-}
-
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            const monthElement = document.getElementById('currentMonth');
+    grid.innerHTML = '';
+    
+    // En-têtes des jours
+    ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].forEach(day => {
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'calendar-day-header';
+        dayHeader.textContent = day;
+        grid.appendChild(dayHeader);
+    });
+    
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+    
+    let startDay = firstDay.getDay();
+    startDay = startDay === 0 ? 6 : startDay - 1;
+    
+    // Jours vides du début
+    for (let i = 0; i < startDay; i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'calendar-day other-month';
+        grid.appendChild(emptyDay);
+    }
+    
+    // Jours du mois
+    for (let i = 1; i <= lastDay.getDate(); i++) {
+        const day = document.createElement('div');
+        day.className = 'calendar-day';
+        day.textContent = i;
+        
+        const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
+        const dateKey = date.toISOString().split('T')[0];
+        const messages = dateMessagesMap[dateKey] || [];
+        
+        if (messages.length > 0) {
+            day.classList.add('has-data');
             
-            monthElement.textContent = currentDate.toLocaleDateString('fr-FR', {
-                month: 'long',
-                year: 'numeric'
-            });
+            // Déterminer la source principale pour ce jour
+            let sourceType = 'mixed';
+            const sources = new Set(messages.map(m => m.source));
             
-            grid.innerHTML = '';
-            
-            // En-têtes des jours
-            ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'].forEach(day => {
-                const dayHeader = document.createElement('div');
-                dayHeader.className = 'calendar-day-header';
-                dayHeader.textContent = day;
-                grid.appendChild(dayHeader);
-            });
-            
-            const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-            const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
-            
-            let startDay = firstDay.getDay();
-            startDay = startDay === 0 ? 6 : startDay - 1;
-            
-            // Jours vides du début
-            for (let i = 0; i < startDay; i++) {
-                const emptyDay = document.createElement('div');
-                emptyDay.className = 'calendar-day other-month';
-                grid.appendChild(emptyDay);
+            if (sources.size === 1) {
+                sourceType = Array.from(sources)[0];
             }
             
-            // Jours du mois
-            for (let i = 1; i <= lastDay.getDate(); i++) {
-                const day = document.createElement('div');
-                day.className = 'calendar-day';
-                day.textContent = i;
-                
-                const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
-                const dateKey = date.toISOString().split('T')[0];
-                const messages = dateMessagesMap[dateKey] || [];
-                
-                if (messages.length > 0) {
-                    day.classList.add('has-data');
-                    
-                    // Déterminer la source principale pour ce jour
-                    let sourceType = 'mixed';
-                    const sources = new Set(messages.map(m => m.source));
-                    
-                    if (sources.size === 1) {
-                        sourceType = Array.from(sources)[0];
-                    }
-                    
-                    day.classList.add(sourceType);
-                    day.title = `${messages.length} message${messages.length > 1 ? 's' : ''}`;
-                    
-                    day.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        showCalendarPopup(date);
-                    });
-                } else {
-                    // Si pas de messages, permettre quand même de cliquer pour écrire
-                    day.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        showCalendarPopup(date);
-                    });
-                }
-                
-                grid.appendChild(day);
+            day.classList.add(sourceType);
+            
+            // Ajouter le nombre de messages dans un cercle coloré en haut à droite
+            const countSpan = document.createElement('span');
+            countSpan.className = 'message-count';
+            countSpan.textContent = messages.length;
+            day.appendChild(countSpan);
+            
+            // Ajouter l'icône de source
+            const sourceIcon = document.createElement('span');
+            sourceIcon.className = 'flag-indicator';
+            
+            // Vérifier s'il y a des messages anglais
+            const hasEnglish = messages.some(m => m.source === 'english' || m.source === 'english-photo');
+            const hasFrench = messages.some(m => m.source === 'photo' || m.source === 'nophoto');
+            
+            if (hasEnglish && hasFrench) {
+                sourceIcon.textContent = '🌍';
+                sourceIcon.title = 'Messages FR et ENG';
+            } else if (hasEnglish) {
+                sourceIcon.textContent = '🇬🇧';
+                sourceIcon.title = 'Messages en anglais';
+            } else if (hasFrench) {
+                sourceIcon.textContent = '🇫🇷';
+                sourceIcon.title = 'Messages en français';
             }
+            
+            day.appendChild(sourceIcon);
+            
+            day.title = `${messages.length} message${messages.length > 1 ? 's' : ''}`;
+            
+            day.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showCalendarPopup(date);
+            });
+        } else {
+            // Si pas de messages, permettre quand même de cliquer pour écrire
+            day.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showCalendarPopup(date);
+            });
         }
+        
+        grid.appendChild(day);
+    }
+}
 
         function viewDayMessages() {
             if (popupDate) {
-                selectDate(popupDate);
+                // Appeler avec fromCalendar = true (car vient du calendrier)
+                selectDate(popupDate, true);
                 closeCalendarPopup();
             }
         }
 
         function exportDayToPDF() {
+            if (!isAdminUnlocked) {
+                showUnlockBubble();
+                return;
+            }
+            
             if (popupDate) {
                 const dateKey = popupDate.toISOString().split('T')[0];
                 const messages = dateMessagesMap[dateKey] || [];
                 if (messages.length > 0) {
-                    if (isAdminUnlocked) {
-                        // Convertir les objets message en lignes simples
-                        const rows = messages.map(m => m.row);
-                        exportDayMessagesToPDF(rows, popupDate);
-                    } else {
-                        showUnlockBubble();
-                    }
+                    // Convertir les objets message en lignes simples
+                    const rows = messages.map(m => m.row);
+                    exportDayMessagesToPDF(rows, popupDate);
                 }
             }
             closeCalendarPopup();
         }
 
-        function selectDate(date) {
+        function selectDate(date, fromCalendar = false) {
             selectedDate = date;
+            
+            // AJOUTER +1 jour UNIQUEMENT si on vient des dates extraites (pas du calendrier)
+            const displayDate = new Date(date);
+            if (!fromCalendar) {
+                displayDate.setDate(displayDate.getDate() + 1);
+            }
+            
             const matchingRows = findEntriesByDate(date);
-            displayResults(matchingRows, `Messages du ${formatDateForDisplay(date)}`);
+            
+            // Utiliser la date appropriée pour le titre
+            displayResults(matchingRows, `Messages du ${formatDateForDisplay(displayDate)} (${matchingRows.length} message${matchingRows.length !== 1 ? 's' : ''})`);
             renderCalendar();
         }
 
@@ -4234,6 +4453,9 @@
             
             const results = searchData(searchValue);
             displayResults(results, `Résultats pour "${searchValue}"`);
+            
+            // Cacher les suggestions
+            document.getElementById('searchSuggestions').style.display = 'none';
         }
 
         function searchData(searchValue) {
@@ -4542,20 +4764,20 @@
         }
 
         // Fonction pour formater la date en ddd dd-mm-aa
-       function formatDateToDDD_DD_MM_AA(dateStr) {
-    if (!dateStr) return '';
-    
-    const date = parseDate(dateStr);
-    if (!date) return dateStr;
-    
-    const jours = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-    const jourSemaine = jours[date.getDay()];
-    const jour = date.getDate().toString().padStart(2, '0');
-    const mois = (date.getMonth() + 1).toString().padStart(2, '0');
-    const annee = date.getFullYear().toString().slice(-2);
-    
-    return `${jourSemaine} ${jour}-${mois}-${annee}`;
-}
+        function formatDateToDDD_DD_MM_AA(dateStr) {
+            if (!dateStr) return '';
+            
+            const date = parseDate(dateStr);
+            if (!date) return dateStr;
+            
+            const jours = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+            const jourSemaine = jours[date.getDay()];
+            const jour = date.getDate().toString().padStart(2, '0');
+            const mois = (date.getMonth() + 1).toString().padStart(2, '0');
+            const annee = date.getFullYear().toString().slice(-2);
+            
+            return `${jourSemaine} ${jour}-${mois}-${annee}`;
+        }
 
         function filterByType(type) {
             if (type === 'nom') {
@@ -5045,6 +5267,7 @@
             exportDayMessagesToPDF(sheetData, new Date());
         }
 
+        // MODIFICATION: Ajouter les aperçus photos dans le livre PDF avec textes réduits
         function generateBookPDF() {
             if (!isAdminUnlocked) {
                 showUnlockBubble();
@@ -5130,6 +5353,21 @@
                         const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
                         const hasPhotos = photo1.trim() !== '' || photo2.trim() !== '';
                         
+                        // Fonction pour créer une miniature Google Drive
+                        const generateThumbnailUrl = (url) => {
+                            if (!url) return '';
+                            if (url.includes('drive.google.com')) {
+                                if (url.includes('/file/d/')) {
+                                    const fileId = url.split('/file/d/')[1].split('/')[0];
+                                    return `https://drive.google.com/thumbnail?sz=w400&id=${fileId}`;
+                                } else if (url.includes('id=')) {
+                                    const fileId = url.split('id=')[1].split('&')[0];
+                                    return `https://drive.google.com/thumbnail?sz=w400&id=${fileId}`;
+                                }
+                            }
+                            return url;
+                        };
+                        
                         bookContent += `
                             <div class="message-item" style="margin: 20px 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #f9f9f9; page-break-inside: avoid;">
                                 <div style="font-weight: bold; color: #8B6914; text-align: center; margin-bottom: 10px; font-size: 1.1em;">
@@ -5149,18 +5387,37 @@
                                 
                                 ${hasPhotos ? `
                                 <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 5px; font-size: 0.9em; color: #666;">
-                                    <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">📸 Photos souvenir</div>
+                                    <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">📸 Photos souvenir (aperçus)</div>
                                     <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
                                         ${photo1.trim() !== '' ? `
-                                        <div style="text-align: center; max-width: 300px;">
-                                            <img src="${photo1}" alt="Photo souvenir 1" style="max-width: 100%; height: 250px; object-fit: cover; border-radius: 8px; border: 2px solid #3498db; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                                            <div style="font-size: 0.9em; margin-top: 8px; font-weight: bold;">Photo 1</div>
+                                        <div style="text-align: center;">
+                                            <div class="photo-preview-container" style="display: inline-block; margin: 5px; text-align: center; vertical-align: top;">
+                                                <div class="photo-link-with-preview" style="display: block; width: 200px; height: 200px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 3px solid #D4AF37; position: relative; transition: all 0.3s; background: linear-gradient(135deg, #f8f9fa, #e9ecef); margin: 0 auto;">
+                                                    <img src="${generateThumbnailUrl(photo1)}" 
+                                                         alt="Photo souvenir 1" 
+                                                         style="width: 100%; height: 100%; object-fit: cover; display: block;"
+                                                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
+                                                </div>
+                                                <div class="photo-label" style="margin-top: 8px; font-size: 0.85em; font-weight: 600; color: #8B6914; padding: 5px 8px; background: white; border-radius: 8px; border-left: 3px solid #D4AF37;">
+                                                    Photo souvenir 1
+                                                </div>
+                                            </div>
                                         </div>
                                         ` : ''}
+                                        
                                         ${photo2.trim() !== '' ? `
-                                        <div style="text-align: center; max-width: 300px;">
-                                            <img src="${photo2}" alt="Photo souvenir 2" style="max-width: 100%; height: 250px; object-fit: cover; border-radius: 8px; border: 2px solid #3498db; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-                                            <div style="font-size: 0.9em; margin-top: 8px; font-weight: bold;">Photo 2</div>
+                                        <div style="text-align: center;">
+                                            <div class="photo-preview-container" style="display: inline-block; margin: 5px; text-align: center; vertical-align: top;">
+                                                <div class="photo-link-with-preview" style="display: block; width: 200px; height: 200px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: 3px solid #D4AF37; position: relative; transition: all 0.3s; background: linear-gradient(135deg, #f8f9fa, #e9ecef); margin: 0 auto;">
+                                                    <img src="${generateThumbnailUrl(photo2)}" 
+                                                         alt="Photo souvenir 2" 
+                                                         style="width: 100%; height: 100%; object-fit: cover; display: block;"
+                                                         onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
+                                                </div>
+                                                <div class="photo-label" style="margin-top: 8px; font-size: 0.85em; font-weight: 600; color: #8B6914; padding: 5px 8px; background: white; border-radius: 8px; border-left: 3px solid #D4AF37;">
+                                                    Photo souvenir 2
+                                                </div>
+                                            </div>
                                         </div>
                                         ` : ''}
                                     </div>
@@ -5240,52 +5497,147 @@
                 <head>
                     <title>Livre d'Or Tournée Europe 2026 - NY AKO</title>
                     <style>
-                        body { font-family: Arial, sans-serif; margin: 25px; line-height: 1.6; color: #333; font-size: 16px; }
-                        h1 { color: #8b0000; text-align: center; margin-bottom: 10px; padding-bottom: 15px; border-bottom: 3px solid #D4AF37; font-size: 28px; }
-                        h2 { color: #8b0000; margin-top: 40px; padding-bottom: 8px; border-bottom: 2px solid #eee; font-size: 22px; }
-                        h3 { color: #8A2BE2; margin-top: 25px; font-size: 18px; }
-                        .intro { background: #fef5e7; padding: 25px; border-radius: 10px; margin-bottom: 30px; border: 2px solid #D4AF37; }
-                        .country-section { margin-bottom: 50px; page-break-inside: avoid; }
-                        .lieu-section { margin-left: 20px; margin-bottom: 30px; }
-                        .message-item { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: #f9f9f9; page-break-inside: avoid; }
-                        .conclusion { margin-top: 50px; padding: 25px; background: #e8f5e9; border-radius: 10px; font-style: italic; border: 2px solid #27ae60; }
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            margin: 25px; 
+                            line-height: 1.6; 
+                            color: #333; 
+                            font-size: 16px;
+                            background: #FFF8E1;
+                        }
+                        h1 { 
+                            color: #8b0000; 
+                            text-align: center; 
+                            margin-bottom: 10px; 
+                            padding-bottom: 15px; 
+                            border-bottom: 3px solid #D4AF37; 
+                            font-size: 28px; 
+                            font-family: 'Georgia', serif;
+                        }
+                        h2 { 
+                            color: #8b0000; 
+                            margin-top: 40px; 
+                            padding-bottom: 8px; 
+                            border-bottom: 2px solid #D4AF37; 
+                            font-size: 22px;
+                            font-family: 'Georgia', serif;
+                        }
+                        h3 { 
+                            color: #8A2BE2; 
+                            margin-top: 25px; 
+                            font-size: 18px;
+                            font-weight: bold;
+                        }
+                        .intro { 
+                            background: #FFFDF0; 
+                            padding: 25px; 
+                            border-radius: 10px; 
+                            margin-bottom: 30px; 
+                            border: 2px solid #D4AF37;
+                            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+                        }
+                        .country-section { 
+                            margin-bottom: 50px; 
+                            page-break-inside: avoid;
+                            background: white;
+                            padding: 20px;
+                            border-radius: 8px;
+                            border: 1px solid #e9ecef;
+                        }
+                        .lieu-section { 
+                            margin-left: 20px; 
+                            margin-bottom: 30px;
+                            padding: 15px;
+                            background: #f8f9fa;
+                            border-radius: 8px;
+                        }
+                        .message-item { 
+                            margin: 20px 0; 
+                            padding: 20px; 
+                            border: 1px solid #ddd; 
+                            border-radius: 8px; 
+                            background: white;
+                            page-break-inside: avoid;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        }
+                        .conclusion { 
+                            margin-top: 50px; 
+                            padding: 25px; 
+                            background: #e8f5e9; 
+                            border-radius: 10px; 
+                            font-style: italic; 
+                            border: 2px solid #27ae60;
+                        }
+                        .photo-preview-container {
+                            display: inline-block;
+                            margin: 5px;
+                            text-align: center;
+                            vertical-align: top;
+                        }
+                        .photo-link-with-preview {
+                            display: block;
+                            width: 200px;
+                            height: 200px;
+                            border-radius: 12px;
+                            overflow: hidden;
+                            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                            border: 3px solid #D4AF37;
+                            position: relative;
+                            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                            margin: 0 auto;
+                        }
+                        .photo-label {
+                            margin-top: 8px;
+                            font-size: 0.85em;
+                            font-weight: 600;
+                            color: #8B6914;
+                            padding: 5px 8px;
+                            background: white;
+                            border-radius: 8px;
+                            border-left: 3px solid #D4AF37;
+                        }
                         @media print {
                             .page-break { page-break-before: always; }
-                            body { margin: 15mm; }
+                            body { margin: 15mm; background: white; }
                             .message-item { page-break-inside: avoid; }
+                            .photo-link-with-preview {
+                                width: 180px;
+                                height: 180px;
+                            }
                         }
                     </style>
                 </head>
                 <body>
-                    <h1>📖 Livre d'Or Tournée Europe 2026</h1>
-                    <h2 style="text-align: center; color: #666; margin-bottom: 30px; font-size: 20px;">NY AKO - Ligue pour la Lecture de la Bible Madagascar</h2>
+                    <div style="text-align: center; margin-bottom: 30px;">
+                        <h1>📖 Livre d'Or Tournée Europe 2026</h1>
+                        <h2 style="text-align: center; color: #8B6914; margin-bottom: 30px; font-size: 20px; font-family: 'Georgia', serif;">
+                            NY AKO - Ligue pour la Lecture de la Bible Madagascar
+                        </h2>
+                    </div>
                     
                     <div class="intro">
-                        <h3>Introduction</h3>
-                        <p>Nous sommes un groupe artistique appartenant à la ligue pour la lecture de la Bible à Madagascar. Cette tournée européenne 2026 représente un voyage spirituel et culturel d'une grande importance pour notre ministère. Elle a pour objectif de partager notre foi, notre culture et notre art à travers différents pays européens, créant des ponts entre les cultures et témoignant de l'amour de Dieu.</p>
-                        <p>Chaque rencontre, chaque concert, chaque partage est une occasion unique de témoigner de l'amour de Dieu et de construire des relations fraternelles. Cette tournée nous permet de rencontrer des communautés chrétiennes variées, de partager notre héritage culturel malgache riche en musique et danse, et de recevoir des encouragements précieux pour notre cheminement spirituel.</p>
-                        <p>Notre thème <strong>"Nos sources sont en Toi"</strong> puise son inspiration dans le Psaume 87:7. Il rappelle que notre véritable source de vie, d'inspiration et de force se trouve en Jésus-Christ. À travers la musique, la danse et le témoignage, nous souhaitons partager cette source inépuisable avec tous ceux que nous rencontrons. Cette tournée n'est pas seulement une série de concerts, mais un pèlerinage spirituel où nous puisons à la Source divine pour ensuite pouvoir désaltérer ceux qui ont soif.</p>
+                        <h3 style="color: #D4AF37; text-align: center; font-size: 24px;">Thème: "Nos sources sont en Toi"</h3>
+                        <p>Ce livre d'or rassemble les témoignages et souvenirs de notre tournée européenne 2026. Chaque message représente un moment partagé, une rencontre précieuse, un encouragement reçu tout au long de notre parcours.</p>
                         
-                        <h3>📊 Statistiques de la tournée</h3>
+                        <h3 style="color: #D4AF37; margin-top: 30px;">📊 Statistiques</h3>
                         ${statsHtml}
                     </div>
                     
-                    <h2 style="text-align: center; color: #8b0000; margin-top: 40px; font-size: 24px;">📝 Messages classés par pays</h2>
+                    <h2 style="text-align: center; color: #8b0000; margin-top: 40px; font-size: 24px; border-bottom: 2px solid #D4AF37; padding-bottom: 15px;">
+                        📝 Messages classés par pays
+                    </h2>
                     ${bookContent}
                     
                     <div class="conclusion">
                         <h3>Conclusion</h3>
-                        <p>Ces messages sont bien plus que de simples mots écrits sur papier. Ils représentent des rencontres, des partages, des moments de grâce qui ont marqué notre parcours. Chaque témoignage est une pierre précieuse ajoutée à l'édifice de notre ministère, un encouragement qui nous soutient dans les moments difficiles, un rappel que notre travail porte du fruit.</p>
-                        <p>Ils nous rappellent que, malgré les distances géographiques et les différences culturelles, nous formons une seule famille en Christ, unie par la même foi et le même amour. Ces messages traversent les frontières et les barrières linguistiques pour nous toucher au plus profond de notre être.</p>
-                        <p>Que ces pages soient un témoignage durable de l'impact de notre tournée et une source d'encouragement pour les années à venir. Notre prière est que ces messages continuent à porter du fruit bien au-delà de cette tournée, inspirant d'autres à chercher leur source en Jésus et à partager leur foi avec créativité et passion.</p>
-                        <p><em>"Que la parole de Christ habite parmi vous abondamment ; instruisez-vous et exhortez-vous les uns les autres en toute sagesse, par des psaumes, par des hymnes, par des cantiques spirituels, chantant à Dieu dans vos cœurs sous l'inspiration de la Grâce."</em> (Colossiens 3:16)</p>
-                        <p>Nous remercions chaleureusement toutes les personnes qui ont pris le temps d'écrire dans ce livre d'or. Vos mots sont pour nous un trésor précieux qui nous accompagnera dans notre mission future. Que Dieu bénisse abondamment chacun d'entre vous et vous guide dans vos propres chemins de foi.</p>
+                        <p>Ces messages sont un trésor précieux qui accompagnera notre ministère. Ils témoignent des rencontres et partages qui ont marqué notre tournée. Merci à tous ceux qui ont pris le temps d'écrire dans ce livre d'or.</p>
+                        <p>Que ces témoignages continuent à porter du fruit et à nous encourager dans notre mission.</p>
                     </div>
                     
                     <div style="margin-top: 50px; text-align: center; color: #7f8c8d; font-size: 14px; padding-top: 20px; border-top: 1px solid #eee;">
                         <p>Export généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
-                        <p>Total des messages: ${sheetData.length} | Pays visités: ${Object.keys(messagesByCountry).length} | Auteurs: ${allNoms.length}</p>
-                        <p>Source: ${getDataSourceName(currentDataSource)}</p>
+                        <p><strong>Total:</strong> ${sheetData.length} messages | <strong>Pays:</strong> ${Object.keys(messagesByCountry).length} | <strong>Auteurs:</strong> ${allNoms.length}</p>
+                        <p><strong>Source:</strong> ${getDataSourceName(currentDataSource)}</p>
                     </div>
                 </body>
                 </html>
@@ -5410,6 +5762,7 @@
             document.getElementById('adminSourceButtons').style.display = 'flex';
             document.getElementById('mobileAdminSourceButtons').style.display = 'flex';
             
+            // Déverrouiller tous les boutons export
             document.querySelectorAll('.export-btn.locked').forEach(btn => {
                 btn.classList.remove('locked');
                 btn.innerHTML = btn.innerHTML.replace('🔒 ', '');
@@ -5425,6 +5778,14 @@
                     btn.onclick = exportTableToPDF;
                 }
             });
+            
+            // Déverrouiller le bouton "Générer le livre PDF" dans la sidebar
+            const sidebarBookBtn = document.querySelector('.action-button.book.locked');
+            if (sidebarBookBtn) {
+                sidebarBookBtn.classList.remove('locked');
+                sidebarBookBtn.innerHTML = sidebarBookBtn.innerHTML.replace('🔒 ', '');
+                sidebarBookBtn.onclick = generateBookPDF;
+            }
             
             const excelBtn = document.querySelector('.export-btn.excel');
             const pdfBtn = document.querySelector('.export-btn.pdf');
@@ -5457,6 +5818,15 @@
             if (document.getElementById('tableauSection').style.display !== 'none') {
                 showDataTable();
             }
+            
+            // Mettre à jour le texte des boutons d'écriture
+            updateWriteButtonsText();
+        }
+        
+        // Mettre à jour le texte des boutons d'écriture
+        function updateWriteButtonsText() {
+            // Cette fonction peut être utilisée pour mettre à jour dynamiquement
+            // le texte des boutons si nécessaire
         }
         
         // Adapter l'affichage pour mobile
