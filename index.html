@@ -28,7 +28,7 @@
             --source-photo: #D4AF37;
             --source-nophoto: #8B6914;
             --source-english: #FFA500;
-            --source-english-photo: #FF6347; /* Nouvelle couleur pour anglais avec photo */
+            --source-english-photo: #FF6347;
         }
         
         * {
@@ -180,7 +180,6 @@
             font-size: 12px;
         }
         
-        /* Boutons flottants - version desktop */
         .fixed-nav-buttons {
             position: fixed;
             top: 110px;
@@ -191,7 +190,6 @@
             z-index: 1000;
         }
         
-        /* Boutons flottants - version mobile */
         .mobile-floating-buttons {
             display: none;
             position: fixed;
@@ -1438,7 +1436,7 @@
             font-family: 'Georgia', 'Times New Roman', serif;
         }
         
-        /* Styles pour les photos souvenirs - APERÇU 10cm x 10cm */
+        /* Styles pour les photos souvenirs - APERÇU 6.5cm x 6.5cm en mobile */
         .photos-souvenir-container {
             display: flex;
             flex-wrap: wrap;
@@ -1602,14 +1600,6 @@
                 width: 50px;
                 height: 50px;
                 font-size: 20px;
-            }
-            
-            .photo-preview-container {
-                width: 8cm;
-            }
-            .photo-link-with-preview {
-                width: 8cm;
-                height: 8cm;
             }
         }
         
@@ -1821,13 +1811,14 @@
                 padding: 10px 12px;
             }
             
+            /* MODIFICATION: Ajustement de la taille des photos en vue mobile à 6.5cm x 6.5cm */
             .photo-preview-container {
-                width: 6cm;
+                width: 6.5cm;
                 margin: 8px;
             }
             .photo-link-with-preview {
-                width: 6cm;
-                height: 6cm;
+                width: 6.5cm;
+                height: 6.5cm;
             }
             .photos-souvenir-container {
                 gap: 15px;
@@ -1913,13 +1904,14 @@
                 padding: 8px 10px;
             }
             
+            /* MODIFICATION: Ajustement de la taille des photos en très petit mobile */
             .photo-preview-container {
-                width: 5cm;
+                width: 6cm;
                 margin: 6px;
             }
             .photo-link-with-preview {
-                width: 5cm;
-                height: 5cm;
+                width: 6cm;
+                height: 6cm;
             }
             .photos-souvenir-container {
                 gap: 12px;
@@ -2451,6 +2443,35 @@
         .source-file-btn.english-photo:hover {
             background: linear-gradient(135deg, #FF4500, var(--source-english-photo));
         }
+        
+        /* Nouveau: Statistiques supplémentaires */
+        .additional-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 6px;
+            margin-top: 10px;
+        }
+        
+        .additional-stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+        
+        .additional-stat-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--gold-dark);
+        }
+        
+        .additional-stat-label {
+            color: var(--text-medium);
+            font-size: 0.7em;
+            line-height: 1.2;
+            margin-top: 3px;
+        }
     </style>
 </head>
 <body>
@@ -2593,6 +2614,26 @@
                             <div class="stat-label">Messages anonymes</div>
                         </div>
                     </div>
+                    
+                    <!-- MODIFICATION: Ajout des statistiques supplémentaires -->
+                    <div class="additional-stats-grid">
+                        <div class="additional-stat-card">
+                            <div class="additional-stat-value" id="totalWithPhotos">0</div>
+                            <div class="additional-stat-label">Fiches avec photos</div>
+                        </div>
+                        <div class="additional-stat-card">
+                            <div class="additional-stat-value" id="totalEnglishMessages">0</div>
+                            <div class="additional-stat-label">Messages anglais</div>
+                        </div>
+                        <div class="additional-stat-card">
+                            <div class="additional-stat-value" id="totalFrenchMessages">0</div>
+                            <div class="additional-stat-label">Messages français</div>
+                        </div>
+                        <div class="additional-stat-card">
+                            <div class="additional-stat-value" id="totalEnglishWithPhotos">0</div>
+                            <div class="additional-stat-label">Anglais avec photos</div>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- Sélecteur de source de données - PLACÉ EN DESSOUS DES STATISTIQUES -->
@@ -2658,8 +2699,8 @@
                     📖 Générer le livre PDF
                 </button>
                 
-                <!-- Boutons pour ouvrir les fichiers sources -->
-                <div class="source-files-buttons">
+                <!-- Boutons pour ouvrir les fichiers sources (VISIBLES SEULEMENT POUR ADMIN) -->
+                <div class="source-files-buttons" id="adminSourceButtons" style="display: none;">
                     <button class="source-file-btn photo" onclick="openSourceFile('photo')">
                         📋 Ouvrir fichier FR avec photo
                     </button>
@@ -2706,7 +2747,8 @@
                     <button class="export-btn locked book" onclick="showUnlockBubble()">
                         🔒 Générer livre
                     </button>
-                    <div class="source-files-buttons" style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+                    <!-- Boutons admin pour mobile (CACHÉS PAR DÉFAUT) -->
+                    <div class="source-files-buttons" id="mobileAdminSourceButtons" style="display: none; flex-direction: column; gap: 10px; width: 100%;">
                         <button class="source-file-btn photo" onclick="openSourceFile('photo')" style="width: 100%; font-size: 0.85em; padding: 10px;">
                             📋 Fichier FR avec photo
                         </button>
@@ -2869,6 +2911,12 @@
         let messageLinksMap = {};
         let photoUrlsMap = {};
         let messageSourceMap = {}; // Pour stocker la source de chaque message
+        
+        // Variables pour les statistiques supplémentaires
+        let totalWithPhotos = 0;
+        let totalEnglishMessages = 0;
+        let totalFrenchMessages = 0;
+        let totalEnglishWithPhotos = 0;
 
         // Liste de titres attractifs
         const creativeTitles = [
@@ -2906,6 +2954,10 @@
             // Cacher les indicateurs de chargement
             document.getElementById('loadingProgress').style.display = 'none';
             document.getElementById('loadingIndicator').style.display = 'none';
+            
+            // Cacher les boutons admin par défaut
+            document.getElementById('adminSourceButtons').style.display = 'none';
+            document.getElementById('mobileAdminSourceButtons').style.display = 'none';
             
             // Commencer le chargement des données
             loadDataFromGoogleSheets();
@@ -3034,6 +3086,11 @@
         
         // Ouvrir le fichier source selon le type
         function openSourceFile(type) {
+            if (!isAdminUnlocked) {
+                showUnlockBubble();
+                return;
+            }
+            
             let url;
             switch(type) {
                 case 'photo':
@@ -3049,24 +3106,7 @@
                     url = SOURCE_SHEET_URL_4;
                     break;
                 default:
-                    // Si aucun type spécifié, ouvrir selon la source actuelle
-                    switch(currentDataSource) {
-                        case 'sheet1':
-                            url = SOURCE_SHEET_URL_1;
-                            break;
-                        case 'sheet2':
-                            url = SOURCE_SHEET_URL_2;
-                            break;
-                        case 'sheet3':
-                            url = SOURCE_SHEET_URL_3;
-                            break;
-                        case 'sheet4':
-                            url = SOURCE_SHEET_URL_4;
-                            break;
-                        case 'combined':
-                        default:
-                            url = SOURCE_SHEET_URL_1;
-                    }
+                    url = SOURCE_SHEET_URL_1;
             }
             window.open(url, '_blank');
         }
@@ -3627,6 +3667,7 @@
             extractAllNoms();
             extractAllPays();
             calculateCountryStats();
+            calculateAdditionalStats(); // MODIFICATION: Ajout du calcul des stats supplémentaires
             updateStats();
             renderFilterTags();
             renderCalendar();
@@ -3684,6 +3725,7 @@
             return lines;
         }
 
+        // MODIFICATION: Correction de l'extraction des dates - utilisation des dates exactes
         function extractDatesWithData() {
             datesWithData = [];
             dateMessagesMap = {};
@@ -3694,7 +3736,7 @@
                 if (dateStr && dateStr.trim() !== '') {
                     const date = parseDate(dateStr);
                     if (date) {
-                        // MODIFICATION: Utiliser la date exacte des fiches (sans ajustement)
+                        // Utiliser la date exacte des fiches (sans ajustement -1 jour)
                         const dateKey = date.toISOString().split('T')[0];
                         if (!dateMessagesMap[dateKey]) {
                             dateMessagesMap[dateKey] = [];
@@ -3830,6 +3872,90 @@
             }
         }
 
+        // MODIFICATION: Ajout du calcul des statistiques supplémentaires
+        function calculateAdditionalStats() {
+            // Réinitialiser les compteurs
+            totalWithPhotos = 0;
+            totalEnglishMessages = 0;
+            totalFrenchMessages = 0;
+            totalEnglishWithPhotos = 0;
+            
+            // Indices des colonnes
+            const photo1Index = headers.findIndex(h => 
+                h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('1')
+            );
+            const photo2Index = headers.findIndex(h => 
+                h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('2')
+            );
+            
+            if (currentDataSource === 'combined') {
+                // Pour les données combinées, calculer à partir de toutes les sources
+                // Fiches avec photos (sheet1 + sheet4)
+                totalWithPhotos = sheetData1.length + sheetData4.length;
+                
+                // Messages anglais (sheet3 + sheet4)
+                totalEnglishMessages = sheetData3.length + sheetData4.length;
+                
+                // Messages français (sheet1 + sheet2)
+                totalFrenchMessages = sheetData1.length + sheetData2.length;
+                
+                // Messages anglais avec photos (sheet4)
+                totalEnglishWithPhotos = sheetData4.length;
+            } else {
+                // Pour une source spécifique
+                sheetData.forEach((row, index) => {
+                    const sourceKey = `${currentDataSource}-${index}`;
+                    const source = messageSourceMap[sourceKey] || 'unknown';
+                    
+                    // Vérifier si c'est une fiche avec photo
+                    if (photo1Index !== -1 && photo2Index !== -1) {
+                        const hasPhoto = (row[photo1Index] && row[photo1Index].trim() !== '') || 
+                                        (row[photo2Index] && row[photo2Index].trim() !== '');
+                        if (hasPhoto) {
+                            totalWithPhotos++;
+                        }
+                    }
+                    
+                    // Compter par type de source
+                    switch(source) {
+                        case 'english':
+                            totalEnglishMessages++;
+                            break;
+                        case 'english-photo':
+                            totalEnglishMessages++;
+                            totalEnglishWithPhotos++;
+                            if (photo1Index !== -1 && photo2Index !== -1) {
+                                const hasPhoto = (row[photo1Index] && row[photo1Index].trim() !== '') || 
+                                                (row[photo2Index] && row[photo2Index].trim() !== '');
+                                if (hasPhoto) {
+                                    totalWithPhotos++;
+                                }
+                            }
+                            break;
+                        case 'photo':
+                            totalFrenchMessages++;
+                            if (photo1Index !== -1 && photo2Index !== -1) {
+                                const hasPhoto = (row[photo1Index] && row[photo1Index].trim() !== '') || 
+                                                (row[photo2Index] && row[photo2Index].trim() !== '');
+                                if (hasPhoto) {
+                                    totalWithPhotos++;
+                                }
+                            }
+                            break;
+                        case 'nophoto':
+                            totalFrenchMessages++;
+                            break;
+                    }
+                });
+            }
+            
+            console.log('📊 Statistiques supplémentaires calculées:');
+            console.log('- Fiches avec photos:', totalWithPhotos);
+            console.log('- Messages anglais:', totalEnglishMessages);
+            console.log('- Messages français:', totalFrenchMessages);
+            console.log('- Messages anglais avec photos:', totalEnglishWithPhotos);
+        }
+
         function updateStats() {
             document.getElementById('totalMessages').textContent = sheetData.length;
             document.getElementById('totalAuteurs').textContent = allNoms.length;
@@ -3856,6 +3982,12 @@
                 return !nom.trim() || nom.toLowerCase().includes('anonyme');
             }).length;
             document.getElementById('anonymousCount').textContent = anonymousCount;
+            
+            // MODIFICATION: Mettre à jour les statistiques supplémentaires
+            document.getElementById('totalWithPhotos').textContent = totalWithPhotos;
+            document.getElementById('totalEnglishMessages').textContent = totalEnglishMessages;
+            document.getElementById('totalFrenchMessages').textContent = totalFrenchMessages;
+            document.getElementById('totalEnglishWithPhotos').textContent = totalEnglishWithPhotos;
         }
 
         function renderFilterTags() {
@@ -3882,11 +4014,12 @@
             });
         }
 
+        // MODIFICATION: Correction du rendu des dates - utiliser les dates exactes
         function renderDatesTags() {
             const container = document.getElementById('datesTags');
             container.innerHTML = '';
             
-            // MODIFICATION: Utiliser les dates exactes des fiches (sans ajustement)
+            // Utiliser les dates exactes des fiches (sans ajustement)
             const uniqueDates = [...new Set(datesWithData.map(d => 
                 d.date.toISOString().split('T')[0]
             ))].sort().reverse();
@@ -4161,6 +4294,9 @@
                     const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
                     const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
                     const adresseIndex = headers.findIndex(h => h.toLowerCase().includes('adresse'));
+                    const messageLinkIndex = headers.findIndex(h => 
+                        h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
+                    );
                     
                     const dateStr = row[dateIndex] || '';
                     const nom = row[nomIndex] || 'Anonyme';
@@ -4170,8 +4306,9 @@
                     const email = row[emailIndex] || '';
                     const telephone = row[telephoneIndex] || '';
                     const adresse = row[adresseIndex] || '';
+                    const messageLink = row[messageLinkIndex] || '';
                     
-                    // MODIFICATION: Afficher la date exacte de la fiche (sans ajustement)
+                    // Utiliser la date exacte de la fiche (sans ajustement)
                     const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
                     const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
                     
@@ -4319,6 +4456,20 @@
                                     </div>
                                 </div>
                                 ` : ''}
+                    `;
+                    
+                    // MODIFICATION: Afficher le lien du message seulement si admin déverrouillé
+                    if (isAdminUnlocked && messageLink && messageLink.trim() !== '') {
+                        html += `
+                            <div class="message-links-container">
+                                <button class="message-link-btn" onclick="window.open('${messageLink}', '_blank')">
+                                    🔗 Accéder au formulaire de modification
+                                </button>
+                            </div>
+                        `;
+                    }
+                    
+                    html += `
                             </div>
                         </div>
                     `;
@@ -4330,8 +4481,6 @@
             resultTitle.textContent = `${title} (${results.length} message${results.length > 1 ? 's' : ''})`;
             document.getElementById('resultsSection').style.display = 'block';
             document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
-            
-            // SUPPRESSION: On ne montre plus le bouton vert "Accéder au fichier source" car on a déjà les boutons spécifiques
         }
 
         // Fonction pour obtenir le nom complet de la source
@@ -4493,6 +4642,9 @@
             );
             const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
             const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
+            const messageLinkIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
+            );
             
             sheetData.forEach((row, index) => {
                 const date = row[dateIndex] || '';
@@ -4503,7 +4655,8 @@
                 const telephone = row[telephoneIndex] || '';
                 const message = row[messageIndex] || '';
                 const messageExcerpt = message.length > 50 ? message.substring(0, 50) + '...' : message;
-                const hasMessageLink = messageLinksMap[index];
+                const messageLink = row[messageLinkIndex] || '';
+                const hasMessageLink = messageLink && messageLink.trim() !== '';
                 
                 // Déterminer la source
                 const sourceKey = `${currentDataSource}-${index}`;
@@ -4529,7 +4682,7 @@
                         ${isAdminUnlocked ? `
                         <td>
                             ${hasMessageLink ? `
-                            <button class="admin-source-btn" onclick="window.open('${hasMessageLink}', '_blank')" style="padding: 5px 10px; font-size: 0.8em;">
+                            <button class="admin-source-btn" onclick="window.open('${messageLink}', '_blank')" style="padding: 5px 10px; font-size: 0.8em;">
                                 ✏️ Modifier
                             </button>
                             ` : '—'}
@@ -4632,9 +4785,9 @@
                         .message-text p:before { content: '✍️'; position: absolute; left: 0; top: 0; font-size: 20px; color: #D4AF37; }
                         .photo-section { margin-top: 20px; padding: 20px; background: #f0f7ff; border-radius: 8px; border-left: 4px solid #3498db; }
                         .photo-label { font-weight: bold; color: #3498db; margin-bottom: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
-                        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-                        .photo-item { text-align: center; }
-                        .photo-thumb { max-width: 100%; height: auto; border-radius: 8px; border: 2px solid #3498db; }
+                        .photo-grid { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+                        .photo-item { text-align: center; max-width: 300px; }
+                        .photo-thumb { max-width: 100%; height: auto; border-radius: 8px; border: 2px solid #3498db; max-height: 250px; object-fit: cover; }
                         .contact-section { margin-top: 20px; padding: 20px; background: #e3f2fd; border-radius: 8px; border-left: 4px solid #1E3A8A; }
                         .contact-label { font-weight: bold; color: #1E3A8A; margin-bottom: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
                         .contact-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
@@ -4984,16 +5137,16 @@
                                 ${hasPhotos ? `
                                 <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 5px; font-size: 0.9em; color: #666;">
                                     <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">📸 Photos souvenir</div>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                    <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
                                         ${photo1.trim() !== '' ? `
-                                        <div style="text-align: center;">
-                                            <img src="${photo1}" alt="Photo souvenir 1" style="max-width: 200px; height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid #3498db; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                        <div style="text-align: center; max-width: 300px;">
+                                            <img src="${photo1}" alt="Photo souvenir 1" style="max-width: 100%; height: 250px; object-fit: cover; border-radius: 8px; border: 2px solid #3498db; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                                             <div style="font-size: 0.9em; margin-top: 8px; font-weight: bold;">Photo 1</div>
                                         </div>
                                         ` : ''}
                                         ${photo2.trim() !== '' ? `
-                                        <div style="text-align: center;">
-                                            <img src="${photo2}" alt="Photo souvenir 2" style="max-width: 200px; height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid #3498db; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                                        <div style="text-align: center; max-width: 300px;">
+                                            <img src="${photo2}" alt="Photo souvenir 2" style="max-width: 100%; height: 250px; object-fit: cover; border-radius: 8px; border: 2px solid #3498db; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
                                             <div style="font-size: 0.9em; margin-top: 8px; font-weight: bold;">Photo 2</div>
                                         </div>
                                         ` : ''}
@@ -5239,6 +5392,10 @@
         
         function unlockAllFeatures() {
             isAdminUnlocked = true;
+            
+            // Afficher les boutons admin
+            document.getElementById('adminSourceButtons').style.display = 'flex';
+            document.getElementById('mobileAdminSourceButtons').style.display = 'flex';
             
             document.querySelectorAll('.export-btn.locked').forEach(btn => {
                 btn.classList.remove('locked');
