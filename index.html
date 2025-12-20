@@ -1841,14 +1841,14 @@
                 padding: 10px 12px;
             }
             
+            /* Ajustement des photos pour mobile */
+            .book-photo-large,
+            .photo-link-with-preview,
             .photo-preview-container {
-                width: 6.5cm;
-                margin: 8px;
+                width: 7cm !important;
+                height: 7cm !important;
             }
-            .photo-link-with-preview {
-                width: 6.5cm;
-                height: 6.5cm;
-            }
+            
             .photos-souvenir-container {
                 gap: 15px;
             }
@@ -1937,13 +1937,11 @@
                 padding: 8px 10px;
             }
             
+            .book-photo-large,
+            .photo-link-with-preview,
             .photo-preview-container {
-                width: 6cm;
-                margin: 6px;
-            }
-            .photo-link-with-preview {
-                width: 6cm;
-                height: 6cm;
+                width: 6.5cm !important;
+                height: 6.5cm !important;
             }
             .photos-souvenir-container {
                 gap: 12px;
@@ -2694,13 +2692,16 @@
             background: #f0f0f0;
         }
         
-        /* Styles pour la table des matières améliorée */
+        /* Styles pour la table des matières améliorée - MODIFICATION: 3 colonnes */
         .toc-container {
             margin: 20px 0;
             padding: 20px;
             background: #f8f9fa;
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-light);
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
         }
         
         .toc-title {
@@ -2711,6 +2712,7 @@
             font-weight: bold;
             border-bottom: 2px solid var(--gold-light);
             padding-bottom: 10px;
+            grid-column: 1 / -1;
         }
         
         .toc-country {
@@ -2867,45 +2869,53 @@
             background-color: #f0f0f0;
         }
         
+        /* MODIFICATION: Nouvelles largeurs de colonnes */
         .recap-num-col {
-            width: 50px;
+            width: 40px; /* Réduit */
             font-weight: bold;
             color: black;
             text-align: center;
         }
         
         .recap-date-col {
-            width: 100px;
+            width: 80px; /* Réduit de 100px à 80px */
             font-weight: bold;
             color: black;
         }
         
         .recap-pays-col {
-            width: 120px;
+            width: 100px; /* Réduit de 120px à 100px */
             color: #FF0000;
             font-weight: bold;
         }
         
         .recap-lieu-col {
-            width: 150px;
+            width: 120px; /* Réduit de 150px à 120px */
             color: #8A2BE2;
             font-weight: bold;
         }
         
         .recap-auteur-col {
-            width: 150px;
+            width: 120px; /* Réduit de 150px à 120px */
             color: #333;
         }
         
         .recap-source-col {
-            width: 80px;
+            width: 60px; /* Réduit de 80px à 60px */
             text-align: center;
         }
         
-        /* Styles pour les aperçus photo dans le livre */
+        .recap-extrait-col {
+            width: auto; /* La plus large */
+            color: #666;
+            font-size: 0.85em;
+            max-width: 300px;
+        }
+        
+        /* Styles pour les aperçus photo dans le livre - MODIFICATION: 7x7cm */
         .book-photo-large {
-            width: 6cm;
-            height: 6cm;
+            width: 7cm !important;
+            height: 7cm !important;
             object-fit: cover;
             border-radius: 8px;
             border: 2px solid var(--gold-light);
@@ -2930,6 +2940,49 @@
         
         .photo-clear {
             clear: both;
+        }
+        
+        /* Styles pour l'aperçu photo dans les fiches - MODIFICATION: 7x7cm */
+        .photo-link-with-preview {
+            display: block;
+            width: 7cm !important;
+            height: 7cm !important;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            border: 3px solid var(--gold-light);
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+        
+        .photo-preview-container {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            vertical-align: top;
+            width: 7cm !important;
+            max-width: 100%;
+        }
+        
+        /* Responsive pour la table des matières */
+        @media (max-width: 1024px) {
+            .toc-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .toc-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .book-photo-large,
+            .photo-link-with-preview,
+            .photo-preview-container {
+                width: 6.5cm !important;
+                height: 6.5cm !important;
+            }
         }
     </style>
 </head>
@@ -3258,7 +3311,7 @@
                         <div class="book-stats-grid" id="bookStats"></div>
                     </div>
                     
-                    <!-- Table des matières améliorée -->
+                    <!-- Table des matières améliorée - MODIFICATION: 3 colonnes -->
                     <div class="toc-container" id="tableOfContents">
                         <div class="toc-title">📑 Table des Matières</div>
                         <!-- La table des matières sera générée ici -->
@@ -3339,6 +3392,10 @@
         let totalUnknownSource = 0;
         
         let allSearchTerms = new Set();
+        
+        // MODIFICATION: Variable pour suivre l'ordre d'apparition des pays
+        let countryAppearanceOrder = {};
+        let countryAppearanceCounter = 1;
 
         const creativeTitles = [
             "📝 Trésor de messages",
@@ -4100,6 +4157,37 @@
             extractPhotoUrls();
             extractSearchTerms();
             showDataInfo();
+            
+            // MODIFICATION: Calculer l'ordre d'apparition des pays
+            calculateCountryAppearanceOrder();
+        }
+
+        // MODIFICATION: Fonction pour calculer l'ordre d'apparition des pays
+        function calculateCountryAppearanceOrder() {
+            countryAppearanceOrder = {};
+            countryAppearanceCounter = 1;
+            
+            const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
+            const dateIndex = 1;
+            
+            if (paysIndex !== -1) {
+                // Trier les données par date
+                const sortedData = [...sheetData].sort((a, b) => {
+                    const dateA = parseDate(a[dateIndex] || '');
+                    const dateB = parseDate(b[dateIndex] || '');
+                    if (!dateA || !dateB) return 0;
+                    return dateA - dateB;
+                });
+                
+                sortedData.forEach(row => {
+                    const pays = row[paysIndex] || 'Non spécifié';
+                    if (pays && pays.trim() !== '' && pays !== 'Non spécifié') {
+                        if (!countryAppearanceOrder[pays]) {
+                            countryAppearanceOrder[pays] = countryAppearanceCounter++;
+                        }
+                    }
+                });
+            }
         }
 
         function extractSearchTerms() {
@@ -5459,6 +5547,7 @@
             displayResults(results, 'Messages anonymes');
         }
 
+        // MODIFICATION: Fonction pour afficher le tableau récapitulatif amélioré
         function showDataTable() {
             const tableauSection = document.getElementById('tableauSection');
             const tableauContent = document.getElementById('tableauContent');
@@ -5490,22 +5579,21 @@
                 </div>
                 ` : ''}
                 
-                <table class="tableau-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 50px;">N°</th>
-                            <th>Date</th>
-                            <th>Nom</th>
-                            <th>Lieu</th>
-                            <th>Pays</th>
-                            <th>Email</th>
-                            <th>Téléphone</th>
-                            <th>Message (extrait)</th>
-                            <th>Source</th>
-                            ${isAdminUnlocked ? '<th>Actions</th>' : ''}
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div style="overflow-x: auto;">
+                    <table class="recap-table">
+                        <thead>
+                            <tr>
+                                <th class="recap-num-col">N°</th>
+                                <th class="recap-date-col">Date</th>
+                                <th class="recap-auteur-col">Auteur</th>
+                                <th class="recap-pays-col">Pays</th>
+                                <th class="recap-lieu-col">Lieu</th>
+                                <th class="recap-extrait-col">Extrait du message</th>
+                                <th class="recap-source-col">Source</th>
+                                ${isAdminUnlocked ? '<th style="width: 80px;">Actions</th>' : ''}
+                            </tr>
+                        </thead>
+                        <tbody>
             `;
             
             const dateIndex = 1;
@@ -5525,7 +5613,15 @@
                 h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
             );
             
-            sheetData.forEach((row, index) => {
+            // Trier les données par date
+            const sortedData = [...sheetData].sort((a, b) => {
+                const dateA = parseDate(a[dateIndex] || '');
+                const dateB = parseDate(b[dateIndex] || '');
+                if (!dateA || !dateB) return 0;
+                return dateA - dateB;
+            });
+            
+            sortedData.forEach((row, index) => {
                 const date = row[dateIndex] || '';
                 const nom = row[nomIndex] || 'Anonyme';
                 const lieu = row[lieuIndex] || '';
@@ -5533,36 +5629,38 @@
                 const email = row[emailIndex] || '';
                 const telephone = row[telephoneIndex] || '';
                 const message = row[messageIndex] || '';
-                const messageExcerpt = message.length > 50 ? message.substring(0, 50) + '...' : message;
+                const messageExcerpt = message.length > 100 ? message.substring(0, 100) + '...' : message;
                 const messageLink = row[messageLinkIndex] || '';
                 const hasMessageLink = messageLink && messageLink.trim() !== '';
                 
-                const sourceKey = `${currentDataSource}-${index}`;
+                const sourceKey = `${currentDataSource}-${sheetData.indexOf(row)}`;
                 const source = messageSourceMap[sourceKey] || 'nophoto';
                 const sourceIcon = getSourceIcon(source);
                 const sourceIndicator = getSourceIndicator(source);
                 
                 html += `
                     <tr>
-                        <td style="font-weight: bold; color: black; text-align: center;">${index + 1}</td>
-                        <td style="font-weight: bold; color: black;">${formatDateToDDD_DD_MM_AA(date)}</td>
-                        <td><span class="clickable-cell" onclick="filterByValue('${nom.replace(/'/g, "\\'")}', 'nom')">${nom}</span></td>
-                        <td style="color: #8A2BE2; font-weight: bold;"><span class="clickable-cell" onclick="filterByValue('${lieu.replace(/'/g, "\\'")}', 'lieu')">${lieu}</span></td>
-                        <td style="color: #FF0000; font-weight: bold;"><span class="clickable-cell" onclick="filterByValue('${pays.replace(/'/g, "\\'")}', 'pays')">${pays}</span></td>
-                        <td>${email ? `<a href="mailto:${email}" class="clickable-link">${email}</a>` : ''}</td>
-                        <td>${telephone ? `<a href="tel:${telephone.replace(/\s/g, '')}" class="clickable-link">${telephone}</a>` : ''}</td>
-                        <td title="${message}">${messageExcerpt}</td>
-                        <td style="text-align: center;" title="${getSourceFullName(source)}">
-                            <div style="display: flex; align-items: center; justify-content: center; gap: 5px;">
-                                ${sourceIcon}
-                                <span style="font-size: 0.85em;">${sourceIndicator}</span>
+                        <td class="recap-num-col">${index + 1}</td>
+                        <td class="recap-date-col">${formatDateToDDD_DD_MM_AA(date)}</td>
+                        <td class="recap-auteur-col"><span class="clickable-cell" onclick="filterByValue('${nom.replace(/'/g, "\\'")}', 'nom')">${nom}</span></td>
+                        <td class="recap-pays-col">
+                            <div style="display: flex; align-items: center; gap: 5px;">
+                                ${getFlagEmoji(pays)}
+                                <span class="clickable-cell" onclick="filterByValue('${pays.replace(/'/g, "\\'")}', 'pays')">${pays}</span>
+                            </div>
+                        </td>
+                        <td class="recap-lieu-col"><span class="clickable-cell" onclick="filterByValue('${lieu.replace(/'/g, "\\'")}', 'lieu')">${lieu}</span></td>
+                        <td class="recap-extrait-col" title="${message}">${messageExcerpt}</td>
+                        <td class="recap-source-col">
+                            <div class="toc-source-indicator ${source}" title="${getSourceFullName(source)}">
+                                ${sourceIndicator}
                             </div>
                         </td>
                         ${isAdminUnlocked ? `
                         <td>
                             ${hasMessageLink ? `
                             <button class="admin-source-btn" onclick="window.open('${messageLink}', '_blank')" style="padding: 5px 10px; font-size: 0.8em;">
-                                ✏️ Modifier
+                                ✏️
                             </button>
                             ` : '—'}
                         </td>
@@ -5571,7 +5669,7 @@
                 `;
             });
             
-            html += `</tbody></table>`;
+            html += `</tbody></table></div>`;
             tableauContent.innerHTML = html;
             
             document.getElementById('tableauTitle').textContent = '📊 Tableau récapitulatif des messages';
@@ -5626,7 +5724,7 @@
             `;
         }
 
-        // MODIFICATION: Fonction pour générer la table des matières améliorée
+        // MODIFICATION: Fonction pour générer la table des matières améliorée avec 3 colonnes
         function generateEnhancedTableOfContents(messagesByCountry) {
             let tocHtml = `
                 <div class="toc-container">
@@ -5634,20 +5732,25 @@
             `;
             
             let messageNumber = 1;
-            Object.keys(messagesByCountry).sort().forEach(pays => {
+            
+            // Trier les pays par ordre d'apparition
+            const sortedCountries = Object.keys(messagesByCountry).sort((a, b) => {
+                return (countryAppearanceOrder[a] || 999) - (countryAppearanceOrder[b] || 999);
+            });
+            
+            sortedCountries.forEach(pays => {
                 const messages = messagesByCountry[pays];
-                
-                // Ajouter un petit drapeau devant le nom du pays
-                let flagEmoji = getFlagEmoji(pays);
+                const countryNumber = countryAppearanceOrder[pays] || '';
                 
                 tocHtml += `
                     <div class="toc-country">
                         <div class="toc-country-header">
                             <div class="toc-country-name">
-                                ${flagEmoji} ${pays}
+                                ${getFlagEmoji(pays)} ${pays}
+                                ${countryNumber ? `<span style="font-size: 0.8em; color: #666; margin-left: 5px;">(${countryNumber})</span>` : ''}
                             </div>
                             <div class="toc-country-count">
-                                ${messages.length} message${messages.length > 1 ? 's' : ''}
+                                ${messages.length}
                             </div>
                         </div>
                         <div class="toc-messages-list">
@@ -5686,7 +5789,7 @@
                                 <div class="toc-message-info">
                                     <div class="toc-message-num">${messageNumber}</div>
                                     <div class="toc-message-auteur">${nom}</div>
-                                    <div class="toc-message-lieu">📍 ${lieu}</div>
+                                    <div class="toc-message-lieu">${messageNumber}-${lieu}</div>
                                 </div>
                                 <div class="toc-source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
                                     ${getSourceIndicator(source)}
@@ -5704,7 +5807,7 @@
             });
             
             tocHtml += `
-                    <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd; text-align: center; font-size: 0.9em; color: #666;">
+                    <div style="grid-column: 1 / -1; margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd; text-align: center; font-size: 0.9em; color: #666;">
                         Total: ${sheetData.length} messages | ${Object.keys(messagesByCountry).length} pays | ${allNoms.length} auteurs
                     </div>
                 </div>
@@ -5760,6 +5863,7 @@
                                 <th class="recap-auteur-col">Auteur</th>
                                 <th class="recap-pays-col">Pays</th>
                                 <th class="recap-lieu-col">Lieu</th>
+                                <th class="recap-extrait-col">Extrait du message</th>
                                 <th class="recap-source-col">Source</th>
                             </tr>
                         </thead>
@@ -5774,6 +5878,9 @@
                 h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
             );
             const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
+            const messageIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('votre') && h.toLowerCase().includes('message')
+            );
             
             // Trier les messages par date
             const sortedMessages = [];
@@ -5800,10 +5907,11 @@
                 const nom = row[nomIndex] || 'Anonyme';
                 const lieu = row[lieuIndex] || '';
                 const pays = row[paysIndex] || '';
+                const message = row[messageIndex] || '';
+                const messageExcerpt = message.length > 80 ? message.substring(0, 80) + '...' : message;
                 
                 const sourceKey = `${currentDataSource}-${index}`;
                 const source = messageSourceMap[sourceKey] || 'nophoto';
-                const sourceIcon = getSourceIcon(source);
                 const sourceLabel = getSourceIndicator(source);
                 
                 const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
@@ -5819,7 +5927,8 @@
                                 ${pays}
                             </div>
                         </td>
-                        <td class="recap-lieu-col">${lieu}</td>
+                        <td class="recap-lieu-col">${seqIndex + 1}-${lieu}</td>
+                        <td class="recap-extrait-col" title="${message}">${messageExcerpt}</td>
                         <td class="recap-source-col">
                             <div class="toc-source-indicator ${source}" title="${getSourceFullName(source)}">
                                 ${sourceLabel}
@@ -5874,13 +5983,21 @@
             
             // Générer le contenu principal par pays
             let mainContent = '';
-            Object.keys(messagesByCountry).sort().forEach(pays => {
+            
+            // Trier les pays par ordre d'apparition
+            const sortedCountries = Object.keys(messagesByCountry).sort((a, b) => {
+                return (countryAppearanceOrder[a] || 999) - (countryAppearanceOrder[b] || 999);
+            });
+            
+            sortedCountries.forEach(pays => {
                 const messages = messagesByCountry[pays];
+                const countryNumber = countryAppearanceOrder[pays] || '';
                 
                 mainContent += `
                     <div class="country-section" style="margin-bottom: 40px; page-break-inside: avoid;">
                         <h2 style="color: #8b0000; border-bottom: 2px solid #D4AF37; padding-bottom: 10px; display: flex; align-items: center; gap: 10px;">
                             ${getFlagEmoji(pays)} ${pays}
+                            ${countryNumber ? `<span style="font-size: 0.8em; color: #666; margin-left: 5px;">(${countryNumber})</span>` : ''}
                         </h2>
                         <p style="color: #666; font-style: italic; margin-bottom: 20px;">${messages.length} message${messages.length > 1 ? 's' : ''}</p>
                 `;
@@ -5973,14 +6090,14 @@
                                 
                                 ${hasPhotos ? `
                                 <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 5px; font-size: 0.9em; color: #666;">
-                                    <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">📸 Photos souvenir (aperçus)</div>
+                                    <div style="font-weight: bold; color: #1976d2; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">📸 Photos souvenir (aperçus 7x7cm)</div>
                                     <div class="book-photo-container">
                                         ${photo1.trim() !== '' ? `
                                         <div style="text-align: center; margin-right: 15px;">
                                             <img src="${generateThumbnailUrl(photo1)}" 
                                                  alt="Photo souvenir 1" 
                                                  class="book-photo-large"
-                                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2U4ZjRmOCIvPjxwYXRoIGQ9Ik01MCA3MEwxNTAgNzBMMTIwIDEzMEg3MEwxNTAgMTMwSDUwVjcwWiIgZmlsbD0iIzM0OThkYiIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iMzAiIGZpbGw9IiNmNzRjM2MiLz48L3N2Zz4='; this.alt='Image non disponible'">
+                                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
                                             <a href="${photo1}" target="_blank" class="photo-link-bottom" style="display: block; margin-top: 8px; padding: 5px 8px; background: linear-gradient(135deg, #D4AF37, #B8860B); color: white; border-radius: 6px; text-decoration: none; font-size: 0.85em; font-weight: 600; text-align: center; transition: all 0.3s;">
                                                 🔗 Voir la photo originale
                                             </a>
@@ -6088,190 +6205,201 @@
                     <style>
                         body { 
                             font-family: Arial, sans-serif; 
-                            margin: 25px; 
+                            margin: 25mm; 
                             line-height: 1.6; 
                             color: #333; 
-                            font-size: 16px;
+                            font-size: 12pt;
                             background: #FFF8E1;
                         }
                         h1 { 
                             color: #8b0000; 
                             text-align: center; 
-                            margin-bottom: 10px; 
-                            padding-bottom: 15px; 
+                            margin-bottom: 10mm; 
+                            padding-bottom: 5mm; 
                             border-bottom: 3px solid #D4AF37; 
-                            font-size: 28px; 
+                            font-size: 24pt; 
                             font-family: 'Georgia', serif;
                         }
                         h2 { 
                             color: #8b0000; 
-                            margin-top: 40px; 
-                            padding-bottom: 8px; 
+                            margin-top: 15mm; 
+                            padding-bottom: 3mm; 
                             border-bottom: 2px solid #D4AF37; 
-                            font-size: 22px;
+                            font-size: 18pt;
                             font-family: 'Georgia', serif;
                         }
                         h3 { 
                             color: #8A2BE2; 
-                            margin-top: 25px; 
-                            font-size: 18px;
+                            margin-top: 10mm; 
+                            font-size: 14pt;
                             font-weight: bold;
                         }
                         .intro { 
                             background: #FFFDF0; 
-                            padding: 25px; 
-                            border-radius: 10px; 
-                            margin-bottom: 30px; 
+                            padding: 10mm; 
+                            border-radius: 5mm; 
+                            margin-bottom: 10mm; 
                             border: 2px solid #D4AF37;
-                            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
                         }
                         .country-section { 
-                            margin-bottom: 50px; 
+                            margin-bottom: 15mm; 
                             page-break-inside: avoid;
                             background: white;
-                            padding: 20px;
-                            border-radius: 8px;
+                            padding: 8mm;
+                            border-radius: 4mm;
                             border: 1px solid #e9ecef;
                         }
                         .lieu-section { 
-                            margin-left: 20px; 
-                            margin-bottom: 30px;
-                            padding: 15px;
+                            margin-left: 10mm; 
+                            margin-bottom: 8mm;
+                            padding: 6mm;
                             background: #f8f9fa;
-                            border-radius: 8px;
+                            border-radius: 3mm;
                         }
                         .message-item { 
-                            margin: 20px 0; 
-                            padding: 20px; 
+                            margin: 8mm 0; 
+                            padding: 8mm; 
                             border: 1px solid #ddd; 
-                            border-radius: 8px; 
+                            border-radius: 4mm; 
                             background: white;
                             page-break-inside: avoid;
-                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
                         }
                         .conclusion { 
-                            margin-top: 50px; 
-                            padding: 25px; 
+                            margin-top: 15mm; 
+                            padding: 10mm; 
                             background: #e8f5e9; 
-                            border-radius: 10px; 
+                            border-radius: 5mm; 
                             font-style: italic; 
                             border: 2px solid #27ae60;
                         }
                         .book-photo-large {
-                            width: 6cm;
-                            height: 6cm;
+                            width: 7cm !important;
+                            height: 7cm !important;
                             object-fit: cover;
-                            border-radius: 8px;
+                            border-radius: 4mm;
                             border: 2px solid #D4AF37;
-                            margin: 5px;
-                            cursor: pointer;
-                            transition: transform 0.3s;
+                            margin: 3mm;
                             float: left;
-                        }
-                        .book-photo-large:hover {
-                            transform: scale(1.05);
                         }
                         .book-photo-container {
                             display: flex;
                             flex-wrap: wrap;
                             justify-content: flex-start;
                             align-items: flex-start;
-                            margin: 15px 0;
+                            margin: 6mm 0;
                         }
                         .photo-clear {
                             clear: both;
                         }
                         .photo-label {
-                            margin-top: 8px;
-                            font-size: 0.85em;
+                            margin-top: 3mm;
+                            font-size: 10pt;
                             font-weight: 600;
                             color: #8B6914;
-                            padding: 5px 8px;
+                            padding: 2mm 3mm;
                             background: white;
-                            border-radius: 8px;
-                            border-left: 3px solid #D4AF37;
+                            border-radius: 3mm;
+                            border-left: 2px solid #D4AF37;
                         }
                         .photo-link-bottom {
                             display: block;
-                            margin-top: 8px;
-                            padding: 5px 8px;
+                            margin-top: 3mm;
+                            padding: 2mm 3mm;
                             background: linear-gradient(135deg, #D4AF37, #B8860B);
                             color: white;
-                            border-radius: 6px;
+                            border-radius: 3mm;
                             text-decoration: none;
-                            font-size: 0.85em;
+                            font-size: 10pt;
                             font-weight: 600;
                             text-align: center;
-                            transition: all 0.3s;
-                        }
-                        .photo-link-bottom:hover {
-                            background: linear-gradient(135deg, #B8860B, #D4AF37);
                         }
                         .recap-table {
                             width: 100%;
                             border-collapse: collapse;
-                            margin-top: 20px;
-                            font-size: 14px;
+                            margin-top: 8mm;
+                            font-size: 10pt;
                         }
                         .recap-table th {
                             background: #D4AF37;
                             color: white;
-                            padding: 10px;
+                            padding: 3mm;
                             text-align: left;
                             font-weight: 600;
                         }
                         .recap-table td {
-                            padding: 8px;
+                            padding: 2mm;
                             border-bottom: 1px solid #e9ecef;
                         }
                         .recap-table tr:nth-child(even) {
                             background: #f9f9f9;
                         }
-                        .recap-table tr:hover {
-                            background: #f0f0f0;
+                        .toc-container {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 5mm;
+                            margin: 8mm 0;
+                            padding: 8mm;
+                            background: #f8f9fa;
+                            border-radius: 4mm;
+                            border: 2px solid #D4AF37;
                         }
-                        .recap-num-col {
-                            width: 50px;
+                        .toc-title {
+                            color: #8B6914;
+                            margin-bottom: 5mm;
                             text-align: center;
+                            font-size: 14pt;
+                            font-weight: bold;
+                            border-bottom: 2px solid #D4AF37;
+                            padding-bottom: 3mm;
+                            grid-column: 1 / -1;
+                        }
+                        .toc-country {
+                            margin-bottom: 5mm;
+                            padding: 4mm;
+                            background: white;
+                            border-radius: 3mm;
+                            border-left: 3px solid #D4AF37;
                         }
                         @media print {
                             .page-break { page-break-before: always; }
                             body { margin: 15mm; background: white; }
                             .message-item { page-break-inside: avoid; }
-                            .book-photo-large {
-                                width: 6cm;
-                                height: 6cm;
+                            .toc-container {
+                                grid-template-columns: repeat(3, 1fr);
                             }
+                        }
+                        @page {
+                            margin: 15mm;
                         }
                     </style>
                 </head>
                 <body>
-                    <div style="text-align: center; margin-bottom: 30px;">
+                    <div style="text-align: center; margin-bottom: 15mm;">
                         <h1>📖 Livre d'Or Tournée Europe 2026</h1>
-                        <h2 style="text-align: center; color: #8B6914; margin-bottom: 30px; font-size: 20px; font-family: 'Georgia', serif;">
+                        <h2 style="text-align: center; color: #8B6914; margin-bottom: 10mm; font-size: 16pt; font-family: 'Georgia', serif;">
                             NY AKO - Ligue pour la Lecture de la Bible Madagascar
                         </h2>
                     </div>
                     
                     <div class="intro">
-                        <h3 style="color: #D4AF37; text-align: center; font-size: 24px;">Thème: "Nos sources sont en Toi"</h3>
+                        <h3 style="color: #D4AF37; text-align: center; font-size: 20pt;">Thème: "Nos sources sont en Toi"</h3>
                         <p>Ce livre d'or rassemble les témoignages et souvenirs de notre tournée européenne 2026. Chaque message représente un moment partagé, une rencontre précieuse, un encouragement reçu tout au long de notre parcours.</p>
                         
-                        <h3 style="color: #D4AF37; margin-top: 30px;">📊 Statistiques</h3>
+                        <h3 style="color: #D4AF37; margin-top: 10mm;">📊 Statistiques</h3>
                         ${statsHtml}
                         
                         <!-- Table des matières améliorée -->
                         ${tableOfContents}
                     </div>
                     
-                    <h2 style="text-align: center; color: #8b0000; margin-top: 40px; font-size: 24px; border-bottom: 2px solid #D4AF37; padding-bottom: 15px;">
+                    <h2 style="text-align: center; color: #8b0000; margin-top: 15mm; font-size: 20pt; border-bottom: 2px solid #D4AF37; padding-bottom: 5mm;">
                         📝 Messages classés par pays
                     </h2>
                     ${mainContent}
                     
                     <!-- Tableau récapitulatif chronologique amélioré -->
                     <div class="page-break"></div>
-                    <h2 style="text-align: center; color: #8b0000; margin-top: 40px; font-size: 24px; border-bottom: 2px solid #D4AF37; padding-bottom: 15px;">
+                    <h2 style="text-align: center; color: #8b0000; margin-top: 15mm; font-size: 20pt; border-bottom: 2px solid #D4AF37; padding-bottom: 5mm;">
                         📋 Tableau récapitulatif chronologique
                     </h2>
                     ${chronologicalTable}
@@ -6282,7 +6410,7 @@
                         <p>Que ces témoignages continuent à porter du fruit et à nous encourager dans notre mission.</p>
                     </div>
                     
-                    <div style="margin-top: 50px; text-align: center; color: #7f8c8d; font-size: 14px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <div style="margin-top: 15mm; text-align: center; color: #7f8c8d; font-size: 10pt; padding-top: 5mm; border-top: 1px solid #eee;">
                         <p>Export généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
                         <p><strong>Total:</strong> ${sheetData.length} messages | <strong>Pays:</strong> ${Object.keys(messagesByCountry).length} | <strong>Auteurs:</strong> ${allNoms.length}</p>
                         <p><strong>Fiches avec photos:</strong> ${totalWithPhotos} | <strong>Messages français:</strong> ${totalFrenchMessages} | <strong>Messages anglais:</strong> ${totalEnglishMessages}</p>
