@@ -597,24 +597,27 @@
             border-left: 4px solid #9b59b6;
         }
         
+        /* MODIFICATION: Réduction de la hauteur des statistiques */
         .stats-section {
             background: linear-gradient(135deg, var(--gold-light), #fcebb6);
-            padding: 12px 15px;
+            padding: 8px 12px;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             border: 2px solid var(--secondary-color);
             min-height: auto;
+            height: auto;
         }
         
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
+            gap: 4px;
+            margin-bottom: 8px;
         }
         
         .stat-card {
             background: linear-gradient(135deg, white, #f8f9fa);
-            padding: 8px 6px;
+            padding: 6px 4px;
             border-radius: var(--border-radius);
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             text-align: center;
@@ -622,6 +625,7 @@
             transition: transform 0.3s ease;
             cursor: pointer;
             min-height: auto;
+            height: auto;
         }
         
         .stat-card:hover {
@@ -630,17 +634,19 @@
         }
         
         .stat-value {
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: bold;
             color: var(--secondary-color);
             margin-bottom: 2px;
             line-height: 1.2;
         }
         
+        /* MODIFICATION: Labels en noir/gris */
         .stat-label {
-            color: var(--text-medium);
-            font-size: 0.7em;
+            color: #333333; /* Noir */
+            font-size: 0.65em;
             line-height: 1.1;
+            font-weight: 500;
         }
         
         .filters-sidebar {
@@ -1464,14 +1470,14 @@
             margin: 10px;
             text-align: center;
             vertical-align: top;
-            width: 10cm;
+            width: 7cm;
             max-width: 100%;
         }
 
         .photo-link-with-preview {
             display: block;
-            width: 10cm;
-            height: 10cm;
+            width: 7cm;
+            height: 7cm;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
@@ -1839,6 +1845,12 @@
             .title-golden-words {
                 font-size: 1em;
                 padding: 10px 12px;
+            }
+            
+            /* MODIFICATION: Agrandir légèrement les messages en mobile */
+            .message-text {
+                font-size: 1.1em; /* Augmenté de 1em à 1.1em */
+                line-height: 1.4; /* Légèrement augmenté */
             }
             
             /* Ajustement des photos pour mobile */
@@ -2256,12 +2268,29 @@
             }
         }
         
+        /* MODIFICATION: Nouveau positionnement du sélecteur de source */
         .data-source-selector {
             margin: 15px 0;
             padding: 15px;
             background: linear-gradient(135deg, #FFF8E1, #FCEBB6);
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-secondary);
+        }
+        
+        /* MODIFICATION: Vue ordinateur - sous le bouton Exporter livre */
+        @media (min-width: 769px) {
+            .desktop-export-buttons + .data-source-selector {
+                margin-top: 15px;
+                order: 6; /* Après les boutons d'export */
+            }
+        }
+        
+        /* MODIFICATION: Vue mobile - sous le bouton Générer livre */
+        @media (max-width: 768px) {
+            .mobile-buttons-row .export-btn.book + .data-source-selector {
+                margin-top: 15px;
+                width: 100%;
+            }
         }
         
         .data-source-buttons {
@@ -2692,43 +2721,49 @@
             background: #f0f0f0;
         }
         
-        /* Styles pour la table des matières améliorée - MODIFICATION: 3 colonnes */
+        /* MODIFICATION: Styles pour la table des matières améliorée - 3 colonnes, police réduite et compacte */
         .toc-container {
             margin: 20px 0;
-            padding: 20px;
+            padding: 15px;
             background: #f8f9fa;
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-light);
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 10px;
+            font-family: 'Arial', sans-serif; /* Police plus compacte */
+            font-size: 0.8em; /* Réduction de la taille de police */
+            line-height: 1.2; /* Réduction de l'interligne */
         }
         
         .toc-title {
             color: var(--gold-dark);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1em; /* Réduction */
             font-weight: bold;
             border-bottom: 2px solid var(--gold-light);
-            padding-bottom: 10px;
+            padding-bottom: 8px;
             grid-column: 1 / -1;
+            font-family: 'Arial', sans-serif; /* Police plus compacte */
         }
         
         .toc-country {
-            margin-bottom: 15px;
-            padding: 12px;
+            margin-bottom: 12px;
+            padding: 8px;
             background: white;
-            border-radius: 8px;
-            border-left: 4px solid var(--secondary-color);
+            border-radius: 6px;
+            border-left: 3px solid var(--secondary-color);
             position: relative;
+            font-size: 0.85em; /* Réduction */
+            line-height: 1.2; /* Réduction */
         }
         
         .toc-country-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
+            gap: 6px;
+            margin-bottom: 8px;
         }
         
         .toc-country-name {
@@ -2736,34 +2771,38 @@
             color: var(--gold-dark);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 0.9em; /* Réduction */
         }
         
         .toc-country-count {
             background: var(--secondary-color);
             color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.85em;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 0.75em;
             font-weight: bold;
         }
         
         .toc-messages-list {
-            margin-left: 20px;
-            padding-left: 15px;
-            border-left: 2px solid var(--gold-light);
+            margin-left: 15px;
+            padding-left: 10px;
+            border-left: 1px solid var(--gold-light);
+            font-size: 0.8em; /* Réduction */
         }
         
         .toc-message-item {
-            margin-bottom: 8px;
-            padding: 8px;
+            margin-bottom: 6px;
+            padding: 6px;
             background: #f5f5f5;
-            border-radius: 6px;
+            border-radius: 4px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 0.8em; /* Réduction */
+            line-height: 1.1; /* Réduction */
         }
         
         .toc-message-item:hover {
@@ -2774,36 +2813,38 @@
         .toc-message-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 6px;
             flex: 1;
         }
         
         .toc-message-num {
             font-weight: bold;
             color: var(--secondary-color);
-            min-width: 30px;
+            min-width: 25px;
+            font-size: 0.85em;
         }
         
         .toc-message-auteur {
             color: var(--text-dark);
             flex: 1;
+            font-size: 0.85em;
         }
         
         .toc-message-lieu {
             color: #666;
-            font-size: 0.9em;
-            min-width: 150px;
+            font-size: 0.75em;
+            min-width: 120px;
         }
         
         .toc-source-indicator {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8em;
-            margin-left: 5px;
+            font-size: 0.7em;
+            margin-left: 3px;
         }
         
         .toc-source-indicator.photo {
@@ -2912,17 +2953,18 @@
             max-width: 300px;
         }
         
-        /* Styles pour les aperçus photo dans le livre - MODIFICATION: 7x7cm */
+        /* MODIFICATION: Aperçu photo aligné à gauche dans le livre */
         .book-photo-large {
             width: 7cm !important;
             height: 7cm !important;
             object-fit: cover;
             border-radius: 8px;
             border: 2px solid var(--gold-light);
-            margin: 5px;
+            margin: 5px 15px 5px 0; /* Marge à droite uniquement pour alignement à gauche */
             cursor: pointer;
             transition: transform 0.3s;
-            float: left;
+            float: left; /* Alignement à gauche */
+            clear: left; /* Empêche le chevauchement */
         }
         
         .book-photo-large:hover {
@@ -2930,19 +2972,16 @@
         }
         
         .book-photo-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-start;
-            align-items: flex-start;
+            display: block; /* Changé de flex à block pour l'alignement float */
             margin: 15px 0;
-            clear: both;
+            overflow: hidden; /* Pour contenir les floats */
         }
         
         .photo-clear {
             clear: both;
         }
         
-        /* Styles pour l'aperçu photo dans les fiches - MODIFICATION: 7x7cm */
+        /* MODIFICATION: Aperçu photo dans les fiches */
         .photo-link-with-preview {
             display: block;
             width: 7cm !important;
@@ -2954,6 +2993,9 @@
             position: relative;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            float: left; /* Alignement à gauche */
+            margin-right: 15px; /* Marge à droite */
+            margin-bottom: 15px;
         }
         
         .photo-preview-container {
@@ -2963,18 +3005,37 @@
             vertical-align: top;
             width: 7cm !important;
             max-width: 100%;
+            float: left; /* Alignement à gauche */
+        }
+        
+        /* MODIFICATION: Ajustement des messages pour vue ordinateur */
+        @media (min-width: 769px) {
+            .message-text {
+                font-size: 1.05em; /* Réduction légère en vue ordinateur */
+                line-height: 1.4;
+            }
+        }
+        
+        /* MODIFICATION: Ajustement des messages pour mobile */
+        @media (max-width: 768px) {
+            .message-text {
+                font-size: 1.1em; /* Agrandissement en mobile */
+                line-height: 1.5;
+            }
         }
         
         /* Responsive pour la table des matières */
         @media (max-width: 1024px) {
             .toc-container {
                 grid-template-columns: repeat(2, 1fr);
+                font-size: 0.85em;
             }
         }
         
         @media (max-width: 768px) {
             .toc-container {
                 grid-template-columns: 1fr;
+                font-size: 0.9em;
             }
             
             .book-photo-large,
@@ -2982,6 +3043,30 @@
             .photo-preview-container {
                 width: 6.5cm !important;
                 height: 6.5cm !important;
+            }
+            
+            /* MODIFICATION: Mobile - Source de données sous Générer livre */
+            .mobile-buttons-row {
+                position: relative;
+            }
+            
+            .data-source-selector {
+                order: 100; /* S'assure qu'il vient après */
+                margin-top: 15px;
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .toc-container {
+                font-size: 0.85em;
+            }
+            
+            .book-photo-large,
+            .photo-link-with-preview,
+            .photo-preview-container {
+                width: 6cm !important;
+                height: 6cm !important;
             }
         }
     </style>
@@ -3122,32 +3207,6 @@
                     </div>
                 </div>
                 
-                <div class="data-source-selector" style="order: 2;">
-                    <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
-                    <div class="data-source-buttons">
-                        <button class="source-btn" onclick="switchDataSource('sheet1')" id="btnSheet1">
-                            <span id="sheet1Count">0</span> FR avec photos
-                        </button>
-                        <button class="source-btn" onclick="switchDataSource('sheet2')" id="btnSheet2">
-                            <span id="sheet2Count">0</span> FR sans photos
-                        </button>
-                        <button class="source-btn english" onclick="switchDataSource('sheet3')" id="btnSheet3">
-                            <span id="sheet3Count">0</span> ENG sans photos
-                        </button>
-                        <button class="source-btn english-photo" onclick="switchDataSource('sheet4')" id="btnSheet4">
-                            <span id="sheet4Count">0</span> ENG avec photos
-                        </button>
-                        <button class="source-btn combined active" onclick="switchDataSource('combined')" id="btnCombined">
-                            <span id="combinedCount">0</span> Tous combinés
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="date-filter-group" style="order: 3;">
-                    <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📅 Dates avec messages</h3>
-                    <div class="filter-tags" id="datesTags" style="max-height: 200px;"></div>
-                </div>
-                
                 <div class="filter-group">
                     <h3 class="toggle-title" data-filter="noms">
                         <span style="color: var(--gold-dark);">👤 Auteurs</span>
@@ -3198,10 +3257,38 @@
                 </div>
             </div>
             
+            <!-- MODIFICATION: Vue ordinateur - Source de données sous Exporter livre -->
             <div class="desktop-export-buttons" style="order: 5;">
                 <button class="export-btn locked" onclick="showUnlockBubble()" style="width: 100%;">
                     🔒 Exporter toutes les fiches
                 </button>
+                
+                <!-- MODIFICATION: Positionnement du sélecteur de source sous le bouton Exporter livre -->
+                <div class="data-source-selector" style="margin-top: 15px;">
+                    <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
+                    <div class="data-source-buttons">
+                        <button class="source-btn" onclick="switchDataSource('sheet1')" id="btnSheet1">
+                            <span id="sheet1Count">0</span> FR avec photos
+                        </button>
+                        <button class="source-btn" onclick="switchDataSource('sheet2')" id="btnSheet2">
+                            <span id="sheet2Count">0</span> FR sans photos
+                        </button>
+                        <button class="source-btn english" onclick="switchDataSource('sheet3')" id="btnSheet3">
+                            <span id="sheet3Count">0</span> ENG sans photos
+                        </button>
+                        <button class="source-btn english-photo" onclick="switchDataSource('sheet4')" id="btnSheet4">
+                            <span id="sheet4Count">0</span> ENG avec photos
+                        </button>
+                        <button class="source-btn combined active" onclick="switchDataSource('combined')" id="btnCombined">
+                            <span id="combinedCount">0</span> Tous combinés
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="date-filter-group" style="order: 3;">
+                <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📅 Dates avec messages</h3>
+                <div class="filter-tags" id="datesTags" style="max-height: 200px;"></div>
             </div>
         </div>
         
@@ -3226,6 +3313,29 @@
                     <button class="export-btn locked book" onclick="showUnlockBubble()">
                         🔒 Générer livre
                     </button>
+                    
+                    <!-- MODIFICATION: Vue mobile - Source de données sous Générer livre -->
+                    <div class="data-source-selector" style="width: 100%; margin-top: 15px;">
+                        <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
+                        <div class="data-source-buttons">
+                            <button class="source-btn" onclick="switchDataSource('sheet1')" id="btnSheet1Mobile">
+                                <span id="sheet1CountMobile">0</span> FR avec photos
+                            </button>
+                            <button class="source-btn" onclick="switchDataSource('sheet2')" id="btnSheet2Mobile">
+                                <span id="sheet2CountMobile">0</span> FR sans photos
+                            </button>
+                            <button class="source-btn english" onclick="switchDataSource('sheet3')" id="btnSheet3Mobile">
+                                <span id="sheet3CountMobile">0</span> ENG sans photos
+                            </button>
+                            <button class="source-btn english-photo" onclick="switchDataSource('sheet4')" id="btnSheet4Mobile">
+                                <span id="sheet4CountMobile">0</span> ENG avec photos
+                            </button>
+                            <button class="source-btn combined active" onclick="switchDataSource('combined')" id="btnCombinedMobile">
+                                <span id="combinedCountMobile">0</span> Tous combinés
+                            </button>
+                        </div>
+                    </div>
+                    
                     <div class="source-files-buttons" id="mobileAdminSourceButtons" style="display: none; width: 100%;">
                         <button class="source-file-btn photo" onclick="openSourceFile('photo')">
                             📋 Fichier FR avec photo
@@ -3311,7 +3421,7 @@
                         <div class="book-stats-grid" id="bookStats"></div>
                     </div>
                     
-                    <!-- Table des matières améliorée - MODIFICATION: 3 colonnes -->
+                    <!-- MODIFICATION: Table des matières améliorée avec 3 colonnes -->
                     <div class="toc-container" id="tableOfContents">
                         <div class="toc-title">📑 Table des Matières</div>
                         <!-- La table des matières sera générée ici -->
@@ -4001,11 +4111,25 @@
         }
 
         function updateSourceButtonsCount() {
-            document.getElementById('sheet1Count').textContent = sheetData1.length;
-            document.getElementById('sheet2Count').textContent = sheetData2.length;
-            document.getElementById('sheet3Count').textContent = sheetData3.length;
-            document.getElementById('sheet4Count').textContent = sheetData4.length;
-            document.getElementById('combinedCount').textContent = sheetData1.length + sheetData2.length + sheetData3.length + sheetData4.length;
+            const sheet1Count = sheetData1.length;
+            const sheet2Count = sheetData2.length;
+            const sheet3Count = sheetData3.length;
+            const sheet4Count = sheetData4.length;
+            const combinedCount = sheetData1.length + sheetData2.length + sheetData3.length + sheetData4.length;
+            
+            // Mise à jour des boutons desktop
+            document.getElementById('sheet1Count').textContent = sheet1Count;
+            document.getElementById('sheet2Count').textContent = sheet2Count;
+            document.getElementById('sheet3Count').textContent = sheet3Count;
+            document.getElementById('sheet4Count').textContent = sheet4Count;
+            document.getElementById('combinedCount').textContent = combinedCount;
+            
+            // Mise à jour des boutons mobile
+            document.getElementById('sheet1CountMobile').textContent = sheet1Count;
+            document.getElementById('sheet2CountMobile').textContent = sheet2Count;
+            document.getElementById('sheet3CountMobile').textContent = sheet3Count;
+            document.getElementById('sheet4CountMobile').textContent = sheet4Count;
+            document.getElementById('combinedCountMobile').textContent = combinedCount;
         }
 
         async function loadSingleSheet(url, sheetName) {
@@ -4095,11 +4219,19 @@
         function switchDataSource(source) {
             currentDataSource = source;
             
+            // Mise à jour des boutons desktop
             document.getElementById('btnSheet1').classList.toggle('active', source === 'sheet1');
             document.getElementById('btnSheet2').classList.toggle('active', source === 'sheet2');
             document.getElementById('btnSheet3').classList.toggle('active', source === 'sheet3');
             document.getElementById('btnSheet4').classList.toggle('active', source === 'sheet4');
             document.getElementById('btnCombined').classList.toggle('active', source === 'combined');
+            
+            // Mise à jour des boutons mobile
+            document.getElementById('btnSheet1Mobile').classList.toggle('active', source === 'sheet1');
+            document.getElementById('btnSheet2Mobile').classList.toggle('active', source === 'sheet2');
+            document.getElementById('btnSheet3Mobile').classList.toggle('active', source === 'sheet3');
+            document.getElementById('btnSheet4Mobile').classList.toggle('active', source === 'sheet4');
+            document.getElementById('btnCombinedMobile').classList.toggle('active', source === 'combined');
             
             switch(source) {
                 case 'sheet1':
@@ -5724,7 +5856,7 @@
             `;
         }
 
-        // MODIFICATION: Fonction pour générer la table des matières améliorée avec 3 colonnes
+        // MODIFICATION: Fonction pour générer la table des matières améliorée avec 3 colonnes selon l'exemple
         function generateEnhancedTableOfContents(messagesByCountry) {
             let tocHtml = `
                 <div class="toc-container">
@@ -5742,15 +5874,12 @@
                 const messages = messagesByCountry[pays];
                 const countryNumber = countryAppearanceOrder[pays] || '';
                 
+                // MODIFICATION: Format selon l'exemple
                 tocHtml += `
                     <div class="toc-country">
                         <div class="toc-country-header">
                             <div class="toc-country-name">
-                                ${getFlagEmoji(pays)} ${pays}
-                                ${countryNumber ? `<span style="font-size: 0.8em; color: #666; margin-left: 5px;">(${countryNumber})</span>` : ''}
-                            </div>
-                            <div class="toc-country-count">
-                                ${messages.length}
+                                ${getFlagEmoji(pays)} ${pays} (${messages.length} message${messages.length > 1 ? 's' : ''})
                             </div>
                         </div>
                         <div class="toc-messages-list">
@@ -5784,12 +5913,12 @@
                         const source = messageSourceMap[sourceKey] || 'nophoto';
                         const sourceClass = source;
                         
+                        // MODIFICATION: Format selon l'exemple
                         tocHtml += `
                             <div class="toc-message-item" onclick="scrollToMessage(${rowIndex})">
                                 <div class="toc-message-info">
-                                    <div class="toc-message-num">${messageNumber}</div>
-                                    <div class="toc-message-auteur">${nom}</div>
-                                    <div class="toc-message-lieu">${messageNumber}-${lieu}</div>
+                                    <div class="toc-message-num">${countryNumber}-${index + 1}.</div>
+                                    <div class="toc-message-auteur">${lieu} / ${nom}</div>
                                 </div>
                                 <div class="toc-source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
                                     ${getSourceIndicator(source)}
@@ -5927,7 +6056,7 @@
                                 ${pays}
                             </div>
                         </td>
-                        <td class="recap-lieu-col">${seqIndex + 1}-${lieu}</td>
+                        <td class="recap-lieu-col">${lieu}</td>
                         <td class="recap-extrait-col" title="${message}">${messageExcerpt}</td>
                         <td class="recap-source-col">
                             <div class="toc-source-indicator ${source}" title="${getSourceFullName(source)}">
@@ -6278,15 +6407,13 @@
                             object-fit: cover;
                             border-radius: 4mm;
                             border: 2px solid #D4AF37;
-                            margin: 3mm;
+                            margin: 3mm 5mm 3mm 0;
                             float: left;
                         }
                         .book-photo-container {
-                            display: flex;
-                            flex-wrap: wrap;
-                            justify-content: flex-start;
-                            align-items: flex-start;
+                            display: block;
                             margin: 6mm 0;
+                            overflow: hidden;
                         }
                         .photo-clear {
                             clear: both;
@@ -6342,12 +6469,15 @@
                             background: #f8f9fa;
                             border-radius: 4mm;
                             border: 2px solid #D4AF37;
+                            font-family: Arial, sans-serif;
+                            font-size: 10pt;
+                            line-height: 1.2;
                         }
                         .toc-title {
                             color: #8B6914;
                             margin-bottom: 5mm;
                             text-align: center;
-                            font-size: 14pt;
+                            font-size: 12pt;
                             font-weight: bold;
                             border-bottom: 2px solid #D4AF37;
                             padding-bottom: 3mm;
