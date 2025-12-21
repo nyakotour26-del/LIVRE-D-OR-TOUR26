@@ -29,6 +29,8 @@
             --source-nophoto: #8B6914;
             --source-english: #FFA500;
             --source-english-photo: #FF6347;
+            --label-color: #B8860B;
+            --english-date-bg: #FFA500;
         }
         
         * {
@@ -597,7 +599,6 @@
             border-left: 4px solid #9b59b6;
         }
         
-        /* MODIFICATION: Réduction de la hauteur des statistiques */
         .stats-section {
             background: linear-gradient(135deg, var(--gold-light), #fcebb6);
             padding: 8px 12px;
@@ -605,14 +606,13 @@
             box-shadow: var(--box-shadow);
             border: 2px solid var(--secondary-color);
             min-height: auto;
-            height: auto;
+            order: 1.5;
         }
         
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 4px;
-            margin-bottom: 8px;
         }
         
         .stat-card {
@@ -625,7 +625,6 @@
             transition: transform 0.3s ease;
             cursor: pointer;
             min-height: auto;
-            height: auto;
         }
         
         .stat-card:hover {
@@ -637,16 +636,14 @@
             font-size: 1em;
             font-weight: bold;
             color: var(--secondary-color);
-            margin-bottom: 2px;
-            line-height: 1.2;
+            margin-bottom: 1px;
+            line-height: 1.1;
         }
         
-        /* MODIFICATION: Labels en noir/gris */
         .stat-label {
-            color: #333333; /* Noir */
+            color: var(--label-color) !important;
             font-size: 0.65em;
-            line-height: 1.1;
-            font-weight: 500;
+            line-height: 1;
         }
         
         .filters-sidebar {
@@ -666,7 +663,7 @@
         
         .filter-group h3 {
             margin-bottom: 8px;
-            color: var(--gold-dark);
+            color: var(--label-color) !important;
             font-size: 1em;
             display: flex;
             align-items: center;
@@ -818,6 +815,10 @@
             align-items: center;
         }
         
+        .entry-date-line.english {
+            background: var(--english-date-bg) !important;
+        }
+        
         .date-source-indicator {
             font-size: 0.8em;
             display: flex;
@@ -866,7 +867,7 @@
             flex: 1;
             text-align: center;
             font-weight: 600;
-            color: var(--gold-dark);
+            color: var(--label-color) !important;
             font-size: 1em;
             display: flex;
             flex-direction: column;
@@ -1470,14 +1471,14 @@
             margin: 10px;
             text-align: center;
             vertical-align: top;
-            width: 7cm;
+            width: 10cm;
             max-width: 100%;
         }
 
         .photo-link-with-preview {
             display: block;
-            width: 7cm;
-            height: 7cm;
+            width: 10cm;
+            height: 10cm;
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
@@ -1847,26 +1848,24 @@
                 padding: 10px 12px;
             }
             
-            /* MODIFICATION: Agrandir légèrement les messages en mobile */
-            .message-text {
-                font-size: 1.1em; /* Augmenté de 1em à 1.1em */
-                line-height: 1.4; /* Légèrement augmenté */
-            }
-            
-            /* Ajustement des photos pour mobile */
             .book-photo-large,
             .photo-link-with-preview,
             .photo-preview-container {
-                width: 7cm !important;
-                height: 7cm !important;
+                width: 10cm !important;
+                height: 10cm !important;
+                float: left !important;
+                margin-right: 15px !important;
+                margin-bottom: 15px !important;
             }
             
             .photos-souvenir-container {
                 gap: 15px;
+                justify-content: flex-start !important;
             }
             .photo-label {
                 font-size: 0.85em;
                 padding: 6px 8px;
+                clear: both;
             }
             .photo-link-with-preview::after {
                 font-size: 0.8em;
@@ -1875,6 +1874,7 @@
             .photo-link-bottom {
                 padding: 6px 10px;
                 font-size: 0.8em;
+                clear: both;
             }
         }
         
@@ -1952,8 +1952,8 @@
             .book-photo-large,
             .photo-link-with-preview,
             .photo-preview-container {
-                width: 6.5cm !important;
-                height: 6.5cm !important;
+                width: 8cm !important;
+                height: 8cm !important;
             }
             .photos-souvenir-container {
                 gap: 12px;
@@ -2006,12 +2006,36 @@
         @media (max-width: 768px) {
             .mobile-buttons-row {
                 display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 15px;
             }
             
             .mobile-buttons-row .export-btn.locked {
                 opacity: 0.5;
                 cursor: not-allowed;
                 pointer-events: none;
+            }
+            
+            /* MODIFICATION: Boutons sur 2 lignes en mobile */
+            .mobile-buttons-row .export-btn {
+                flex: 1;
+                min-width: 45%;
+                margin-bottom: 5px;
+            }
+            
+            /* MODIFICATION: Boutons source de données sur ligne séparée */
+            .mobile-buttons-row .source-files-buttons {
+                width: 100%;
+                display: flex !important;
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-top: 10px;
+            }
+            
+            .mobile-buttons-row .source-file-btn {
+                flex: 1;
+                min-width: 45%;
             }
         }
         
@@ -2020,6 +2044,7 @@
             flex-direction: column;
             gap: 15px;
             margin-top: 20px;
+            order: 3;
         }
         
         .desktop-export-buttons .export-btn.locked {
@@ -2268,29 +2293,13 @@
             }
         }
         
-        /* MODIFICATION: Nouveau positionnement du sélecteur de source */
         .data-source-selector {
             margin: 15px 0;
             padding: 15px;
             background: linear-gradient(135deg, #FFF8E1, #FCEBB6);
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-secondary);
-        }
-        
-        /* MODIFICATION: Vue ordinateur - sous le bouton Exporter livre */
-        @media (min-width: 769px) {
-            .desktop-export-buttons + .data-source-selector {
-                margin-top: 15px;
-                order: 6; /* Après les boutons d'export */
-            }
-        }
-        
-        /* MODIFICATION: Vue mobile - sous le bouton Générer livre */
-        @media (max-width: 768px) {
-            .mobile-buttons-row .export-btn.book + .data-source-selector {
-                margin-top: 15px;
-                width: 100%;
-            }
+            order: 4;
         }
         
         .data-source-buttons {
@@ -2458,9 +2467,10 @@
             transition: all 0.3s;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             font-size: 0.85em;
-            text-align: left;
+            text-align: center;
             flex: 1;
             min-width: 200px;
         }
@@ -2503,6 +2513,14 @@
             background: linear-gradient(135deg, #FF4500, var(--source-english-photo));
         }
         
+        .source-btn-img {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1.2em;
+        }
+        
         .additional-stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -2525,7 +2543,7 @@
         }
         
         .additional-stat-label {
-            color: var(--text-medium);
+            color: var(--label-color);
             font-size: 0.7em;
             line-height: 1.2;
             margin-top: 3px;
@@ -2593,26 +2611,6 @@
             transform: none;
         }
         
-        .mobile-buttons-row {
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-        
-        .mobile-buttons-row .export-btn,
-        .mobile-buttons-row .source-file-btn {
-            flex: 1;
-            min-width: 45%;
-        }
-        
-        @media (max-width: 480px) {
-            .mobile-buttons-row .export-btn,
-            .mobile-buttons-row .source-file-btn {
-                min-width: 100%;
-                font-size: 0.8em;
-                padding: 8px 12px;
-            }
-        }
-        
         .stats-line {
             display: flex;
             flex-wrap: wrap;
@@ -2654,7 +2652,7 @@
         
         .stats-item-label {
             font-size: 0.8em;
-            color: var(--text-medium);
+            color: var(--label-color);
             line-height: 1.2;
         }
         
@@ -2721,119 +2719,126 @@
             background: #f0f0f0;
         }
         
-        /* MODIFICATION: Styles pour la table des matières améliorée - 3 colonnes, police réduite et compacte */
+        /* MODIFICATION: Table des matières sur 3 colonnes */
         .toc-container {
             margin: 20px 0;
-            padding: 15px;
+            padding: 20px;
             background: #f8f9fa;
             border-radius: var(--border-radius);
             border: 2px solid var(--gold-light);
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            font-family: 'Arial', sans-serif; /* Police plus compacte */
-            font-size: 0.8em; /* Réduction de la taille de police */
-            line-height: 1.2; /* Réduction de l'interligne */
+            font-family: 'Arial', sans-serif;
+            font-size: 0.85em;
+            line-height: 1.3;
         }
         
         .toc-title {
             color: var(--gold-dark);
-            margin-bottom: 12px;
+            margin-bottom: 20px;
             text-align: center;
-            font-size: 1em; /* Réduction */
+            font-size: 1.4em;
             font-weight: bold;
-            border-bottom: 2px solid var(--gold-light);
-            padding-bottom: 8px;
-            grid-column: 1 / -1;
-            font-family: 'Arial', sans-serif; /* Police plus compacte */
+            border-bottom: 3px solid var(--gold-light);
+            padding-bottom: 15px;
         }
         
-        .toc-country {
-            margin-bottom: 12px;
-            padding: 8px;
-            background: white;
-            border-radius: 6px;
-            border-left: 3px solid var(--secondary-color);
-            position: relative;
-            font-size: 0.85em; /* Réduction */
-            line-height: 1.2; /* Réduction */
+        .toc-columns {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            align-items: start;
+        }
+        
+        .toc-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .toc-country-section {
+            margin-bottom: 15px;
+            page-break-inside: avoid;
         }
         
         .toc-country-header {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--gold-light);
+        }
+        
+        .toc-country-number {
+            font-size: 1em;
+            font-weight: bold;
+            color: var(--gold-dark);
+            min-width: 25px;
         }
         
         .toc-country-name {
             font-weight: bold;
             color: var(--gold-dark);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.9em; /* Réduction */
+            font-size: 1em;
+            flex-grow: 1;
         }
         
         .toc-country-count {
             background: var(--secondary-color);
             color: white;
-            padding: 2px 6px;
-            border-radius: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
             font-size: 0.75em;
             font-weight: bold;
         }
         
         .toc-messages-list {
-            margin-left: 15px;
+            margin-left: 10px;
             padding-left: 10px;
-            border-left: 1px solid var(--gold-light);
-            font-size: 0.8em; /* Réduction */
+            border-left: 2px solid var(--gold-light);
         }
         
         .toc-message-item {
-            margin-bottom: 6px;
-            padding: 6px;
+            margin: 6px 0;
+            padding: 4px 6px;
             background: #f5f5f5;
             border-radius: 4px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 6px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.8em; /* Réduction */
-            line-height: 1.1; /* Réduction */
+            font-size: 0.8em;
         }
         
         .toc-message-item:hover {
             background: var(--gold-light);
-            transform: translateX(5px);
+            transform: translateX(3px);
         }
         
-        .toc-message-info {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 1;
-        }
-        
-        .toc-message-num {
+        .toc-message-number {
             font-weight: bold;
             color: var(--secondary-color);
-            min-width: 25px;
+            min-width: 30px;
             font-size: 0.85em;
+        }
+        
+        .toc-message-content {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-grow: 1;
         }
         
         .toc-message-auteur {
             color: var(--text-dark);
-            flex: 1;
+            font-weight: 500;
             font-size: 0.85em;
         }
         
         .toc-message-lieu {
             color: #666;
             font-size: 0.75em;
-            min-width: 120px;
+            margin-left: auto;
         }
         
         .toc-source-indicator {
@@ -2844,7 +2849,6 @@
             align-items: center;
             justify-content: center;
             font-size: 0.7em;
-            margin-left: 3px;
         }
         
         .toc-source-indicator.photo {
@@ -2893,6 +2897,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            font-size: 0.9em;
         }
         
         .recap-table td {
@@ -2900,6 +2905,7 @@
             border-bottom: 1px solid #e9ecef;
             vertical-align: top;
             background-color: white;
+            font-size: 0.85em;
         }
         
         .recap-table tr:nth-child(even) td {
@@ -2910,61 +2916,60 @@
             background-color: #f0f0f0;
         }
         
-        /* MODIFICATION: Nouvelles largeurs de colonnes */
         .recap-num-col {
-            width: 40px; /* Réduit */
+            width: 40px;
             font-weight: bold;
             color: black;
             text-align: center;
         }
         
         .recap-date-col {
-            width: 80px; /* Réduit de 100px à 80px */
+            width: 80px;
             font-weight: bold;
             color: black;
         }
         
         .recap-pays-col {
-            width: 100px; /* Réduit de 120px à 100px */
+            width: 100px;
             color: #FF0000;
             font-weight: bold;
         }
         
         .recap-lieu-col {
-            width: 120px; /* Réduit de 150px à 120px */
+            width: 120px;
             color: #8A2BE2;
             font-weight: bold;
         }
         
         .recap-auteur-col {
-            width: 120px; /* Réduit de 150px à 120px */
+            width: 120px;
             color: #333;
         }
         
         .recap-source-col {
-            width: 60px; /* Réduit de 80px à 60px */
+            width: 60px;
             text-align: center;
         }
         
         .recap-extrait-col {
-            width: auto; /* La plus large */
+            width: auto;
             color: #666;
             font-size: 0.85em;
             max-width: 300px;
         }
         
-        /* MODIFICATION: Aperçu photo aligné à gauche dans le livre */
         .book-photo-large {
             width: 7cm !important;
             height: 7cm !important;
             object-fit: cover;
             border-radius: 8px;
             border: 2px solid var(--gold-light);
-            margin: 5px 15px 5px 0; /* Marge à droite uniquement pour alignement à gauche */
+            margin: 5px;
             cursor: pointer;
             transition: transform 0.3s;
-            float: left; /* Alignement à gauche */
-            clear: left; /* Empêche le chevauchement */
+            float: left !important;
+            margin-right: 10px !important;
+            margin-bottom: 10px !important;
         }
         
         .book-photo-large:hover {
@@ -2972,16 +2977,19 @@
         }
         
         .book-photo-container {
-            display: block; /* Changé de flex à block pour l'alignement float */
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: flex-start;
             margin: 15px 0;
-            overflow: hidden; /* Pour contenir les floats */
+            clear: both;
+            overflow: hidden;
         }
         
         .photo-clear {
             clear: both;
         }
         
-        /* MODIFICATION: Aperçu photo dans les fiches */
         .photo-link-with-preview {
             display: block;
             width: 7cm !important;
@@ -2993,9 +3001,6 @@
             position: relative;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            float: left; /* Alignement à gauche */
-            margin-right: 15px; /* Marge à droite */
-            margin-bottom: 15px;
         }
         
         .photo-preview-container {
@@ -3005,37 +3010,90 @@
             vertical-align: top;
             width: 7cm !important;
             max-width: 100%;
-            float: left; /* Alignement à gauche */
         }
         
-        /* MODIFICATION: Ajustement des messages pour vue ordinateur */
-        @media (min-width: 769px) {
-            .message-text {
-                font-size: 1.05em; /* Réduction légère en vue ordinateur */
-                line-height: 1.4;
-            }
-        }
-        
-        /* MODIFICATION: Ajustement des messages pour mobile */
-        @media (max-width: 768px) {
-            .message-text {
-                font-size: 1.1em; /* Agrandissement en mobile */
-                line-height: 1.5;
-            }
-        }
-        
-        /* Responsive pour la table des matières */
+        /* Ajustements responsive pour la table des matières */
         @media (max-width: 1024px) {
-            .toc-container {
+            .toc-columns {
                 grid-template-columns: repeat(2, 1fr);
-                font-size: 0.85em;
             }
         }
         
         @media (max-width: 768px) {
-            .toc-container {
+            .toc-columns {
                 grid-template-columns: 1fr;
-                font-size: 0.9em;
+            }
+            
+            .message-text {
+                font-size: 1.15em;
+            }
+            
+            /* MODIFICATION: Correction largeur mobile - réduire padding */
+            .container {
+                padding: 0 10px;
+            }
+            
+            .search-section, 
+            .calendar-section,
+            .results-section,
+            .tableau-container,
+            .book-section {
+                padding: 10px;
+                margin: 0 -10px 15px -10px;
+                width: calc(100% + 20px);
+            }
+            
+            /* MODIFICATION: Réduction largeur des boutons en mobile */
+            .mobile-buttons-row .export-btn,
+            .mobile-buttons-row .source-file-btn {
+                min-width: 45%;
+                max-width: 45%;
+                font-size: 0.8em;
+                padding: 8px 10px;
+            }
+            
+            /* MODIFICATION: Boutons sur 2 lignes en mobile */
+            .mobile-buttons-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-top: 10px;
+            }
+            
+            /* MODIFICATION: Ligne 1 - boutons export */
+            .mobile-buttons-row .export-btn:not(.source-file-btn) {
+                flex: 1;
+                min-width: 30%;
+                margin-bottom: 5px;
+            }
+            
+            /* MODIFICATION: Ligne 2 - boutons source de données */
+            .mobile-buttons-row .source-files-buttons {
+                width: 100%;
+                display: flex !important;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-top: 5px;
+                order: 2;
+            }
+            
+            .mobile-buttons-row .source-file-btn {
+                flex: 1;
+                min-width: 22%;
+                font-size: 0.75em;
+                padding: 6px 8px;
+            }
+            
+            /* MODIFICATION: Réorganisation des boutons source de données en ordinateur */
+            .data-source-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .source-btn {
+                flex: 1;
+                min-width: 130px;
             }
             
             .book-photo-large,
@@ -3044,30 +3102,83 @@
                 width: 6.5cm !important;
                 height: 6.5cm !important;
             }
-            
-            /* MODIFICATION: Mobile - Source de données sous Générer livre */
+        }
+        
+        /* MODIFICATION: Boutons sur la même ligne pour ordinateur et tablette */
+        @media (min-width: 769px) {
             .mobile-buttons-row {
-                position: relative;
+                display: none;
             }
             
-            .data-source-selector {
-                order: 100; /* S'assure qu'il vient après */
-                margin-top: 15px;
-                width: 100%;
+            .source-files-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            
+            .source-file-btn {
+                flex: 1;
+                min-width: 200px;
+            }
+            
+            .data-source-buttons {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            
+            .source-btn {
+                flex: 1;
+                min-width: 150px;
+            }
+            
+            .source-btn.combined {
+                flex-basis: 100%;
+                margin-top: 10px;
             }
         }
         
         @media (max-width: 480px) {
-            .toc-container {
-                font-size: 0.85em;
+            .mobile-buttons-row .export-btn,
+            .mobile-buttons-row .source-file-btn {
+                min-width: 100%;
+                max-width: 100%;
+                font-size: 0.8em;
+                padding: 8px 12px;
+            }
+            
+            .mobile-buttons-row .source-file-btn {
+                min-width: 48%;
+                max-width: 48%;
             }
             
             .book-photo-large,
             .photo-link-with-preview,
             .photo-preview-container {
-                width: 6cm !important;
-                height: 6cm !important;
+                width: 8cm !important;
+                height: 8cm !important;
             }
+            
+            .photos-souvenir-container {
+                gap: 12px;
+            }
+        }
+        
+        /* MODIFICATION: Styles pour les boutons restructurés en mobile */
+        .mobile-buttons-row .export-row {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+        
+        .mobile-buttons-row .source-row {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
         }
     </style>
 </head>
@@ -3168,12 +3279,20 @@
         
         <div class="sidebar">
             <div class="filters-sidebar" style="order: 1;">
-                <button class="action-button" onclick="showAllData()" style="margin-bottom: 15px; font-size: 1em; padding: 14px;">
-                    📋 Afficher tous les messages
-                </button>
+                <!-- MODIFICATION: Barre de recherche et bouton Rechercher uniquement -->
+                <section class="search-section" id="searchSection">
+                    <div class="search-form">
+                        <input type="text" class="search-input-full" id="searchInput" placeholder="Rechercher dans tous les messages...">
+                        <div class="suggestions-container" id="searchSuggestions"></div>
+                        <button class="search-button-circle mobile-search-button" onclick="handleSearch()" title="Rechercher">
+                            🔍
+                        </button>
+                        <button class="search-button-full" onclick="handleSearch()">🔍 Rechercher</button>
+                    </div>
+                </section>
                 
-                <div class="stats-section" style="order: 1.5;">
-                    <h3 style="margin-bottom: 12px; color: var(--gold-dark); text-align: center; font-size: 1em; font-weight: 700;">📊 Statistiques</h3>
+                <div class="stats-section">
+                    <h3 style="margin-bottom: 12px; color: var(--label-color); text-align: center; font-size: 1em; font-weight: 700;">📊 Statistiques</h3>
                     <div class="stats-grid">
                         <div class="stat-card" onclick="showAllData()">
                             <div class="stat-value" id="totalMessages">0</div>
@@ -3201,7 +3320,6 @@
                         </div>
                     </div>
                     
-                    <!-- MODIFICATION: Ajout des statistiques cliquables -->
                     <div class="stats-line" id="statsLine">
                         <!-- Les statistiques seront ajoutées dynamiquement -->
                     </div>
@@ -3209,7 +3327,7 @@
                 
                 <div class="filter-group">
                     <h3 class="toggle-title" data-filter="noms">
-                        <span style="color: var(--gold-dark);">👤 Auteurs</span>
+                        <span style="color: var(--label-color);">👤 Auteurs</span>
                         <span class="toggle-indicator">▶ Afficher</span>
                     </h3>
                     <div class="filter-tags" id="nomsTags" style="display: none;"></div>
@@ -3217,7 +3335,7 @@
                 
                 <div class="filter-group">
                     <h3 class="toggle-title" data-filter="pays">
-                        <span style="color: var(--gold-dark);">🌍 Pays</span>
+                        <span style="color: var(--label-color);">🌍 Pays</span>
                         <span class="toggle-indicator">▶ Afficher</span>
                     </h3>
                     <div class="filter-tags" id="paysTags" style="display: none;"></div>
@@ -3225,85 +3343,80 @@
                 
                 <div class="filter-group">
                     <h3 class="toggle-title" data-filter="lieux">
-                        <span style="color: var(--gold-dark);">📍 Lieux</span>
+                        <span style="color: var(--label-color);">📍 Lieux</span>
                         <span class="toggle-indicator">▶ Afficher</span>
                     </h3>
                     <div class="filter-tags" id="lieuxTags" style="display: none;"></div>
                 </div>
-            </div>
-            
-            <div class="action-buttons-sidebar" style="order: 4;">
-                <button class="action-button" onclick="showDataTable()">
-                    📊 Tableau récapitulatif
-                </button>
                 
-                <button class="action-button book locked" onclick="showUnlockBubble()">
-                    🔒 Générer le livre PDF
-                </button>
+                <div class="date-filter-group">
+                    <h3 style="color: var(--label-color); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📅 Dates avec messages</h3>
+                    <div class="filter-tags" id="datesTags" style="max-height: 200px;"></div>
+                </div>
                 
-                <div class="source-files-buttons" id="adminSourceButtons" style="display: none;">
-                    <button class="source-file-btn photo" onclick="openSourceFile('photo')">
-                        📋 Fichier FR avec photo
+                <div class="action-buttons-sidebar">
+                    <button class="action-button" onclick="showDataTable()">
+                        📊 Tableau récapitulatif
                     </button>
-                    <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')">
-                        📋 Fichier FR sans photo
+                    
+                    <button class="action-button book locked" onclick="showUnlockBubble()">
+                        🔒 Générer le livre PDF
                     </button>
-                    <button class="source-file-btn english" onclick="openSourceFile('english')">
-                        📋 Fichier ENG sans photo
-                    </button>
-                    <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')">
-                        📋 Fichier ENG avec photo
+                    
+                    <div class="source-files-buttons" id="adminSourceButtons" style="display: none;">
+                        <button class="source-file-btn photo" onclick="openSourceFile('photo')">
+                            <span class="source-btn-img">🇫🇷📸</span>
+                        </button>
+                        <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')">
+                            <span class="source-btn-img">🇫🇷📋</span>
+                        </button>
+                        <button class="source-file-btn english" onclick="openSourceFile('english')">
+                            <span class="source-btn-img">🇬🇧📋</span>
+                        </button>
+                        <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')">
+                            <span class="source-btn-img">🇬🇧📸</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="desktop-export-buttons">
+                    <button class="export-btn locked" onclick="showUnlockBubble()" style="width: 100%;">
+                        🔒 Exporter toutes les fiches
                     </button>
                 </div>
-            </div>
-            
-            <!-- MODIFICATION: Vue ordinateur - Source de données sous Exporter livre -->
-            <div class="desktop-export-buttons" style="order: 5;">
-                <button class="export-btn locked" onclick="showUnlockBubble()" style="width: 100%;">
-                    🔒 Exporter toutes les fiches
-                </button>
                 
-                <!-- MODIFICATION: Positionnement du sélecteur de source sous le bouton Exporter livre -->
-                <div class="data-source-selector" style="margin-top: 15px;">
-                    <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
+                <div class="data-source-selector">
+                    <h3 style="color: var(--label-color); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
                     <div class="data-source-buttons">
                         <button class="source-btn" onclick="switchDataSource('sheet1')" id="btnSheet1">
-                            <span id="sheet1Count">0</span> FR avec photos
+                            <span class="source-btn-img">🇫🇷📸</span>
+                            <span id="sheet1Count">0</span>
                         </button>
                         <button class="source-btn" onclick="switchDataSource('sheet2')" id="btnSheet2">
-                            <span id="sheet2Count">0</span> FR sans photos
+                            <span class="source-btn-img">🇫🇷📋</span>
+                            <span id="sheet2Count">0</span>
                         </button>
                         <button class="source-btn english" onclick="switchDataSource('sheet3')" id="btnSheet3">
-                            <span id="sheet3Count">0</span> ENG sans photos
+                            <span class="source-btn-img">🇬🇧📋</span>
+                            <span id="sheet3Count">0</span>
                         </button>
                         <button class="source-btn english-photo" onclick="switchDataSource('sheet4')" id="btnSheet4">
-                            <span id="sheet4Count">0</span> ENG avec photos
+                            <span class="source-btn-img">🇬🇧📸</span>
+                            <span id="sheet4Count">0</span>
                         </button>
                         <button class="source-btn combined active" onclick="switchDataSource('combined')" id="btnCombined">
-                            <span id="combinedCount">0</span> Tous combinés
+                            <span>📚 Tous combinés</span>
+                            <span id="combinedCount">0</span>
                         </button>
                     </div>
                 </div>
             </div>
-            
-            <div class="date-filter-group" style="order: 3;">
-                <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📅 Dates avec messages</h3>
-                <div class="filter-tags" id="datesTags" style="max-height: 200px;"></div>
-            </div>
         </div>
         
         <div class="main-content">
-            <section class="search-section" id="searchSection">
-                <div class="search-form">
-                    <input type="text" class="search-input-full" id="searchInput" placeholder="Rechercher dans tous les messages...">
-                    <div class="suggestions-container" id="searchSuggestions"></div>
-                    <button class="search-button-circle mobile-search-button" onclick="handleSearch()" title="Rechercher">
-                        🔍
-                    </button>
-                    <button class="search-button-full" onclick="handleSearch()">🔍 Rechercher</button>
-                </div>
-                
-                <div class="mobile-buttons-row">
+            <!-- MODIFICATION: Boutons mobiles réorganisés -->
+            <div class="mobile-buttons-row">
+                <div class="export-row">
                     <button class="export-btn" onclick="showDataTable()">
                         📊 Tableau
                     </button>
@@ -3313,45 +3426,24 @@
                     <button class="export-btn locked book" onclick="showUnlockBubble()">
                         🔒 Générer livre
                     </button>
-                    
-                    <!-- MODIFICATION: Vue mobile - Source de données sous Générer livre -->
-                    <div class="data-source-selector" style="width: 100%; margin-top: 15px;">
-                        <h3 style="color: var(--gold-dark); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
-                        <div class="data-source-buttons">
-                            <button class="source-btn" onclick="switchDataSource('sheet1')" id="btnSheet1Mobile">
-                                <span id="sheet1CountMobile">0</span> FR avec photos
-                            </button>
-                            <button class="source-btn" onclick="switchDataSource('sheet2')" id="btnSheet2Mobile">
-                                <span id="sheet2CountMobile">0</span> FR sans photos
-                            </button>
-                            <button class="source-btn english" onclick="switchDataSource('sheet3')" id="btnSheet3Mobile">
-                                <span id="sheet3CountMobile">0</span> ENG sans photos
-                            </button>
-                            <button class="source-btn english-photo" onclick="switchDataSource('sheet4')" id="btnSheet4Mobile">
-                                <span id="sheet4CountMobile">0</span> ENG avec photos
-                            </button>
-                            <button class="source-btn combined active" onclick="switchDataSource('combined')" id="btnCombinedMobile">
-                                <span id="combinedCountMobile">0</span> Tous combinés
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="source-files-buttons" id="mobileAdminSourceButtons" style="display: none; width: 100%;">
+                </div>
+                <div class="source-row">
+                    <div class="source-files-buttons" id="mobileAdminSourceButtons" style="display: none;">
                         <button class="source-file-btn photo" onclick="openSourceFile('photo')">
-                            📋 Fichier FR avec photo
+                            <span class="source-btn-img">🇫🇷📸</span>
                         </button>
                         <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')">
-                            📋 Fichier FR sans photo
+                            <span class="source-btn-img">🇫🇷📋</span>
                         </button>
                         <button class="source-file-btn english" onclick="openSourceFile('english')">
-                            📋 Fichier ENG sans photo
+                            <span class="source-btn-img">🇬🇧📋</span>
                         </button>
                         <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')">
-                            📋 Fichier ENG avec photo
+                            <span class="source-btn-img">🇬🇧📸</span>
                         </button>
                     </div>
                 </div>
-            </section>
+            </div>
             
             <div class="calendar-section">
                 <div class="calendar-header">
@@ -3421,15 +3513,16 @@
                         <div class="book-stats-grid" id="bookStats"></div>
                     </div>
                     
-                    <!-- MODIFICATION: Table des matières améliorée avec 3 colonnes -->
+                    <!-- MODIFICATION: Table des matières sur 3 colonnes -->
                     <div class="toc-container" id="tableOfContents">
                         <div class="toc-title">📑 Table des Matières</div>
-                        <!-- La table des matières sera générée ici -->
+                        <div class="toc-columns" id="tocColumns">
+                            <!-- La table des matières sera générée ici sur 3 colonnes -->
+                        </div>
                     </div>
                 </div>
                 <div class="book-classification" id="bookContent"></div>
                 
-                <!-- Tableau récapitulatif chronologique amélioré -->
                 <div class="recap-table-container" id="chronologicalTableContainer">
                     <h3 style="color: var(--gold-dark); margin-bottom: 20px; text-align: center; font-size: 1.2em;">📋 Tableau récapitulatif chronologique</h3>
                     <div id="chronologicalTableContent">
@@ -3503,7 +3596,6 @@
         
         let allSearchTerms = new Set();
         
-        // MODIFICATION: Variable pour suivre l'ordre d'apparition des pays
         let countryAppearanceOrder = {};
         let countryAppearanceCounter = 1;
 
@@ -3535,12 +3627,39 @@
             "🌠 Étoile du livre d'or"
         ];
 
+        // MODIFICATION: Fonction pour convertir les nombres en chiffres romains
+        function toRoman(num) {
+            const romanNumerals = [
+                { value: 1000, symbol: 'M' },
+                { value: 900, symbol: 'CM' },
+                { value: 500, symbol: 'D' },
+                { value: 400, symbol: 'CD' },
+                { value: 100, symbol: 'C' },
+                { value: 90, symbol: 'XC' },
+                { value: 50, symbol: 'L' },
+                { value: 40, symbol: 'XL' },
+                { value: 10, symbol: 'X' },
+                { value: 9, symbol: 'IX' },
+                { value: 5, symbol: 'V' },
+                { value: 4, symbol: 'IV' },
+                { value: 1, symbol: 'I' }
+            ];
+            
+            let result = '';
+            for (const { value, symbol } of romanNumerals) {
+                while (num >= value) {
+                    result += symbol;
+                    num -= value;
+                }
+            }
+            return result;
+        }
+
         // MODIFICATION: Fonction pour mettre à jour la source par défaut à FR
         function updateUnknownSourceToFR() {
-            // Parcourir toutes les sources et changer "unknown" en "FR"
             for (const key in messageSourceMap) {
                 if (messageSourceMap[key] === 'unknown') {
-                    messageSourceMap[key] = 'nophoto'; // Par défaut FR sans photo
+                    messageSourceMap[key] = 'nophoto';
                     totalUnknownSource++;
                 }
             }
@@ -4079,7 +4198,6 @@
                     messageSourceMap[`sheet4-${index}`] = 'english-photo';
                 });
                 
-                // MODIFICATION: Changer les sources "unknown" en "FR" par défaut
                 updateUnknownSourceToFR();
                 
                 updateSourceButtonsCount();
@@ -4111,25 +4229,11 @@
         }
 
         function updateSourceButtonsCount() {
-            const sheet1Count = sheetData1.length;
-            const sheet2Count = sheetData2.length;
-            const sheet3Count = sheetData3.length;
-            const sheet4Count = sheetData4.length;
-            const combinedCount = sheetData1.length + sheetData2.length + sheetData3.length + sheetData4.length;
-            
-            // Mise à jour des boutons desktop
-            document.getElementById('sheet1Count').textContent = sheet1Count;
-            document.getElementById('sheet2Count').textContent = sheet2Count;
-            document.getElementById('sheet3Count').textContent = sheet3Count;
-            document.getElementById('sheet4Count').textContent = sheet4Count;
-            document.getElementById('combinedCount').textContent = combinedCount;
-            
-            // Mise à jour des boutons mobile
-            document.getElementById('sheet1CountMobile').textContent = sheet1Count;
-            document.getElementById('sheet2CountMobile').textContent = sheet2Count;
-            document.getElementById('sheet3CountMobile').textContent = sheet3Count;
-            document.getElementById('sheet4CountMobile').textContent = sheet4Count;
-            document.getElementById('combinedCountMobile').textContent = combinedCount;
+            document.getElementById('sheet1Count').textContent = sheetData1.length;
+            document.getElementById('sheet2Count').textContent = sheetData2.length;
+            document.getElementById('sheet3Count').textContent = sheetData3.length;
+            document.getElementById('sheet4Count').textContent = sheetData4.length;
+            document.getElementById('combinedCount').textContent = sheetData1.length + sheetData2.length + sheetData3.length + sheetData4.length;
         }
 
         async function loadSingleSheet(url, sheetName) {
@@ -4219,19 +4323,11 @@
         function switchDataSource(source) {
             currentDataSource = source;
             
-            // Mise à jour des boutons desktop
             document.getElementById('btnSheet1').classList.toggle('active', source === 'sheet1');
             document.getElementById('btnSheet2').classList.toggle('active', source === 'sheet2');
             document.getElementById('btnSheet3').classList.toggle('active', source === 'sheet3');
             document.getElementById('btnSheet4').classList.toggle('active', source === 'sheet4');
             document.getElementById('btnCombined').classList.toggle('active', source === 'combined');
-            
-            // Mise à jour des boutons mobile
-            document.getElementById('btnSheet1Mobile').classList.toggle('active', source === 'sheet1');
-            document.getElementById('btnSheet2Mobile').classList.toggle('active', source === 'sheet2');
-            document.getElementById('btnSheet3Mobile').classList.toggle('active', source === 'sheet3');
-            document.getElementById('btnSheet4Mobile').classList.toggle('active', source === 'sheet4');
-            document.getElementById('btnCombinedMobile').classList.toggle('active', source === 'combined');
             
             switch(source) {
                 case 'sheet1':
@@ -4290,11 +4386,9 @@
             extractSearchTerms();
             showDataInfo();
             
-            // MODIFICATION: Calculer l'ordre d'apparition des pays
             calculateCountryAppearanceOrder();
         }
 
-        // MODIFICATION: Fonction pour calculer l'ordre d'apparition des pays
         function calculateCountryAppearanceOrder() {
             countryAppearanceOrder = {};
             countryAppearanceCounter = 1;
@@ -4303,7 +4397,6 @@
             const dateIndex = 1;
             
             if (paysIndex !== -1) {
-                // Trier les données par date
                 const sortedData = [...sheetData].sort((a, b) => {
                     const dateA = parseDate(a[dateIndex] || '');
                     const dateB = parseDate(b[dateIndex] || '');
@@ -4697,7 +4790,6 @@
             document.getElementById('anonymousCount').textContent = anonymousCount;
         }
 
-        // MODIFICATION: Mise à jour de la ligne des statistiques avec les événements onclick
         function updateStatsLine() {
             const statsLine = document.getElementById('statsLine');
             
@@ -4722,7 +4814,6 @@
             `;
         }
 
-        // Fonction pour afficher les fiches avec photos
         function showMessagesWithPhotos() {
             const photo1Index = headers.findIndex(h => 
                 h.toLowerCase().includes('photos') && h.toLowerCase().includes('souvenir') && h.includes('1')
@@ -4771,7 +4862,6 @@
             displayAllFichesData(results, `Fiches avec photos (${results.length})`);
         }
 
-        // Fonction pour afficher toutes les données des fiches
         function displayAllFichesData(results, title) {
             const content = document.getElementById('resultContent');
             const resultTitle = document.getElementById('resultTitle');
@@ -4843,6 +4933,8 @@
                     const hasPhotos = photoUrlsMap[item.originalIndex] && (photoUrlsMap[item.originalIndex].photo1 || photoUrlsMap[item.originalIndex].photo2);
                     const hasMessageLink = messageLinksMap[item.originalIndex];
                     
+                    const dateLineClass = (source === 'english' || source === 'english-photo') ? 'english' : '';
+                    
                     html += `
                         <div class="entry-item">
                             <div class="source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
@@ -4851,7 +4943,7 @@
                             <div class="${titleClass} title-creative">
                                 ${creativeTitle}
                             </div>
-                            <div class="entry-date-line">
+                            <div class="entry-date-line ${dateLineClass}">
                                 <span>${formattedDate}</span>
                                 <span class="date-source-indicator ${sourceClass}">
                                     ${sourceIcon} ${sourceIndicator}
@@ -4896,9 +4988,6 @@
                                     <a href="${photoUrl}" target="_blank" class="photo-link-bottom" title="Voir la photo originale">
                                         🔗 Voir la photo originale
                                     </a>
-                                    <div class="photo-label">
-                                        Photo souvenir ${photoNumber}
-                                    </div>
                                 </div>
                             `;
                         };
@@ -4916,7 +5005,6 @@
                         if (photosHtml.includes('photo-preview-container')) {
                             html += `
                                 <div style="margin-bottom: 20px;">
-                                    <div class="message-label" style="margin-bottom: 10px;">📸 Photos souvenir</div>
                                     ${photosHtml}
                                 </div>
                             `;
@@ -5439,6 +5527,8 @@
                     const hasPhotos = photoUrlsMap[index] && (photoUrlsMap[index].photo1 || photoUrlsMap[index].photo2);
                     const hasMessageLink = messageLinksMap[index];
                     
+                    const dateLineClass = (source === 'english' || source === 'english-photo') ? 'english' : '';
+                    
                     html += `
                         <div class="entry-item">
                             <div class="source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
@@ -5447,7 +5537,7 @@
                             <div class="${titleClass} title-creative">
                                 ${creativeTitle}
                             </div>
-                            <div class="entry-date-line">
+                            <div class="entry-date-line ${dateLineClass}">
                                 <span>${formattedDate}</span>
                                 <span class="date-source-indicator ${sourceClass}">
                                     ${sourceIcon} ${sourceIndicator}
@@ -5492,9 +5582,6 @@
                                     <a href="${photoUrl}" target="_blank" class="photo-link-bottom" title="Voir la photo originale">
                                         🔗 Voir la photo originale
                                     </a>
-                                    <div class="photo-label">
-                                        Photo souvenir ${photoNumber}
-                                    </div>
                                 </div>
                             `;
                         };
@@ -5512,7 +5599,6 @@
                         if (photosHtml.includes('photo-preview-container')) {
                             html += `
                                 <div style="margin-bottom: 20px;">
-                                    <div class="message-label" style="margin-bottom: 10px;">📸 Photos souvenir</div>
                                     ${photosHtml}
                                 </div>
                             `;
@@ -5679,7 +5765,137 @@
             displayResults(results, 'Messages anonymes');
         }
 
-        // MODIFICATION: Fonction pour afficher le tableau récapitulatif amélioré
+        // MODIFICATION: Fonction pour générer la table des matières sur 3 colonnes
+        function generateEnhancedTableOfContents(messagesByCountry) {
+            const tocColumns = document.getElementById('tocColumns');
+            tocColumns.innerHTML = '';
+            
+            // Créer 3 colonnes
+            const columns = 3;
+            const columnElements = [];
+            
+            for (let i = 0; i < columns; i++) {
+                const columnDiv = document.createElement('div');
+                columnDiv.className = 'toc-column';
+                columnElements.push(columnDiv);
+                tocColumns.appendChild(columnDiv);
+            }
+            
+            // Trier les pays par ordre d'apparition
+            const sortedCountries = Object.keys(messagesByCountry).sort((a, b) => {
+                return (countryAppearanceOrder[a] || 999) - (countryAppearanceOrder[b] || 999);
+            });
+            
+            // Répartir les pays dans les colonnes
+            const countriesPerColumn = Math.ceil(sortedCountries.length / columns);
+            
+            sortedCountries.forEach((pays, countryIndex) => {
+                const messages = messagesByCountry[pays];
+                const countryRomanNumeral = toRoman(countryIndex + 1);
+                
+                // Déterminer dans quelle colonne placer ce pays
+                const columnIndex = Math.floor(countryIndex / countriesPerColumn);
+                const column = columnElements[columnIndex];
+                
+                const countryHtml = `
+                    <div class="toc-country-section">
+                        <div class="toc-country-header">
+                            <div class="toc-country-number">${countryRomanNumeral}.</div>
+                            <div class="toc-country-name">
+                                ${getFlagEmoji(pays)} <strong>${pays}</strong>
+                            </div>
+                            <div class="toc-country-count">
+                                ${messages.length} message${messages.length > 1 ? 's' : ''}
+                            </div>
+                        </div>
+                        <div class="toc-messages-list">
+                `;
+                
+                const messagesByLieu = {};
+                messages.forEach(item => {
+                    const lieuIndex = headers.findIndex(h => 
+                        h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
+                    );
+                    const lieu = item.row[lieuIndex] || 'Non spécifié';
+                    
+                    if (!messagesByLieu[lieu]) {
+                        messagesByLieu[lieu] = [];
+                    }
+                    messagesByLieu[lieu].push(item);
+                });
+                
+                Object.keys(messagesByLieu).sort().forEach((lieu, lieuIndex) => {
+                    const lieuMessages = messagesByLieu[lieu];
+                    
+                    lieuMessages.forEach((item, msgIndex) => {
+                        const row = item.row;
+                        const rowIndex = item.index;
+                        
+                        const nomIndex = headers.findIndex(h => 
+                            h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
+                        );
+                        const nom = row[nomIndex] || 'Anonyme';
+                        const sourceKey = `${currentDataSource}-${rowIndex}`;
+                        const source = messageSourceMap[sourceKey] || 'nophoto';
+                        const sourceClass = source;
+                        
+                        const decimalNumber = `${countryIndex + 1}.${lieuIndex + 1}.${msgIndex + 1}`;
+                        
+                        column.innerHTML += `
+                            <div class="toc-message-item" onclick="scrollToMessage(${rowIndex})">
+                                <div class="toc-message-number">${decimalNumber}</div>
+                                <div class="toc-message-content">
+                                    <div class="toc-message-auteur">${nom}</div>
+                                    <div class="toc-message-lieu">${lieu}</div>
+                                    <div class="toc-source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
+                                        ${getSourceIndicator(source)}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+                
+                column.innerHTML += countryHtml + '</div></div>';
+            });
+            
+            return tocColumns.outerHTML;
+        }
+
+        function getFlagEmoji(pays) {
+            const flagMap = {
+                'France': '🇫🇷',
+                'Allemagne': '🇩🇪',
+                'Suisse': '🇨🇭',
+                'Belgique': '🇧🇪',
+                'Royaume-Uni': '🇬🇧',
+                'Pays de Galles': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
+                'Angleterre': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
+                'Écosse': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+                'Italie': '🇮🇹',
+                'Espagne': '🇪🇸',
+                'Portugal': '🇵🇹',
+                'Pays-Bas': '🇳🇱',
+                'Luxembourg': '🇱🇺',
+                'Autriche': '🇦🇹',
+                'Danemark': '🇩🇰',
+                'Suède': '🇸🇪',
+                'Norvège': '🇳🇴',
+                'Finlande': '🇫🇮',
+                'Irlande': '🇮🇪',
+                'Pologne': '🇵🇱',
+                'République Tchèque': '🇨🇿',
+                'Slovaquie': '🇸🇰',
+                'Hongrie': '🇭🇺',
+                'Roumanie': '🇷🇴',
+                'Bulgarie': '🇧🇬',
+                'Grèce': '🇬🇷',
+                'Turquie': '🇹🇷'
+            };
+            
+            return flagMap[pays] || '🌍';
+        }
+
         function showDataTable() {
             const tableauSection = document.getElementById('tableauSection');
             const tableauContent = document.getElementById('tableauContent');
@@ -5696,16 +5912,16 @@
                 <div style="margin-bottom: 15px; text-align: center;">
                     <div class="source-files-buttons" style="display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin: 0 auto;">
                         <button class="source-file-btn photo" onclick="openSourceFile('photo')">
-                            📋 Ouvrir fichier FR avec photo
+                            <span class="source-btn-img">🇫🇷📸</span>
                         </button>
                         <button class="source-file-btn nophoto" onclick="openSourceFile('nophoto')">
-                            📋 Ouvrir fichier FR sans photo
+                            <span class="source-btn-img">🇫🇷📋</span>
                         </button>
                         <button class="source-file-btn english" onclick="openSourceFile('english')">
-                            📋 Ouvrir fichier ENG sans photo
+                            <span class="source-btn-img">🇬🇧📋</span>
                         </button>
                         <button class="source-file-btn english-photo" onclick="openSourceFile('english-photo')">
-                            📋 Ouvrir fichier ENG avec photo
+                            <span class="source-btn-img">🇬🇧📸</span>
                         </button>
                     </div>
                 </div>
@@ -5745,7 +5961,6 @@
                 h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
             );
             
-            // Trier les données par date
             const sortedData = [...sheetData].sort((a, b) => {
                 const dateA = parseDate(a[dateIndex] || '');
                 const dateB = parseDate(b[dateIndex] || '');
@@ -5856,130 +6071,6 @@
             `;
         }
 
-        // MODIFICATION: Fonction pour générer la table des matières améliorée avec 3 colonnes selon l'exemple
-        function generateEnhancedTableOfContents(messagesByCountry) {
-            let tocHtml = `
-                <div class="toc-container">
-                    <div class="toc-title">📑 Table des Matières</div>
-            `;
-            
-            let messageNumber = 1;
-            
-            // Trier les pays par ordre d'apparition
-            const sortedCountries = Object.keys(messagesByCountry).sort((a, b) => {
-                return (countryAppearanceOrder[a] || 999) - (countryAppearanceOrder[b] || 999);
-            });
-            
-            sortedCountries.forEach(pays => {
-                const messages = messagesByCountry[pays];
-                const countryNumber = countryAppearanceOrder[pays] || '';
-                
-                // MODIFICATION: Format selon l'exemple
-                tocHtml += `
-                    <div class="toc-country">
-                        <div class="toc-country-header">
-                            <div class="toc-country-name">
-                                ${getFlagEmoji(pays)} ${pays} (${messages.length} message${messages.length > 1 ? 's' : ''})
-                            </div>
-                        </div>
-                        <div class="toc-messages-list">
-                `;
-                
-                const messagesByLieu = {};
-                messages.forEach(item => {
-                    const lieuIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
-                    );
-                    const lieu = item.row[lieuIndex] || 'Non spécifié';
-                    
-                    if (!messagesByLieu[lieu]) {
-                        messagesByLieu[lieu] = [];
-                    }
-                    messagesByLieu[lieu].push(item);
-                });
-                
-                Object.keys(messagesByLieu).sort().forEach(lieu => {
-                    const lieuMessages = messagesByLieu[lieu];
-                    
-                    lieuMessages.forEach((item, index) => {
-                        const row = item.row;
-                        const rowIndex = item.index;
-                        
-                        const nomIndex = headers.findIndex(h => 
-                            h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
-                        );
-                        const nom = row[nomIndex] || 'Anonyme';
-                        const sourceKey = `${currentDataSource}-${rowIndex}`;
-                        const source = messageSourceMap[sourceKey] || 'nophoto';
-                        const sourceClass = source;
-                        
-                        // MODIFICATION: Format selon l'exemple
-                        tocHtml += `
-                            <div class="toc-message-item" onclick="scrollToMessage(${rowIndex})">
-                                <div class="toc-message-info">
-                                    <div class="toc-message-num">${countryNumber}-${index + 1}.</div>
-                                    <div class="toc-message-auteur">${lieu} / ${nom}</div>
-                                </div>
-                                <div class="toc-source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
-                                    ${getSourceIndicator(source)}
-                                </div>
-                            </div>
-                        `;
-                        messageNumber++;
-                    });
-                });
-                
-                tocHtml += `
-                        </div>
-                    </div>
-                `;
-            });
-            
-            tocHtml += `
-                    <div style="grid-column: 1 / -1; margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd; text-align: center; font-size: 0.9em; color: #666;">
-                        Total: ${sheetData.length} messages | ${Object.keys(messagesByCountry).length} pays | ${allNoms.length} auteurs
-                    </div>
-                </div>
-            `;
-            
-            return tocHtml;
-        }
-
-        // Fonction pour obtenir l'emoji drapeau correspondant au pays
-        function getFlagEmoji(pays) {
-            const flagMap = {
-                'France': '🇫🇷',
-                'Allemagne': '🇩🇪',
-                'Suisse': '🇨🇭',
-                'Belgique': '🇧🇪',
-                'Royaume-Uni': '🇬🇧',
-                'Pays de Galles': '🏴󠁧󠁢󠁷󠁬󠁳󠁿',
-                'Angleterre': '🏴󠁧󠁢󠁥󠁮󠁧󠁿',
-                'Écosse': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-                'Italie': '🇮🇹',
-                'Espagne': '🇪🇸',
-                'Portugal': '🇵🇹',
-                'Pays-Bas': '🇳🇱',
-                'Luxembourg': '🇱🇺',
-                'Autriche': '🇦🇹',
-                'Danemark': '🇩🇰',
-                'Suède': '🇸🇪',
-                'Norvège': '🇳🇴',
-                'Finlande': '🇫🇮',
-                'Irlande': '🇮🇪',
-                'Pologne': '🇵🇱',
-                'République Tchèque': '🇨🇿',
-                'Slovaquie': '🇸🇰',
-                'Hongrie': '🇭🇺',
-                'Roumanie': '🇷🇴',
-                'Bulgarie': '🇧🇬',
-                'Grèce': '🇬🇷',
-                'Turquie': '🇹🇷'
-            };
-            
-            return flagMap[pays] || '🌍';
-        }
-
         // MODIFICATION: Fonction pour générer le tableau récapitulatif amélioré
         function generateEnhancedChronologicalTable() {
             let tableHtml = `
@@ -6011,7 +6102,6 @@
                 h.toLowerCase().includes('votre') && h.toLowerCase().includes('message')
             );
             
-            // Trier les messages par date
             const sortedMessages = [];
             sheetData.forEach((row, index) => {
                 const dateStr = row[dateIndex] || '';
@@ -6027,7 +6117,6 @@
             
             sortedMessages.sort((a, b) => a.date - b.date);
             
-            // Générer les lignes du tableau
             sortedMessages.forEach((item, seqIndex) => {
                 const row = item.row;
                 const index = item.index;
@@ -6056,7 +6145,7 @@
                                 ${pays}
                             </div>
                         </td>
-                        <td class="recap-lieu-col">${lieu}</td>
+                        <td class="recap-lieu-col">${seqIndex + 1}-${lieu}</td>
                         <td class="recap-extrait-col" title="${message}">${messageExcerpt}</td>
                         <td class="recap-source-col">
                             <div class="toc-source-indicator ${source}" title="${getSourceFullName(source)}">
@@ -6079,15 +6168,13 @@
             return tableHtml;
         }
 
-        // Fonction pour faire défiler jusqu'à un message spécifique
         function scrollToMessage(index) {
-            // Pour l'instant, affiche simplement le message dans la section résultats
             const row = sheetData[index];
             const results = [row];
             displayResults(results, `Message #${index + 1}`);
         }
 
-        // MODIFICATION: Fonction pour générer le livre PDF avec table des matières et tableau chronologique améliorés
+        // MODIFICATION: Fonction pour générer le livre PDF avec table des matières sur 3 colonnes
         function generateBookPDF() {
             if (!isAdminUnlocked) {
                 showUnlockBubble();
@@ -6107,8 +6194,8 @@
                 messagesByCountry[pays].push({row: row, index: index});
             });
             
-            // Générer la table des matières améliorée
-            const tableOfContents = generateEnhancedTableOfContents(messagesByCountry);
+            // Générer la table des matières sur 3 colonnes
+            const tableOfContents = generateEnhancedTableOfContentsForPDF(messagesByCountry);
             
             // Générer le contenu principal par pays
             let mainContent = '';
@@ -6118,17 +6205,16 @@
                 return (countryAppearanceOrder[a] || 999) - (countryAppearanceOrder[b] || 999);
             });
             
-            sortedCountries.forEach(pays => {
+            sortedCountries.forEach((pays, countryIndex) => {
                 const messages = messagesByCountry[pays];
-                const countryNumber = countryAppearanceOrder[pays] || '';
+                const countryRomanNumeral = toRoman(countryIndex + 1);
                 
                 mainContent += `
                     <div class="country-section" style="margin-bottom: 40px; page-break-inside: avoid;">
                         <h2 style="color: #8b0000; border-bottom: 2px solid #D4AF37; padding-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-                            ${getFlagEmoji(pays)} ${pays}
-                            ${countryNumber ? `<span style="font-size: 0.8em; color: #666; margin-left: 5px;">(${countryNumber})</span>` : ''}
+                            ${countryRomanNumeral}. ${getFlagEmoji(pays)} <strong>${pays}</strong>
+                            <span style="font-size: 0.8em; color: #666; margin-left: auto;">(${messages.length} message${messages.length > 1 ? 's' : ''})</span>
                         </h2>
-                        <p style="color: #666; font-style: italic; margin-bottom: 20px;">${messages.length} message${messages.length > 1 ? 's' : ''}</p>
                 `;
                 
                 const messagesByLieu = {};
@@ -6144,15 +6230,10 @@
                     messagesByLieu[lieu].push(item);
                 });
                 
-                Object.keys(messagesByLieu).sort().forEach(lieu => {
+                Object.keys(messagesByLieu).sort().forEach((lieu, lieuIndex) => {
                     const lieuMessages = messagesByLieu[lieu];
                     
-                    mainContent += `
-                        <div class="lieu-section" style="margin-left: 20px; margin-bottom: 30px;">
-                            <h3 style="color: #8A2BE2; margin-bottom: 15px;">📍 ${lieu}</h3>
-                    `;
-                    
-                    lieuMessages.forEach((item, index) => {
+                    lieuMessages.forEach((item, msgIndex) => {
                         const row = item.row;
                         const rowIndex = item.index;
                         
@@ -6183,7 +6264,7 @@
                         const photo2 = row[photo2Index] || '';
                         
                         const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
-                        const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
+                        const creativeTitle = getCreativeTitleForEntry(pays, lieu, msgIndex);
                         const hasPhotos = photo1.trim() !== '' || photo2.trim() !== '';
                         
                         const generateThumbnailUrl = (url) => {
@@ -6200,10 +6281,13 @@
                             return url;
                         };
                         
+                        const decimalNumber = `${countryIndex + 1}.${lieuIndex + 1}.${msgIndex + 1}`;
+                        
                         mainContent += `
                             <div class="message-item" style="margin: 20px 0; padding: 20px; border: 1px solid #eee; border-radius: 8px; background: #f9f9f9; page-break-inside: avoid;">
-                                <div style="font-weight: bold; color: #8B6914; text-align: center; margin-bottom: 10px; font-size: 1.1em;">
-                                    ${creativeTitle}
+                                <div style="font-weight: bold; color: #8B6914; margin-bottom: 10px; font-size: 1.1em; display: flex; align-items: center; gap: 10px;">
+                                    <span style="background: #D4AF37; color: white; padding: 3px 8px; border-radius: 4px;">${decimalNumber}</span>
+                                    <span>${creativeTitle}</span>
                                 </div>
                                 <div style="background: #D4AF37; color: white; padding: 10px 15px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-weight: bold;">
                                     ${formattedDate}
@@ -6230,9 +6314,6 @@
                                             <a href="${photo1}" target="_blank" class="photo-link-bottom" style="display: block; margin-top: 8px; padding: 5px 8px; background: linear-gradient(135deg, #D4AF37, #B8860B); color: white; border-radius: 6px; text-decoration: none; font-size: 0.85em; font-weight: 600; text-align: center; transition: all 0.3s;">
                                                 🔗 Voir la photo originale
                                             </a>
-                                            <div class="photo-label" style="margin-top: 8px; font-size: 0.85em; font-weight: 600; color: #8B6914; padding: 5px 8px; background: white; border-radius: 8px; border-left: 3px solid #D4AF37;">
-                                                Photo souvenir 1
-                                            </div>
                                         </div>
                                         ` : ''}
                                         
@@ -6241,13 +6322,10 @@
                                             <img src="${generateThumbnailUrl(photo2)}" 
                                                  alt="Photo souvenir 2" 
                                                  class="book-photo-large"
-                                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
+                                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5z=">
                                             <a href="${photo2}" target="_blank" class="photo-link-bottom" style="display: block; margin-top: 8px; padding: 5px 8px; background: linear-gradient(135deg, #D4AF37, #B8860B); color: white; border-radius: 6px; text-decoration: none; font-size: 0.85em; font-weight: 600; text-align: center; transition: all 0.3s;">
                                                 🔗 Voir la photo originale
                                             </a>
-                                            <div class="photo-label" style="margin-top: 8px; font-size: 0.85em; font-weight: 600; color: #8B6914; padding: 5px 8px; background: white; border-radius: 8px; border-left: 3px solid #D4AF37;">
-                                                Photo souvenir 2
-                                            </div>
                                         </div>
                                         ` : ''}
                                     </div>
@@ -6265,12 +6343,10 @@
                             </div>
                         `;
                         
-                        if (index < lieuMessages.length - 1) {
+                        if (msgIndex < lieuMessages.length - 1) {
                             mainContent += '<hr style="margin: 20px 0; border: none; border-top: 1px dashed #ddd;">';
                         }
                     });
-                    
-                    mainContent += `</div>`;
                 });
                 
                 mainContent += `</div><div class="page-break"></div>`;
@@ -6293,7 +6369,6 @@
                 return !nom.trim() || nom.toLowerCase().includes('anonyme');
             }).length;
             
-            // Ajouter les statistiques de messages anglais et français
             const statsHtml = `
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 30px 0;">
                     <div style="padding: 15px; background: #e8f5e9; border-radius: 8px; text-align: center;">
@@ -6378,13 +6453,6 @@
                             border-radius: 4mm;
                             border: 1px solid #e9ecef;
                         }
-                        .lieu-section { 
-                            margin-left: 10mm; 
-                            margin-bottom: 8mm;
-                            padding: 6mm;
-                            background: #f8f9fa;
-                            border-radius: 3mm;
-                        }
                         .message-item { 
                             margin: 8mm 0; 
                             padding: 8mm; 
@@ -6407,26 +6475,18 @@
                             object-fit: cover;
                             border-radius: 4mm;
                             border: 2px solid #D4AF37;
-                            margin: 3mm 5mm 3mm 0;
+                            margin: 3mm;
                             float: left;
                         }
                         .book-photo-container {
-                            display: block;
+                            display: flex;
+                            flex-wrap: wrap;
+                            justify-content: flex-start;
+                            align-items: flex-start;
                             margin: 6mm 0;
-                            overflow: hidden;
                         }
                         .photo-clear {
                             clear: both;
-                        }
-                        .photo-label {
-                            margin-top: 3mm;
-                            font-size: 10pt;
-                            font-weight: 600;
-                            color: #8B6914;
-                            padding: 2mm 3mm;
-                            background: white;
-                            border-radius: 3mm;
-                            border-left: 2px solid #D4AF37;
                         }
                         .photo-link-bottom {
                             display: block;
@@ -6461,41 +6521,127 @@
                             background: #f9f9f9;
                         }
                         .toc-container {
-                            display: grid;
-                            grid-template-columns: repeat(3, 1fr);
-                            gap: 5mm;
                             margin: 8mm 0;
                             padding: 8mm;
                             background: #f8f9fa;
                             border-radius: 4mm;
                             border: 2px solid #D4AF37;
-                            font-family: Arial, sans-serif;
-                            font-size: 10pt;
-                            line-height: 1.2;
+                            font-size: 9pt;
                         }
                         .toc-title {
                             color: #8B6914;
                             margin-bottom: 5mm;
                             text-align: center;
-                            font-size: 12pt;
+                            font-size: 14pt;
                             font-weight: bold;
                             border-bottom: 2px solid #D4AF37;
                             padding-bottom: 3mm;
-                            grid-column: 1 / -1;
                         }
-                        .toc-country {
-                            margin-bottom: 5mm;
-                            padding: 4mm;
-                            background: white;
-                            border-radius: 3mm;
-                            border-left: 3px solid #D4AF37;
+                        .toc-columns {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 5mm;
+                            align-items: start;
+                        }
+                        .toc-column {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 3mm;
+                        }
+                        .toc-country-section {
+                            margin-bottom: 4mm;
+                            page-break-inside: avoid;
+                        }
+                        .toc-country-header {
+                            display: flex;
+                            align-items: center;
+                            gap: 2mm;
+                            margin-bottom: 2mm;
+                            padding-bottom: 1mm;
+                            border-bottom: 1px solid #D4AF37;
+                        }
+                        .toc-country-number {
+                            font-size: 1em;
+                            font-weight: bold;
+                            color: #8B6914;
+                            min-width: 6mm;
+                        }
+                        .toc-country-name {
+                            font-weight: bold;
+                            color: #8B6914;
+                            font-size: 1em;
+                            flex-grow: 1;
+                        }
+                        .toc-country-count {
+                            background: #D4AF37;
+                            color: white;
+                            padding: 1mm 2mm;
+                            border-radius: 8mm;
+                            font-size: 0.75em;
+                            font-weight: bold;
+                        }
+                        .toc-messages-list {
+                            margin-left: 6mm;
+                            padding-left: 3mm;
+                            border-left: 1px solid #D4AF37;
+                        }
+                        .toc-message-item {
+                            margin: 1mm 0;
+                            padding: 1mm 2mm;
+                            background: #f5f5f5;
+                            border-radius: 2mm;
+                            display: flex;
+                            align-items: center;
+                            gap: 2mm;
+                            font-size: 0.85em;
+                        }
+                        .toc-message-number {
+                            font-weight: bold;
+                            color: #D4AF37;
+                            min-width: 8mm;
+                            font-size: 0.9em;
+                        }
+                        .toc-message-content {
+                            display: flex;
+                            align-items: center;
+                            gap: 2mm;
+                            flex-grow: 1;
+                        }
+                        .toc-message-auteur {
+                            color: #333;
+                            font-weight: 500;
+                            font-size: 0.85em;
+                        }
+                        .toc-message-lieu {
+                            color: #666;
+                            font-size: 0.75em;
+                            margin-left: auto;
+                        }
+                        .toc-source-indicator {
+                            width: 4mm;
+                            height: 4mm;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 0.7em;
                         }
                         @media print {
                             .page-break { page-break-before: always; }
                             body { margin: 15mm; background: white; }
                             .message-item { page-break-inside: avoid; }
-                            .toc-container {
+                            .toc-columns {
                                 grid-template-columns: repeat(3, 1fr);
+                            }
+                        }
+                        @media screen and (max-width: 1024px) {
+                            .toc-columns {
+                                grid-template-columns: repeat(2, 1fr);
+                            }
+                        }
+                        @media screen and (max-width: 768px) {
+                            .toc-columns {
+                                grid-template-columns: 1fr;
                             }
                         }
                         @page {
@@ -6518,7 +6664,7 @@
                         <h3 style="color: #D4AF37; margin-top: 10mm;">📊 Statistiques</h3>
                         ${statsHtml}
                         
-                        <!-- Table des matières améliorée -->
+                        <!-- Table des matières sur 3 colonnes -->
                         ${tableOfContents}
                     </div>
                     
@@ -6551,6 +6697,118 @@
             `);
             printWindow.document.close();
             printWindow.print();
+        }
+
+        // MODIFICATION: Fonction pour générer la table des matières PDF sur 3 colonnes
+        function generateEnhancedTableOfContentsForPDF(messagesByCountry) {
+            let tocHtml = `
+                <div class="toc-container">
+                    <div class="toc-title">📑 Table des Matières</div>
+                    <div class="toc-columns">
+            `;
+            
+            // Créer 3 colonnes
+            const columns = 3;
+            const columnHtmls = Array(columns).fill('');
+            
+            // Trier les pays par ordre d'apparition
+            const sortedCountries = Object.keys(messagesByCountry).sort((a, b) => {
+                return (countryAppearanceOrder[a] || 999) - (countryAppearanceOrder[b] || 999);
+            });
+            
+            // Répartir les pays dans les colonnes
+            const countriesPerColumn = Math.ceil(sortedCountries.length / columns);
+            
+            sortedCountries.forEach((pays, countryIndex) => {
+                const messages = messagesByCountry[pays];
+                const countryRomanNumeral = toRoman(countryIndex + 1);
+                
+                // Déterminer dans quelle colonne placer ce pays
+                const columnIndex = Math.floor(countryIndex / countriesPerColumn);
+                
+                columnHtmls[columnIndex] += `
+                    <div class="toc-country-section">
+                        <div class="toc-country-header">
+                            <div class="toc-country-number">${countryRomanNumeral}.</div>
+                            <div class="toc-country-name">
+                                ${getFlagEmoji(pays)} <strong>${pays}</strong>
+                            </div>
+                            <div class="toc-country-count">
+                                ${messages.length} message${messages.length > 1 ? 's' : ''}
+                            </div>
+                        </div>
+                        <div class="toc-messages-list">
+                `;
+                
+                const messagesByLieu = {};
+                messages.forEach(item => {
+                    const lieuIndex = headers.findIndex(h => 
+                        h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
+                    );
+                    const lieu = item.row[lieuIndex] || 'Non spécifié';
+                    
+                    if (!messagesByLieu[lieu]) {
+                        messagesByLieu[lieu] = [];
+                    }
+                    messagesByLieu[lieu].push(item);
+                });
+                
+                Object.keys(messagesByLieu).sort().forEach((lieu, lieuIndex) => {
+                    const lieuMessages = messagesByLieu[lieu];
+                    
+                    lieuMessages.forEach((item, msgIndex) => {
+                        const row = item.row;
+                        const rowIndex = item.index;
+                        
+                        const nomIndex = headers.findIndex(h => 
+                            h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
+                        );
+                        const nom = row[nomIndex] || 'Anonyme';
+                        const sourceKey = `${currentDataSource}-${rowIndex}`;
+                        const source = messageSourceMap[sourceKey] || 'nophoto';
+                        const sourceClass = source;
+                        
+                        const decimalNumber = `${countryIndex + 1}.${lieuIndex + 1}.${msgIndex + 1}`;
+                        
+                        columnHtmls[columnIndex] += `
+                            <div class="toc-message-item">
+                                <div class="toc-message-number">${decimalNumber}</div>
+                                <div class="toc-message-content">
+                                    <div class="toc-message-auteur">${nom}</div>
+                                    <div class="toc-message-lieu">${lieu}</div>
+                                    <div class="toc-source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
+                                        ${getSourceIndicator(source)}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                });
+                
+                columnHtmls[columnIndex] += `
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Ajouter les colonnes au HTML
+            columnHtmls.forEach(columnHtml => {
+                tocHtml += `
+                    <div class="toc-column">
+                        ${columnHtml}
+                    </div>
+                `;
+            });
+            
+            tocHtml += `
+                    </div>
+                    <div style="margin-top: 20mm; padding-top: 5mm; border-top: 2px solid #D4AF37; text-align: center; font-size: 0.9em; color: #666;">
+                        Total: ${sheetData.length} messages | ${Object.keys(messagesByCountry).length} pays | ${allNoms.length} auteurs
+                    </div>
+                </div>
+            `;
+            
+            return tocHtml;
         }
 
         function exportDayMessagesToPDF(rows, date) {
