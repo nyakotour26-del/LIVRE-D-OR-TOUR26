@@ -1022,23 +1022,44 @@
         }
         
         .date-tag {
-            background: linear-gradient(135deg, white, #f8f9fa);
-            padding: 8px 12px;
-            border-radius: 20px;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+            color: white;
+            padding: 4px 8px;
+            border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
-            border: 2px solid var(--gold-light);
-            margin: 4px;
+            margin: 2px;
             display: inline-block;
-            font-size: 0.85em;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            font-size: 0.75em;
+            font-weight: 600;
+            min-height: 30px;
+            line-height: 1.2;
+            min-width: 60px;
         }
         
         .date-tag:hover {
-            background: linear-gradient(135deg, var(--gold-light), #f0e6cc);
+            background: linear-gradient(135deg, var(--gold-secondary), var(--gold-primary));
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+        }
+        
+        .date-tag-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+        }
+        
+        .date-tag-day {
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .date-tag-count {
+            font-size: 0.7em;
+            opacity: 0.9;
         }
         
         .export-buttons {
@@ -2163,25 +2184,14 @@
         }
         
         .unlock-bubble-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
             background: none;
             border: none;
             font-size: 1.5em;
             cursor: pointer;
-            color: #666;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s;
-            background: #f0f0f0;
-        }
-        
-        .unlock-bubble-close:hover {
-            background: #e74c3c;
-            color: white;
-            transform: rotate(90deg);
+            padding: 5px 15px;
         }
         
         .unlock-bubble-content {
@@ -2523,30 +2533,35 @@
         
         .additional-stats-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
             margin-top: 10px;
         }
         
         .additional-stat-card {
             background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            padding: 10px;
+            padding: 8px;
             border-radius: var(--border-radius);
             text-align: center;
             border: 1px solid #dee2e6;
+            min-height: 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         
         .additional-stat-value {
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: bold;
             color: var(--gold-dark);
+            margin-bottom: 2px;
         }
         
         .additional-stat-label {
             color: var(--label-color);
-            font-size: 0.7em;
-            line-height: 1.2;
-            margin-top: 3px;
+            font-size: 0.6em;
+            line-height: 1;
+            margin-top: 1px;
         }
         
         .flag-indicator {
@@ -3102,6 +3117,31 @@
                 width: 6.5cm !important;
                 height: 6.5cm !important;
             }
+            
+            /* MODIFICATION: 3 cartes statistiques sur la même ligne en mobile */
+            .additional-stats-grid {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 4px;
+                margin-top: 8px;
+            }
+            
+            .additional-stat-card {
+                flex: 1;
+                min-width: 0;
+                padding: 6px;
+                min-height: 50px;
+            }
+            
+            .additional-stat-value {
+                font-size: 0.9em;
+                margin-bottom: 1px;
+            }
+            
+            .additional-stat-label {
+                font-size: 0.55em;
+                line-height: 0.9;
+            }
         }
         
         /* MODIFICATION: Boutons sur la même ligne pour ordinateur et tablette */
@@ -3162,6 +3202,24 @@
             .photos-souvenir-container {
                 gap: 12px;
             }
+            
+            /* MODIFICATION: Ajustement des cartes statistiques pour très petits écrans */
+            .additional-stats-grid {
+                gap: 3px;
+            }
+            
+            .additional-stat-card {
+                padding: 4px;
+                min-height: 45px;
+            }
+            
+            .additional-stat-value {
+                font-size: 0.85em;
+            }
+            
+            .additional-stat-label {
+                font-size: 0.5em;
+            }
         }
         
         /* MODIFICATION: Styles pour les boutons restructurés en mobile */
@@ -3179,6 +3237,22 @@
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 5px;
+        }
+        
+        /* MODIFICATION: Réduction de la hauteur et de l'espacement des dates */
+        .date-filter-group {
+            padding: 10px;
+        }
+        
+        .date-filter-group .filter-tags {
+            max-height: 120px;
+            gap: 2px;
+            padding: 2px;
+        }
+        
+        .date-tag {
+            margin: 1px;
+            line-height: 1;
         }
     </style>
 </head>
@@ -3320,8 +3394,9 @@
                         </div>
                     </div>
                     
-                    <div class="stats-line" id="statsLine">
-                        <!-- Les statistiques seront ajoutées dynamiquement -->
+                    <!-- MODIFICATION: 3 cartes statistiques sur la même ligne -->
+                    <div class="additional-stats-grid" id="additionalStats">
+                        <!-- Les cartes seront ajoutées dynamiquement -->
                     </div>
                 </div>
                 
@@ -3350,10 +3425,11 @@
                 </div>
                 
                 <div class="date-filter-group">
-                    <h3 style="color: var(--label-color); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📅 Dates avec messages</h3>
-                    <div class="filter-tags" id="datesTags" style="max-height: 200px;"></div>
+                    <h3 style="color: var(--label-color); margin-bottom: 6px; font-size: 0.9em; font-weight: 700;">📅 Dates avec messages</h3>
+                    <div class="filter-tags" id="datesTags" style="max-height: 120px; gap: 2px; padding: 2px;"></div>
                 </div>
                 
+                <!-- MODIFICATION: Déplacé en dessous du calendrier -->
                 <div class="action-buttons-sidebar">
                     <button class="action-button" onclick="showDataTable()">
                         📊 Tableau récapitulatif
@@ -3385,7 +3461,8 @@
                     </button>
                 </div>
                 
-                <div class="data-source-selector">
+                <!-- MODIFICATION: Masqué par défaut, visible seulement après déverrouillage -->
+                <div class="data-source-selector" id="dataSourceSelector" style="display: none;">
                     <h3 style="color: var(--label-color); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
                     <div class="data-source-buttons">
                         <button class="source-btn" onclick="switchDataSource('sheet1')" id="btnSheet1">
@@ -3466,6 +3543,33 @@
                         <button class="close-popup" onclick="closeCalendarPopup()">✕</button>
                     </div>
                     <div class="calendar-popup-options" id="calendarPopupOptions">
+                    </div>
+                </div>
+                
+                <!-- MODIFICATION: Source de données déplacée ici -->
+                <div class="data-source-selector" id="calendarDataSourceSelector" style="margin-top: 20px; display: none;">
+                    <h3 style="color: var(--label-color); margin-bottom: 8px; font-size: 0.95em; font-weight: 700;">📊 Source de données</h3>
+                    <div class="data-source-buttons">
+                        <button class="source-btn" onclick="switchDataSource('sheet1')" id="calendarBtnSheet1">
+                            <span class="source-btn-img">🇫🇷📸</span>
+                            <span id="calendarSheet1Count">0</span>
+                        </button>
+                        <button class="source-btn" onclick="switchDataSource('sheet2')" id="calendarBtnSheet2">
+                            <span class="source-btn-img">🇫🇷📋</span>
+                            <span id="calendarSheet2Count">0</span>
+                        </button>
+                        <button class="source-btn english" onclick="switchDataSource('sheet3')" id="calendarBtnSheet3">
+                            <span class="source-btn-img">🇬🇧📋</span>
+                            <span id="calendarSheet3Count">0</span>
+                        </button>
+                        <button class="source-btn english-photo" onclick="switchDataSource('sheet4')" id="calendarBtnSheet4">
+                            <span class="source-btn-img">🇬🇧📸</span>
+                            <span id="calendarSheet4Count">0</span>
+                        </button>
+                        <button class="source-btn combined active" onclick="switchDataSource('combined')" id="calendarBtnCombined">
+                            <span>📚 Tous combinés</span>
+                            <span id="calendarCombinedCount">0</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -3677,6 +3781,10 @@
             
             document.getElementById('adminSourceButtons').style.display = 'none';
             document.getElementById('mobileAdminSourceButtons').style.display = 'none';
+            
+            // MODIFICATION: Masquer les sélecteurs de source de données par défaut
+            document.getElementById('dataSourceSelector').style.display = 'none';
+            document.getElementById('calendarDataSourceSelector').style.display = 'none';
             
             loadDataFromGoogleSheets();
             
@@ -4234,6 +4342,13 @@
             document.getElementById('sheet3Count').textContent = sheetData3.length;
             document.getElementById('sheet4Count').textContent = sheetData4.length;
             document.getElementById('combinedCount').textContent = sheetData1.length + sheetData2.length + sheetData3.length + sheetData4.length;
+            
+            // Mettre à jour aussi les boutons du calendrier
+            document.getElementById('calendarSheet1Count').textContent = sheetData1.length;
+            document.getElementById('calendarSheet2Count').textContent = sheetData2.length;
+            document.getElementById('calendarSheet3Count').textContent = sheetData3.length;
+            document.getElementById('calendarSheet4Count').textContent = sheetData4.length;
+            document.getElementById('calendarCombinedCount').textContent = sheetData1.length + sheetData2.length + sheetData3.length + sheetData4.length;
         }
 
         async function loadSingleSheet(url, sheetName) {
@@ -4323,11 +4438,19 @@
         function switchDataSource(source) {
             currentDataSource = source;
             
+            // Mettre à jour les boutons dans la sidebar
             document.getElementById('btnSheet1').classList.toggle('active', source === 'sheet1');
             document.getElementById('btnSheet2').classList.toggle('active', source === 'sheet2');
             document.getElementById('btnSheet3').classList.toggle('active', source === 'sheet3');
             document.getElementById('btnSheet4').classList.toggle('active', source === 'sheet4');
             document.getElementById('btnCombined').classList.toggle('active', source === 'combined');
+            
+            // Mettre à jour les boutons dans le calendrier
+            document.getElementById('calendarBtnSheet1').classList.toggle('active', source === 'sheet1');
+            document.getElementById('calendarBtnSheet2').classList.toggle('active', source === 'sheet2');
+            document.getElementById('calendarBtnSheet3').classList.toggle('active', source === 'sheet3');
+            document.getElementById('calendarBtnSheet4').classList.toggle('active', source === 'sheet4');
+            document.getElementById('calendarBtnCombined').classList.toggle('active', source === 'combined');
             
             switch(source) {
                 case 'sheet1':
@@ -4377,7 +4500,7 @@
             calculateCountryStats();
             calculateAdditionalStats();
             updateStats();
-            updateStatsLine();
+            updateAdditionalStats();
             renderFilterTags();
             renderCalendar();
             renderDatesTags();
@@ -4790,26 +4913,25 @@
             document.getElementById('anonymousCount').textContent = anonymousCount;
         }
 
-        function updateStatsLine() {
-            const statsLine = document.getElementById('statsLine');
+        function updateAdditionalStats() {
+            const additionalStats = document.getElementById('additionalStats');
             
             let withPhotosCount = totalWithPhotos;
             let englishMessagesCount = totalEnglishMessages;
             let frenchMessagesCount = totalFrenchMessages;
-            let englishWithPhotosCount = totalEnglishWithPhotos;
             
-            statsLine.innerHTML = `
-                <div class="stats-item clickable" onclick="showMessagesWithPhotos()" title="Cliquer pour afficher les fiches avec photos">
-                    <div class="stats-item-value">${withPhotosCount}</div>
-                    <div class="stats-item-label">Fiches avec photos</div>
+            additionalStats.innerHTML = `
+                <div class="additional-stat-card clickable" onclick="showMessagesWithPhotos()" title="Cliquer pour afficher les fiches avec photos">
+                    <div class="additional-stat-value">${withPhotosCount}</div>
+                    <div class="additional-stat-label">Fiches avec photos</div>
                 </div>
-                <div class="stats-item clickable" onclick="showEnglishMessages()" title="Cliquer pour afficher les messages anglais">
-                    <div class="stats-item-value">${englishMessagesCount}</div>
-                    <div class="stats-item-label">Messages anglais</div>
+                <div class="additional-stat-card clickable" onclick="showEnglishMessages()" title="Cliquer pour afficher les messages anglais">
+                    <div class="additional-stat-value">${englishMessagesCount}</div>
+                    <div class="additional-stat-label">Messages anglais</div>
                 </div>
-                <div class="stats-item clickable" onclick="showFrenchMessagesWithAndWithoutPhotos()" title="Cliquer pour afficher les messages français">
-                    <div class="stats-item-value">${frenchMessagesCount}</div>
-                    <div class="stats-item-label">Messages français</div>
+                <div class="additional-stat-card clickable" onclick="showFrenchMessagesWithAndWithoutPhotos()" title="Cliquer pour afficher les messages français">
+                    <div class="additional-stat-value">${frenchMessagesCount}</div>
+                    <div class="additional-stat-label">Messages français</div>
                 </div>
             `;
         }
@@ -5196,11 +5318,13 @@
                 const tag = document.createElement('div');
                 tag.className = 'date-tag';
                 tag.innerHTML = `
-                    <div style="font-weight: bold; color: var(--gold-dark);">
-                        ${displayDate.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
-                    </div>
-                    <div style="font-size: 0.8em; color: var(--text-medium);">
-                        ${count} message${count > 1 ? 's' : ''}
+                    <div class="date-tag-content">
+                        <div class="date-tag-day">
+                            ${displayDate.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' })}
+                        </div>
+                        <div class="date-tag-count">
+                            (${count})
+                        </div>
                     </div>
                 `;
                 
@@ -7208,6 +7332,10 @@
             
             document.getElementById('adminSourceButtons').style.display = 'flex';
             document.getElementById('mobileAdminSourceButtons').style.display = 'flex';
+            
+            // MODIFICATION: Afficher les sélecteurs de source de données
+            document.getElementById('dataSourceSelector').style.display = 'block';
+            document.getElementById('calendarDataSourceSelector').style.display = 'block';
             
             document.querySelectorAll('.export-btn.locked').forEach(btn => {
                 btn.classList.remove('locked');
