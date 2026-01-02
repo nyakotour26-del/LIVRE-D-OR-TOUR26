@@ -3256,93 +3256,140 @@
             line-height: 1;
         }
         
-        /* NOUVEAU: Styles pour les flèches de navigation entre fiches */
-        .fiche-navigation {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 15px 0;
-            padding: 10px 15px;
-            background: rgba(212, 175, 55, 0.1);
-            border-radius: var(--border-radius);
-            border: 1px solid var(--gold-light);
-        }
-        
-        .fiche-nav-button {
-            background: linear-gradient(135deg, var(--secondary-color), var(--gold-dark));
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9em;
-            min-width: 150px;
-        }
-        
-        .fiche-nav-button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
-            background: linear-gradient(135deg, var(--gold-dark), var(--secondary-color));
-        }
-        
-        .fiche-nav-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .fiche-nav-button.prev {
-            text-align: left;
-        }
-        
-        .fiche-nav-button.next {
-            text-align: right;
-        }
-        
-        .fiche-counter {
-            font-weight: bold;
-            color: var(--gold-dark);
-            font-size: 1.1em;
-            text-align: center;
-            flex: 1;
-        }
-        
-        .fiche-counter span {
-            background: var(--secondary-color);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-        }
-        
-        @media (max-width: 768px) {
-            .fiche-navigation {
-                flex-direction: column;
-                gap: 10px;
-                padding: 15px;
-            }
-            
-            .fiche-nav-button {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .fiche-nav-button.prev {
-                order: 1;
-            }
-            
-            .fiche-counter {
-                order: 2;
-            }
-            
-            .fiche-nav-button.next {
-                order: 3;
-            }
-        }
+/* NOUVEAU: Styles pour les flèches de navigation entre fiches - MODIFICATION */
+.fiche-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+    padding: 10px 15px;
+    background: rgba(255, 253, 240, 0.95);
+    border-radius: var(--border-radius);
+    border: 2px solid #FFD700;
+    gap: 20px;
+}
+
+.fiche-nav-button {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    color: #8B4513 !important;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9em;
+    min-width: 180px;
+    box-shadow: 0 3px 8px rgba(255, 215, 0, 0.3);
+    border: 1px solid #FFA500;
+}
+
+.fiche-nav-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.5);
+    background: linear-gradient(135deg, #FFA500, #FFD700);
+    color: #8B0000 !important;
+}
+
+.fiche-nav-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: linear-gradient(135deg, #ccc, #999);
+    color: #666 !important;
+    border-color: #999;
+}
+
+.fiche-counter {
+    font-weight: bold;
+    color: #8B4513 !important;
+    font-size: 1.1em;
+    text-align: center;
+    padding: 8px 20px;
+    background: linear-gradient(135deg, #FFFACD, #FFE4B5);
+    border-radius: 20px;
+    border: 1px solid #FFD700;
+    box-shadow: 0 2px 5px rgba(255, 215, 0, 0.2);
+    min-width: 140px;
+}
+
+.fiche-counter span {
+    background: #FFD700;
+    color: #8B4513 !important;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .fiche-navigation {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .fiche-nav-button {
+        width: calc(50% - 5px);
+        min-width: auto;
+        justify-content: center;
+        font-size: 0.85em;
+        padding: 8px 12px;
+    }
+    
+    .fiche-counter {
+        order: -1;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 6px 15px;
+    }
+    
+    .fiche-nav-button.prev {
+        order: 1;
+    }
+    
+    .fiche-nav-button.next {
+        order: 2;
+    }
+}
+
+/* MODIFICATION: Ajouter au :root pour garder les couleurs originales */
+:root {
+    --primary-color: #8b0000;
+    --secondary-color: #D4AF37;
+    --accent-color: #e74c3c;
+    --light-color: #FFFEF5;
+    --text-color: #2C1810;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    --gold-primary: #D4AF37;
+    --gold-secondary: #B8860B;
+    --gold-light: #F5E8AA;
+    --gold-dark: #8B6914;
+    --background: #FFF8E1;
+    --card-bg: #FFFDF0;
+    --text-dark: #5D4037;
+    --text-medium: #8B6914;
+    --accent-blue: #1E3A8A;
+    --export-btn-color: #5D4037;
+    --export-btn-hover: #8B6914;
+    --source-photo: #D4AF37;
+    --source-nophoto: #8B6914;
+    --source-english: #FFA500;
+    --source-english-photo: #FF6347;
+    --label-color: #B8860B;
+    --english-date-bg: #FFA500;
+    /* Ajout des couleurs spécifiques pour la navigation */
+    --nav-yellow: #FFD700;
+    --nav-orange: #FFA500;
+    --nav-brown: #8B4513;
+    --nav-light-yellow: #FFFACD;
+}
     </style>
 </head>
 <body>
