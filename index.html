@@ -6,6 +6,7 @@
     <title>🌟 Livre d'Or Tournée Europe 2026 - NY AKO</title>
     <link href="https://fonts.cdnfonts.com/css/lucida-handwriting" rel="stylesheet">
     <style>
+// hi mmr
         :root {
             --primary-color: #8b0000;
             --secondary-color: #D4AF37;
@@ -3254,6 +3255,94 @@
             margin: 1px;
             line-height: 1;
         }
+        
+        /* NOUVEAU: Styles pour les flèches de navigation entre fiches */
+        .fiche-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px 15px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: var(--border-radius);
+            border: 1px solid var(--gold-light);
+        }
+        
+        .fiche-nav-button {
+            background: linear-gradient(135deg, var(--secondary-color), var(--gold-dark));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            min-width: 150px;
+        }
+        
+        .fiche-nav-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+            background: linear-gradient(135deg, var(--gold-dark), var(--secondary-color));
+        }
+        
+        .fiche-nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .fiche-nav-button.prev {
+            text-align: left;
+        }
+        
+        .fiche-nav-button.next {
+            text-align: right;
+        }
+        
+        .fiche-counter {
+            font-weight: bold;
+            color: var(--gold-dark);
+            font-size: 1.1em;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .fiche-counter span {
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .fiche-navigation {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .fiche-nav-button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .fiche-nav-button.prev {
+                order: 1;
+            }
+            
+            .fiche-counter {
+                order: 2;
+            }
+            
+            .fiche-nav-button.next {
+                order: 3;
+            }
+        }
     </style>
 </head>
 <body>
@@ -3586,7 +3675,9 @@
                     <h2 id="resultTitle" style="font-size: 1.15em;">Résultats de la recherche</h2>
                     <button onclick="closeResults()" style="background: none; border: none; color: white; font-size: 1.2em; cursor: pointer;">✕ Fermer</button>
                 </div>
-                <div class="result-content" id="resultContent"></div>
+                <div class="result-content" id="resultContent">
+                    <!-- Les flèches de navigation seront ajoutées dynamiquement ici -->
+                </div>
             </section>
             
             <div class="tableau-container" id="tableauSection" style="display: none;">
@@ -3703,6 +3794,14 @@
         let countryAppearanceOrder = {};
         let countryAppearanceCounter = 1;
 
+        // NOUVEAU: Variables pour la navigation entre fiches
+        let currentDisplayedResults = [];
+        let currentDisplayType = '';
+        let currentSearchQuery = '';
+        let currentFilterValue = '';
+        let currentPageIndex = 0;
+        let resultsPerPage = 1;
+
         const creativeTitles = [
             "📝 Trésor de messages",
             "🌟 Message précieux",
@@ -3771,6 +3870,278 @@
             if (totalUnknownSource > 0) {
                 console.log(`✅ ${totalUnknownSource} source(s) 'unknown' changée(s) en 'FR' par défaut`);
             }
+        }
+
+        // NOUVEAU: Fonction pour naviguer entre les fiches
+        function navigateToFiche(direction) {
+            if (direction === 'prev' && currentPageIndex > 0) {
+                currentPageIndex--;
+            } else if (direction === 'next' && currentPageIndex < currentDisplayedResults.length - 1) {
+                currentPageIndex++;
+            } else {
+                return;
+            }
+            
+            displayCurrentFiche();
+        }
+
+        // NOUVEAU: Fonction pour afficher la fiche courante
+        function displayCurrentFiche() {
+            const content = document.getElementById('resultContent');
+            const resultTitle = document.getElementById('resultTitle');
+            
+            if (currentDisplayedResults.length === 0) {
+                content.innerHTML = '<div class="empty-state"><h3>❌ Aucun message trouvé</h3></div>';
+                return;
+            }
+            
+            const currentItem = currentDisplayedResults[currentPageIndex];
+            const row = currentItem.row;
+            const index = currentItem.index || currentPageIndex;
+            const source = currentItem.source || 'nophoto';
+            
+            const dateIndex = 1;
+            const nomIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
+            );
+            const lieuIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
+            );
+            const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
+            const messageIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('votre') && h.toLowerCase().includes('message')
+            );
+            const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
+            const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
+            const adresseIndex = headers.findIndex(h => h.toLowerCase().includes('adresse'));
+            const messageLinkIndex = headers.findIndex(h => 
+                h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
+            );
+            
+            const dateStr = row[dateIndex] || '';
+            const nom = row[nomIndex] || 'Anonyme';
+            const lieu = row[lieuIndex] || '';
+            const pays = row[paysIndex] || '';
+            const message = row[messageIndex] || '';
+            const email = row[emailIndex] || '';
+            const telephone = row[telephoneIndex] || '';
+            const adresse = row[adresseIndex] || '';
+            const messageLink = row[messageLinkIndex] || '';
+            
+            const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
+            const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
+            
+            const titleClasses = [
+                'title-message-treasure',
+                'title-blessing-message', 
+                'title-european-journey',
+                'title-spiritual-testimony',
+                'title-memory-moment',
+                'title-golden-words'
+            ];
+            const titleClass = titleClasses[index % titleClasses.length];
+            
+            const sourceIndicator = getSourceIndicator(source);
+            const sourceClass = source;
+            const sourceIcon = getSourceIcon(source);
+            
+            const originalIndex = currentItem.originalIndex || index;
+            const hasPhotos = photoUrlsMap[originalIndex] && (photoUrlsMap[originalIndex].photo1 || photoUrlsMap[originalIndex].photo2);
+            const hasMessageLink = messageLinksMap[originalIndex];
+            
+            const dateLineClass = (source === 'english' || source === 'english-photo') ? 'english' : '';
+            
+            let html = `
+                <div class="fiche-navigation">
+                    <button class="fiche-nav-button prev" onclick="navigateToFiche('prev')" ${currentPageIndex === 0 ? 'disabled' : ''}>
+                        ◀ Fiche précédente
+                    </button>
+                    <div class="fiche-counter">
+                        <span>Fiche ${currentPageIndex + 1} sur ${currentDisplayedResults.length}</span>
+                    </div>
+                    <button class="fiche-nav-button next" onclick="navigateToFiche('next')" ${currentPageIndex === currentDisplayedResults.length - 1 ? 'disabled' : ''}>
+                        Fiche suivante ▶
+                    </button>
+                </div>
+                
+                <div class="entry-item">
+                    <div class="source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
+                        ${sourceIcon}
+                    </div>
+                    <div class="${titleClass} title-creative">
+                        ${creativeTitle}
+                    </div>
+                    <div class="entry-date-line ${dateLineClass}">
+                        <span>${formattedDate}</span>
+                        <span class="date-source-indicator ${sourceClass}">
+                            ${sourceIcon} ${sourceIndicator}
+                        </span>
+                    </div>
+                    
+                    <div class="entry-header">
+                        <div class="header-item author-name">
+                            <div class="header-icon">👤</div>
+                            <div>${nom.replace(/\n/g, ' ')}</div>
+                        </div>
+                        <div class="header-item">
+                            <div class="header-icon">📍</div>
+                            <div>${lieu.replace(/\n/g, ' ')}</div>
+                        </div>
+                        <div class="header-item">
+                            <div class="header-icon">🌍</div>
+                            <div>${pays.replace(/\n/g, ' ')}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entry-content">
+            `;
+            
+            if (hasPhotos) {
+                const photos = photoUrlsMap[originalIndex];
+                let photosHtml = '<div class="photos-souvenir-container">';
+                
+                const createPhotoPreview = (photoUrl, photoNumber) => {
+                    if (!photoUrl || photoUrl.trim() === '') return '';
+                    
+                    const thumbnailUrl = generatePhotoThumbnail(photoUrl);
+                    
+                    return `
+                        <div class="photo-preview-container">
+                            <div class="photo-link-with-preview" onclick="openPhotoModal('${photoUrl}')">
+                                <img src="${thumbnailUrl}" 
+                                     alt="Photo souvenir ${photoNumber}" 
+                                     class="photo-thumbnail"
+                                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
+                            </div>
+                            <a href="${photoUrl}" target="_blank" class="photo-link-bottom" title="Voir la photo originale">
+                                🔗 Voir la photo originale
+                            </a>
+                        </div>
+                    `;
+                };
+                
+                if (photos.photo1 && photos.photo1.trim() !== '') {
+                    photosHtml += createPhotoPreview(photos.photo1, 1);
+                }
+                
+                if (photos.photo2 && photos.photo2.trim() !== '') {
+                    photosHtml += createPhotoPreview(photos.photo2, 2);
+                }
+                
+                photosHtml += '</div>';
+                
+                if (photosHtml.includes('photo-preview-container')) {
+                    html += `
+                        <div style="margin-bottom: 20px;">
+                            ${photosHtml}
+                        </div>
+                    `;
+                }
+            }
+            
+            html += `
+                        <div class="message-content">
+                            <div class="message-label">💌 Message reçu</div>
+                            <div class="message-text">
+                                ${message.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('')}
+                            </div>
+                        </div>
+                        
+                        ${(adresse || email || telephone) ? `
+                        <div class="contact-section">
+                            <div class="contact-label">📞 Contact</div>
+                            <div class="contact-details">
+                                ${adresse ? `
+                                <div class="contact-item">
+                                    <div class="contact-icon address">📍</div>
+                                    <div class="contact-text"><strong>Adresse:</strong><br>${adresse.replace(/\n/g, '<br>')}</div>
+                                </div>
+                                ` : ''}
+                                
+                                ${email ? `
+                                <div class="contact-item">
+                                    <div class="contact-icon mail">✉️</div>
+                                    <div class="contact-text">
+                                        <strong>Email:</strong><br>
+                                        <a href="mailto:${email}" class="clickable-link">${email}</a>
+                                    </div>
+                                </div>
+                                ` : ''}
+                                
+                                ${telephone ? `
+                                <div class="contact-item">
+                                    <div class="contact-icon phone">📱</div>
+                                    <div class="contact-text">
+                                        <strong>Téléphone:</strong><br>
+                                        <a href="tel:${telephone.replace(/\s/g, '')}" class="clickable-link">${telephone}</a>
+                                    </div>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                        ` : ''}
+            `;
+            
+            if (isAdminUnlocked && messageLink && messageLink.trim() !== '') {
+                html += `
+                    <div class="message-links-container">
+                        <button class="message-link-btn" onclick="window.open('${messageLink}', '_blank')">
+                            🔗 Accéder au formulaire de modification
+                        </button>
+                    </div>
+                `;
+            }
+            
+            html += `
+                    </div>
+                </div>
+                
+                <div class="fiche-navigation" style="margin-top: 20px;">
+                    <button class="fiche-nav-button prev" onclick="navigateToFiche('prev')" ${currentPageIndex === 0 ? 'disabled' : ''}>
+                        ◀ Fiche précédente
+                    </button>
+                    <div class="fiche-counter">
+                        <span>Fiche ${currentPageIndex + 1} sur ${currentDisplayedResults.length}</span>
+                    </div>
+                    <button class="fiche-nav-button next" onclick="navigateToFiche('next')" ${currentPageIndex === currentDisplayedResults.length - 1 ? 'disabled' : ''}>
+                        Fiche suivante ▶
+                    </button>
+                </div>
+            `;
+            
+            content.innerHTML = html;
+            
+            // Mettre à jour le titre
+            let title = '';
+            switch(currentDisplayType) {
+                case 'search':
+                    title = `Résultats pour "${currentSearchQuery}"`;
+                    break;
+                case 'all':
+                    title = 'Tous les messages';
+                    break;
+                case 'date':
+                    title = `Messages du ${formatDateForDisplay(new Date(currentFilterValue))}`;
+                    break;
+                case 'filter':
+                    title = `${currentFilterValue}`;
+                    break;
+                case 'english':
+                    title = 'Messages anglais';
+                    break;
+                case 'french':
+                    title = 'Messages français';
+                    break;
+                case 'photos':
+                    title = 'Fiches avec photos';
+                    break;
+                default:
+                    title = 'Résultats';
+            }
+            
+            resultTitle.textContent = `${title} (${currentDisplayedResults.length} fiche${currentDisplayedResults.length > 1 ? 's' : ''})`;
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -4981,223 +5352,10 @@
                 });
             }
             
-            displayAllFichesData(results, `Fiches avec photos (${results.length})`);
-        }
-
-        function displayAllFichesData(results, title) {
-            const content = document.getElementById('resultContent');
-            const resultTitle = document.getElementById('resultTitle');
-            
-            document.getElementById('tableauSection').style.display = 'none';
-            document.getElementById('bookSection').style.display = 'none';
-            
-            if (results.length === 0) {
-                content.innerHTML = '<div class="empty-state"><h3>❌ Aucun message trouvé</h3></div>';
-            } else {
-                let html = `
-                    <div style="margin-bottom: 15px; padding: 12px; background: #ecf0f1; border-radius: 5px; font-size: 0.95em;">
-                        <strong>${results.length} fiche${results.length > 1 ? 's' : ''} trouvée${results.length > 1 ? 's' : ''}</strong>
-                        <div style="font-size: 0.85em; color: #666; margin-top: 5px;">
-                            Source: ${getDataSourceName(currentDataSource)}
-                        </div>
-                    </div>
-                `;
-                
-                results.forEach((item, index) => {
-                    const row = item.row;
-                    const source = item.source;
-                    
-                    const dateIndex = 1;
-                    const nomIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
-                    );
-                    const lieuIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
-                    );
-                    const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
-                    const messageIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('votre') && h.toLowerCase().includes('message')
-                    );
-                    const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
-                    const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
-                    const adresseIndex = headers.findIndex(h => h.toLowerCase().includes('adresse'));
-                    const messageLinkIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
-                    );
-                    
-                    const dateStr = row[dateIndex] || '';
-                    const nom = row[nomIndex] || 'Anonyme';
-                    const lieu = row[lieuIndex] || '';
-                    const pays = row[paysIndex] || '';
-                    const message = row[messageIndex] || '';
-                    const email = row[emailIndex] || '';
-                    const telephone = row[telephoneIndex] || '';
-                    const adresse = row[adresseIndex] || '';
-                    const messageLink = row[messageLinkIndex] || '';
-                    
-                    const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
-                    const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
-                    
-                    const titleClasses = [
-                        'title-message-treasure',
-                        'title-blessing-message', 
-                        'title-european-journey',
-                        'title-spiritual-testimony',
-                        'title-memory-moment',
-                        'title-golden-words'
-                    ];
-                    const titleClass = titleClasses[index % titleClasses.length];
-                    
-                    const sourceIndicator = getSourceIndicator(source);
-                    const sourceClass = source;
-                    const sourceIcon = getSourceIcon(source);
-                    
-                    const hasPhotos = photoUrlsMap[item.originalIndex] && (photoUrlsMap[item.originalIndex].photo1 || photoUrlsMap[item.originalIndex].photo2);
-                    const hasMessageLink = messageLinksMap[item.originalIndex];
-                    
-                    const dateLineClass = (source === 'english' || source === 'english-photo') ? 'english' : '';
-                    
-                    html += `
-                        <div class="entry-item">
-                            <div class="source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
-                                ${sourceIcon}
-                            </div>
-                            <div class="${titleClass} title-creative">
-                                ${creativeTitle}
-                            </div>
-                            <div class="entry-date-line ${dateLineClass}">
-                                <span>${formattedDate}</span>
-                                <span class="date-source-indicator ${sourceClass}">
-                                    ${sourceIcon} ${sourceIndicator}
-                                </span>
-                            </div>
-                            
-                            <div class="entry-header">
-                                <div class="header-item author-name">
-                                    <div class="header-icon">👤</div>
-                                    <div>${nom.replace(/\n/g, ' ')}</div>
-                                </div>
-                                <div class="header-item">
-                                    <div class="header-icon">📍</div>
-                                    <div>${lieu.replace(/\n/g, ' ')}</div>
-                                </div>
-                                <div class="header-item">
-                                    <div class="header-icon">🌍</div>
-                                    <div>${pays.replace(/\n/g, ' ')}</div>
-                                </div>
-                            </div>
-                            
-                            <div class="entry-content">
-                    `;
-                    
-                    if (hasPhotos) {
-                        const photos = photoUrlsMap[item.originalIndex];
-                        let photosHtml = '<div class="photos-souvenir-container">';
-                        
-                        const createPhotoPreview = (photoUrl, photoNumber) => {
-                            if (!photoUrl || photoUrl.trim() === '') return '';
-                            
-                            const thumbnailUrl = generatePhotoThumbnail(photoUrl);
-                            
-                            return `
-                                <div class="photo-preview-container">
-                                    <div class="photo-link-with-preview" onclick="openPhotoModal('${photoUrl}')">
-                                        <img src="${thumbnailUrl}" 
-                                             alt="Photo souvenir ${photoNumber}" 
-                                             class="photo-thumbnail"
-                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
-                                    </div>
-                                    <a href="${photoUrl}" target="_blank" class="photo-link-bottom" title="Voir la photo originale">
-                                        🔗 Voir la photo originale
-                                    </a>
-                                </div>
-                            `;
-                        };
-                        
-                        if (photos.photo1 && photos.photo1.trim() !== '') {
-                            photosHtml += createPhotoPreview(photos.photo1, 1);
-                        }
-                        
-                        if (photos.photo2 && photos.photo2.trim() !== '') {
-                            photosHtml += createPhotoPreview(photos.photo2, 2);
-                        }
-                        
-                        photosHtml += '</div>';
-                        
-                        if (photosHtml.includes('photo-preview-container')) {
-                            html += `
-                                <div style="margin-bottom: 20px;">
-                                    ${photosHtml}
-                                </div>
-                            `;
-                        }
-                    }
-                    
-                    html += `
-                                <div class="message-content">
-                                    <div class="message-label">💌 Message reçu</div>
-                                    <div class="message-text">
-                                        ${message.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('')}
-                                    </div>
-                                </div>
-                                
-                                ${(adresse || email || telephone) ? `
-                                <div class="contact-section">
-                                    <div class="contact-label">📞 Contact</div>
-                                    <div class="contact-details">
-                                        ${adresse ? `
-                                        <div class="contact-item">
-                                            <div class="contact-icon address">📍</div>
-                                            <div class="contact-text"><strong>Adresse:</strong><br>${adresse.replace(/\n/g, '<br>')}</div>
-                                        </div>
-                                        ` : ''}
-                                        
-                                        ${email ? `
-                                        <div class="contact-item">
-                                            <div class="contact-icon mail">✉️</div>
-                                            <div class="contact-text">
-                                                <strong>Email:</strong><br>
-                                                <a href="mailto:${email}" class="clickable-link">${email}</a>
-                                            </div>
-                                        </div>
-                                        ` : ''}
-                                        
-                                        ${telephone ? `
-                                        <div class="contact-item">
-                                            <div class="contact-icon phone">📱</div>
-                                            <div class="contact-text">
-                                                <strong>Téléphone:</strong><br>
-                                                <a href="tel:${telephone.replace(/\s/g, '')}" class="clickable-link">${telephone}</a>
-                                            </div>
-                                        </div>
-                                        ` : ''}
-                                    </div>
-                                </div>
-                                ` : ''}
-                    `;
-                    
-                    if (isAdminUnlocked && messageLink && messageLink.trim() !== '') {
-                        html += `
-                            <div class="message-links-container">
-                                <button class="message-link-btn" onclick="window.open('${messageLink}', '_blank')">
-                                    🔗 Accéder au formulaire de modification
-                                </button>
-                            </div>
-                        `;
-                    }
-                    
-                    html += `
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                content.innerHTML = html;
-            }
-            
-            resultTitle.textContent = `${title} (${results.length} fiche${results.length > 1 ? 's' : ''})`;
-            document.getElementById('resultsSection').style.display = 'block';
-            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            currentDisplayedResults = results;
+            currentDisplayType = 'photos';
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         function showFrenchMessagesWithAndWithoutPhotos() {
@@ -5222,7 +5380,10 @@
                 });
             }
             
-            displayAllFichesData(results, `Messages français (${results.length})`);
+            currentDisplayedResults = results;
+            currentDisplayType = 'french';
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         function showEnglishMessages() {
@@ -5247,7 +5408,10 @@
                 });
             }
             
-            displayAllFichesData(results, `Messages anglais (${results.length})`);
+            currentDisplayedResults = results;
+            currentDisplayType = 'english';
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         function showFrenchMessages() {
@@ -5272,7 +5436,10 @@
                 });
             }
             
-            displayAllFichesData(results, `Messages français (${results.length})`);
+            currentDisplayedResults = results;
+            currentDisplayType = 'french';
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         function renderFilterTags() {
@@ -5292,7 +5459,15 @@
                 
                 tag.addEventListener('click', () => {
                     const results = filterDataByType(item, type);
-                    displayResults(results, `${type.charAt(0).toUpperCase() + type.slice(1)}: ${item.replace(/\n/g, ' ')}`);
+                    currentDisplayedResults = results.map((row, index) => ({
+                        row: row,
+                        source: messageSourceMap[`${currentDataSource}-${index}`] || 'nophoto',
+                        originalIndex: index
+                    }));
+                    currentDisplayType = 'filter';
+                    currentFilterValue = `${type.charAt(0).toUpperCase() + type.slice(1)}: ${item.replace(/\n/g, ' ')}`;
+                    currentPageIndex = 0;
+                    displayCurrentFiche();
                 });
                 
                 container.appendChild(tag);
@@ -5329,7 +5504,17 @@
                 `;
                 
                 tag.addEventListener('click', () => {
-                    selectDate(date, false);
+                    const dateKey = date.toISOString().split('T')[0];
+                    const messages = dateMessagesMap[dateKey] || [];
+                    currentDisplayedResults = messages.map(m => ({
+                        row: m.row,
+                        source: m.source,
+                        originalIndex: m.index
+                    }));
+                    currentDisplayType = 'date';
+                    currentFilterValue = dateKey;
+                    currentPageIndex = 0;
+                    displayCurrentFiche();
                 });
                 
                 container.appendChild(tag);
@@ -5432,7 +5617,17 @@
 
         function viewDayMessages() {
             if (popupDate) {
-                selectDate(popupDate, true);
+                const dateKey = popupDate.toISOString().split('T')[0];
+                const messages = dateMessagesMap[dateKey] || [];
+                currentDisplayedResults = messages.map(m => ({
+                    row: m.row,
+                    source: m.source,
+                    originalIndex: m.index
+                }));
+                currentDisplayType = 'date';
+                currentFilterValue = dateKey;
+                currentPageIndex = 0;
+                displayCurrentFiche();
                 closeCalendarPopup();
             }
         }
@@ -5462,10 +5657,17 @@
                 displayDate.setDate(displayDate.getDate() + 1);
             }
             
-            const matchingRows = findEntriesByDate(date);
-            
-            displayResults(matchingRows, `Messages du ${formatDateForDisplay(displayDate)} (${matchingRows.length} message${matchingRows.length !== 1 ? 's' : ''})`);
-            renderCalendar();
+            const dateKey = date.toISOString().split('T')[0];
+            const messages = dateMessagesMap[dateKey] || [];
+            currentDisplayedResults = messages.map(m => ({
+                row: m.row,
+                source: m.source,
+                originalIndex: m.index
+            }));
+            currentDisplayType = 'date';
+            currentFilterValue = dateKey;
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         function findEntriesByDate(date) {
@@ -5541,7 +5743,15 @@
             }
             
             const results = searchData(searchValue);
-            displayResults(results, `Résultats pour "${searchValue}"`);
+            currentDisplayedResults = results.map((row, index) => ({
+                row: row,
+                source: messageSourceMap[`${currentDataSource}-${index}`] || 'nophoto',
+                originalIndex: index
+            }));
+            currentDisplayType = 'search';
+            currentSearchQuery = searchValue;
+            currentPageIndex = 0;
+            displayCurrentFiche();
             
             document.getElementById('searchSuggestions').style.display = 'none';
         }
@@ -5554,7 +5764,14 @@
         }
 
         function showAllData() {
-            displayResults(sheetData, 'Tous les messages');
+            currentDisplayedResults = sheetData.map((row, index) => ({
+                row: row,
+                source: messageSourceMap[`${currentDataSource}-${index}`] || 'nophoto',
+                originalIndex: index
+            }));
+            currentDisplayType = 'all';
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         function getRandomCreativeTitle() {
@@ -5576,224 +5793,6 @@
             }
             
             return getRandomCreativeTitle();
-        }
-
-        function displayResults(results, title) {
-            const content = document.getElementById('resultContent');
-            const resultTitle = document.getElementById('resultTitle');
-            
-            document.getElementById('tableauSection').style.display = 'none';
-            document.getElementById('bookSection').style.display = 'none';
-            
-            if (results.length === 0) {
-                content.innerHTML = '<div class="empty-state"><h3>❌ Aucun message trouvé</h3></div>';
-            } else {
-                let html = `
-                    <div style="margin-bottom: 15px; padding: 12px; background: #ecf0f1; border-radius: 5px; font-size: 0.95em;">
-                        <strong>${results.length} message${results.length > 1 ? 's' : ''} trouvé${results.length > 1 ? 's' : ''}</strong>
-                        <div style="font-size: 0.85em; color: #666; margin-top: 5px;">
-                            Source: ${getDataSourceName(currentDataSource)}
-                        </div>
-                    </div>
-                `;
-                
-                results.forEach((row, index) => {
-                    const messageId = `msg-${index}`;
-                    const isSelected = selectedMessages.has(messageId);
-                    
-                    const dateIndex = 1;
-                    const nomIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('votre') && h.toLowerCase().includes('nom')
-                    );
-                    const lieuIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('lieu') && h.toLowerCase().includes('événement')
-                    );
-                    const paysIndex = headers.findIndex(h => h.toLowerCase().includes('pays'));
-                    const messageIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('votre') && h.toLowerCase().includes('message')
-                    );
-                    const emailIndex = headers.findIndex(h => h.toLowerCase().includes('e mail') || h.toLowerCase().includes('email'));
-                    const telephoneIndex = headers.findIndex(h => h.toLowerCase().includes('téléphone') || h.toLowerCase().includes('whatsapp'));
-                    const adresseIndex = headers.findIndex(h => h.toLowerCase().includes('adresse'));
-                    const messageLinkIndex = headers.findIndex(h => 
-                        h.toLowerCase().includes('lien') && h.toLowerCase().includes('message')
-                    );
-                    
-                    const dateStr = row[dateIndex] || '';
-                    const nom = row[nomIndex] || 'Anonyme';
-                    const lieu = row[lieuIndex] || '';
-                    const pays = row[paysIndex] || '';
-                    const message = row[messageIndex] || '';
-                    const email = row[emailIndex] || '';
-                    const telephone = row[telephoneIndex] || '';
-                    const adresse = row[adresseIndex] || '';
-                    const messageLink = row[messageLinkIndex] || '';
-                    
-                    const formattedDate = formatDateToDDD_DD_MM_AA(dateStr);
-                    const creativeTitle = getCreativeTitleForEntry(pays, lieu, index);
-                    
-                    const titleClasses = [
-                        'title-message-treasure',
-                        'title-blessing-message', 
-                        'title-european-journey',
-                        'title-spiritual-testimony',
-                        'title-memory-moment',
-                        'title-golden-words'
-                    ];
-                    const titleClass = titleClasses[index % titleClasses.length];
-                    
-                    const sourceKey = `${currentDataSource}-${index}`;
-                    const source = messageSourceMap[sourceKey] || 'nophoto';
-                    const sourceIndicator = getSourceIndicator(source);
-                    const sourceClass = source;
-                    const sourceIcon = getSourceIcon(source);
-                    
-                    const hasPhotos = photoUrlsMap[index] && (photoUrlsMap[index].photo1 || photoUrlsMap[index].photo2);
-                    const hasMessageLink = messageLinksMap[index];
-                    
-                    const dateLineClass = (source === 'english' || source === 'english-photo') ? 'english' : '';
-                    
-                    html += `
-                        <div class="entry-item">
-                            <div class="source-indicator ${sourceClass}" title="${getSourceFullName(source)}">
-                                ${sourceIcon}
-                            </div>
-                            <div class="${titleClass} title-creative">
-                                ${creativeTitle}
-                            </div>
-                            <div class="entry-date-line ${dateLineClass}">
-                                <span>${formattedDate}</span>
-                                <span class="date-source-indicator ${sourceClass}">
-                                    ${sourceIcon} ${sourceIndicator}
-                                </span>
-                            </div>
-                            
-                            <div class="entry-header">
-                                <div class="header-item author-name">
-                                    <div class="header-icon">👤</div>
-                                    <div>${nom.replace(/\n/g, ' ')}</div>
-                                </div>
-                                <div class="header-item">
-                                    <div class="header-icon">📍</div>
-                                    <div>${lieu.replace(/\n/g, ' ')}</div>
-                                </div>
-                                <div class="header-item">
-                                    <div class="header-icon">🌍</div>
-                                    <div>${pays.replace(/\n/g, ' ')}</div>
-                                </div>
-                            </div>
-                            
-                            <div class="entry-content">
-                    `;
-                    
-                    if (hasPhotos) {
-                        const photos = photoUrlsMap[index];
-                        let photosHtml = '<div class="photos-souvenir-container">';
-                        
-                        const createPhotoPreview = (photoUrl, photoNumber) => {
-                            if (!photoUrl || photoUrl.trim() === '') return '';
-                            
-                            const thumbnailUrl = generatePhotoThumbnail(photoUrl);
-                            
-                            return `
-                                <div class="photo-preview-container">
-                                    <div class="photo-link-with-preview" onclick="openPhotoModal('${photoUrl}')">
-                                        <img src="${thumbnailUrl}" 
-                                             alt="Photo souvenir ${photoNumber}" 
-                                             class="photo-thumbnail"
-                                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
-                                    </div>
-                                    <a href="${photoUrl}" target="_blank" class="photo-link-bottom" title="Voir la photo originale">
-                                        🔗 Voir la photo originale
-                                    </a>
-                                </div>
-                            `;
-                        };
-                        
-                        if (photos.photo1 && photos.photo1.trim() !== '') {
-                            photosHtml += createPhotoPreview(photos.photo1, 1);
-                        }
-                        
-                        if (photos.photo2 && photos.photo2.trim() !== '') {
-                            photosHtml += createPhotoPreview(photos.photo2, 2);
-                        }
-                        
-                        photosHtml += '</div>';
-                        
-                        if (photosHtml.includes('photo-preview-container')) {
-                            html += `
-                                <div style="margin-bottom: 20px;">
-                                    ${photosHtml}
-                                </div>
-                            `;
-                        }
-                    }
-                    
-                    html += `
-                                <div class="message-content">
-                                    <div class="message-label">💌 Message reçu</div>
-                                    <div class="message-text">
-                                        ${message.split('\n').filter(p => p.trim()).map(p => `<p>${p}</p>`).join('')}
-                                    </div>
-                                </div>
-                                
-                                ${(adresse || email || telephone) ? `
-                                <div class="contact-section">
-                                    <div class="contact-label">📞 Contact</div>
-                                    <div class="contact-details">
-                                        ${adresse ? `
-                                        <div class="contact-item">
-                                            <div class="contact-icon address">📍</div>
-                                            <div class="contact-text"><strong>Adresse:</strong><br>${adresse.replace(/\n/g, '<br>')}</div>
-                                        </div>
-                                        ` : ''}
-                                        
-                                        ${email ? `
-                                        <div class="contact-item">
-                                            <div class="contact-icon mail">✉️</div>
-                                            <div class="contact-text">
-                                                <strong>Email:</strong><br>
-                                                <a href="mailto:${email}" class="clickable-link">${email}</a>
-                                            </div>
-                                        </div>
-                                        ` : ''}
-                                        
-                                        ${telephone ? `
-                                        <div class="contact-item">
-                                            <div class="contact-icon phone">📱</div>
-                                            <div class="contact-text">
-                                                <strong>Téléphone:</strong><br>
-                                                <a href="tel:${telephone.replace(/\s/g, '')}" class="clickable-link">${telephone}</a>
-                                            </div>
-                                        </div>
-                                        ` : ''}
-                                    </div>
-                                </div>
-                                ` : ''}
-                    `;
-                    
-                    if (isAdminUnlocked && messageLink && messageLink.trim() !== '') {
-                        html += `
-                            <div class="message-links-container">
-                                <button class="message-link-btn" onclick="window.open('${messageLink}', '_blank')">
-                                    🔗 Accéder au formulaire de modification
-                                </button>
-                            </div>
-                        `;
-                    }
-                    
-                    html += `
-                            </div>
-                        </div>
-                    `;
-                });
-                
-                content.innerHTML = html;
-            }
-            
-            resultTitle.textContent = `${title} (${results.length} message${results.length > 1 ? 's' : ''})`;
-            document.getElementById('resultsSection').style.display = 'block';
-            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
         }
 
         function getSourceFullName(source) {
@@ -5873,7 +5872,15 @@
             }
             
             const results = filterDataByType(topCountry, 'pays');
-            displayResults(results, `Pays avec plus de messages: ${topCountry}`);
+            currentDisplayedResults = results.map((row, index) => ({
+                row: row,
+                source: messageSourceMap[`${currentDataSource}-${index}`] || 'nophoto',
+                originalIndex: index
+            }));
+            currentDisplayType = 'filter';
+            currentFilterValue = `Pays avec plus de messages: ${topCountry}`;
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         function showAnonymousMessages() {
@@ -5886,7 +5893,15 @@
                 return !nom.trim() || nom.toLowerCase().includes('anonyme');
             });
             
-            displayResults(results, 'Messages anonymes');
+            currentDisplayedResults = results.map((row, index) => ({
+                row: row,
+                source: messageSourceMap[`${currentDataSource}-${index}`] || 'nophoto',
+                originalIndex: index
+            }));
+            currentDisplayType = 'filter';
+            currentFilterValue = 'Messages anonymes';
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         // MODIFICATION: Fonction pour générer la table des matières sur 3 colonnes
@@ -6159,7 +6174,15 @@
 
         function filterByValue(value, type) {
             const results = filterDataByType(value, type);
-            displayResults(results, `${type === 'nom' ? 'Auteur' : type === 'lieu' ? 'Lieu' : 'Pays'}: ${value}`);
+            currentDisplayedResults = results.map((row, index) => ({
+                row: row,
+                source: messageSourceMap[`${currentDataSource}-${index}`] || 'nophoto',
+                originalIndex: index
+            }));
+            currentDisplayType = 'filter';
+            currentFilterValue = `${type === 'nom' ? 'Auteur' : type === 'lieu' ? 'Lieu' : 'Pays'}: ${value}`;
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         function prevMonth() {
@@ -6294,8 +6317,14 @@
 
         function scrollToMessage(index) {
             const row = sheetData[index];
-            const results = [row];
-            displayResults(results, `Message #${index + 1}`);
+            currentDisplayedResults = [{
+                row: row,
+                source: messageSourceMap[`${currentDataSource}-${index}`] || 'nophoto',
+                originalIndex: index
+            }];
+            currentDisplayType = 'single';
+            currentPageIndex = 0;
+            displayCurrentFiche();
         }
 
         // MODIFICATION: Fonction pour générer le livre PDF avec table des matières sur 3 colonnes
@@ -6434,7 +6463,7 @@
                                             <img src="${generateThumbnailUrl(photo1)}" 
                                                  alt="Photo souvenir 1" 
                                                  class="book-photo-large"
-                                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMMTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
+                                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNlOGY0ZjgiLz48cGF0aCBkPSJNNTAgNzBMTTUwIDcwTDEyMCAxMzBINzBMMTUwIDEzMEg1MFY3MFoiIGZpbGw9IiMzNDk4ZGIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjZjc0YzNjIi8+PC9zdmc+'; this.alt='Image non disponible'">
                                             <a href="${photo1}" target="_blank" class="photo-link-bottom" style="display: block; margin-top: 8px; padding: 5px 8px; background: linear-gradient(135deg, #D4AF37, #B8860B); color: white; border-radius: 6px; text-decoration: none; font-size: 0.85em; font-weight: 600; text-align: center; transition: all 0.3s;">
                                                 🔗 Voir la photo originale
                                             </a>
